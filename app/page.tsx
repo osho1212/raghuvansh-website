@@ -1,65 +1,122 @@
+"use client";
+import { Navigation } from "@/components/ui/Navigation";
+import { Footer } from "@/components/ui/Footer";
+import { Button, CtaButton } from "@/components/ui/Buttons";
+import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <>
+      <Navigation />
+      <main className="flex-grow">
+        {/* HERO */}
+        <section className="relative min-h-screen flex items-center justify-center bg-curtain text-canvas film-grain pt-20">
+          <div className="absolute inset-0 z-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
+          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+            <motion.h1 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="font-heading text-5xl md:text-7xl lg:text-8xl text-gold font-bold mb-8"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Raghuvansh ki Ramaayan
+            </motion.h1>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 0.8 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+              <Button variant="secondary" href="/ramleela">Watch the Leela</Button>
+              <Button variant="outline" href="/contact">Book Us</Button>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* RECOGNITION BAR */}
+        <section className="bg-canvas border-b border-gold/20 py-8 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="flex flex-wrap justify-center items-center gap-12 font-heading text-xl text-ink/60 uppercase tracking-widest">
+              <span>BBC</span>
+              <span className="text-gold">•</span>
+              <span>Brut</span>
+              <span className="text-gold">•</span>
+              <span>Red Fort</span>
+            </div>
+          </div>
+        </section>
+
+        {/* INTRO */}
+        <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div className="order-2 md:order-1">
+              <h2 className="font-heading text-4xl md:text-5xl text-ink font-bold mb-6">
+                Preserving the <span className="text-gold">Classical</span>, Pioneering the <span className="text-curtain">Contemporary</span>.
+              </h2>
+              <p className="font-body text-lg text-ink/80 leading-relaxed mb-8">
+                Raghuvansh Theatre Group is a premier performing arts collective based in New Delhi. Founded by Pt. Amitosh Sharma, an NSD alumnus, we bring centuries of Indian theatrical tradition to the modern stage with unparalleled grandeur.
+              </p>
+              <Button variant="primary" href="/about">Discover Our Story</Button>
+            </div>
+            <div className="order-1 md:order-2 relative aspect-[3/4] md:aspect-square w-full">
+              {/* Image Placeholder */}
+              <div className="absolute inset-0 bg-gold/10 border border-gold/30 rounded-sm flex items-center justify-center">
+                <span className="font-body text-ink/40">Founder Portrait</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* REPERTOIRE */}
+        <section className="py-24 bg-ink text-canvas">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="font-heading text-4xl text-gold mb-16 text-center">Our Repertoire</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Playbill Cards */}
+              {[
+                { title: "RamLeela", href: "/ramleela", desc: "Our flagship production" },
+                { title: "Productions", href: "/productions", desc: "Contemporary plays" },
+                { title: "Ghazal", href: "/ghazal-events", desc: "Musical evenings" },
+                { title: "Annual Day", href: "/annual-day", desc: "School productions" }
+              ].map((item, idx) => (
+                <Link key={idx} href={item.href} className="group block aspect-[3/4] relative overflow-hidden bg-curtain">
+                  {/* Image Placeholder */}
+                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 z-10" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-canvas/5 z-0">
+                    <span className="font-body text-canvas/40">Image Placeholder</span>
+                  </div>
+                  <div className="absolute inset-0 border border-gold/0 group-hover:border-gold/50 transition-colors duration-500 z-20 m-4" />
+                  <div className="absolute bottom-0 left-0 p-8 z-30">
+                    <h3 className="font-heading text-3xl text-gold mb-2 group-hover:-translate-y-2 transition-transform duration-300">{item.title}</h3>
+                    <p className="font-body text-sm tracking-widest uppercase text-canvas opacity-0 group-hover:opacity-100 group-hover:-translate-y-2 transition-all duration-300 delay-100">{item.desc}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* PRESS QUOTE */}
+        <section className="py-32 bg-canvas">
+          <div className="max-w-4xl mx-auto px-4 text-center">
+            <span className="text-gold text-6xl font-heading leading-none">“</span>
+            <h3 className="font-heading text-3xl md:text-5xl text-ink leading-tight mt-4">
+              A breathtaking revival of traditional theatre that leaves the audience spellbound.
+            </h3>
+            <p className="font-body text-ink/60 uppercase tracking-widest mt-8">- The Indian Express</p>
+          </div>
+        </section>
+
+        {/* CTA BAND */}
+        <section className="bg-curtain film-grain py-24 text-center px-4">
+          <h2 className="font-heading text-4xl md:text-5xl text-gold mb-12">Bring Raghuvansh to Your Stage</h2>
+          <CtaButton href="/contact">Enquire via WhatsApp</CtaButton>
+        </section>
       </main>
-    </div>
+      <Footer />
+    </>
   );
 }
