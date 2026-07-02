@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Cinzel, Inter, Tiro_Devanagari_Hindi } from "next/font/google";
+import { Cinzel_Decorative, Inter, Tiro_Devanagari_Hindi } from "next/font/google";
 import "./globals.css";
 
-const cinzel = Cinzel({
-  variable: "--font-cinzel",
+const cinzelDecorative = Cinzel_Decorative({
+  variable: "--font-cinzel-decorative",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
+  weight: ["400", "700"],
 });
 
 const inter = Inter({
@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cinzel.variable} ${inter.variable} ${tiro.variable} h-full antialiased`}
+      className={`${cinzelDecorative.variable} ${inter.variable} ${tiro.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body bg-canvas text-ink">{children}</body>
     </html>
