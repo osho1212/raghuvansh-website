@@ -32,7 +32,7 @@ export default function Home() {
       <Navigation />
       <main className="flex-grow">
         {/* HERO */}
-        <section className="relative min-h-screen flex items-end justify-center bg-curtain text-canvas film-grain pt-20 p-8 md:p-16 lg:p-24 overflow-hidden">
+        <section className="relative min-h-screen flex items-end justify-center bg-curtain text-canvas film-grain pt-20 p-4 md:p-6 lg:p-8 overflow-hidden">
           {/* Background Video */}
           <video
             ref={videoRef}
@@ -43,37 +43,33 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover z-0"
             src="/media%20assets/raghuvansh_1.webm"
           />
-          <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/80 via-transparent to-ink/40"></div>
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/90 via-transparent to-ink/30"></div>
           
           {/* Mute/Unmute Button (Bottom Right) */}
           <button
             onClick={toggleMute}
-            className="absolute bottom-8 right-8 z-30 p-4 bg-ink/60 border border-gold/30 hover:bg-gold hover:text-ink hover:border-gold rounded-full text-canvas transition-all spotlight-glow flex items-center justify-center"
+            className="absolute bottom-6 right-6 z-30 p-3 bg-ink/60 border border-gold/30 hover:bg-gold hover:text-ink hover:border-gold rounded-full text-canvas transition-all spotlight-glow flex items-center justify-center"
             aria-label={isMuted ? "Unmute video" : "Mute video"}
           >
-            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
           </button>
 
-          {/* delayed text at bottom center */}
-          <div className="relative z-20 max-w-4xl text-center mx-auto">
+          {/* delayed text at bottom center (flat layout) */}
+          <div className="relative z-20 max-w-3xl text-center mx-auto pb-4">
             <AnimatePresence>
               {showText && (
                 <motion.div
-                  initial={{ opacity: 0, y: 40 }}
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                  <span className="font-body text-xs md:text-sm text-gold uppercase tracking-[0.2em] font-semibold block mb-4">
-                    ACT I: THE OVERTURE
-                  </span>
-                  <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-canvas font-bold mb-6 uppercase leading-tight tracking-wide">
-                    Raghuvansh <br />
-                    <span className="text-gold">ki Ramayan</span>
+                  <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-canvas font-bold mb-3 uppercase tracking-wide">
+                    Raghuvansh <span className="text-gold">ki Ramayan</span>
                   </h1>
-                  <p className="font-body text-sm md:text-base text-canvas/80 max-w-2xl mx-auto mb-8 leading-relaxed">
+                  <p className="font-body text-xs md:text-sm text-canvas/80 max-w-xl mx-auto mb-4 leading-relaxed">
                     Enter a world where time stands still. We are the custodians of moving poetry, preserving the visceral emotion of Indian classical theatre through
                   </p>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8">
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button variant="secondary" href="/ramleela">WATCH THE LEELA</Button>
                     <Button variant="outline" href="/contact">BOOK US</Button>
                   </div>
