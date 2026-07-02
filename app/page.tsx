@@ -63,7 +63,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                  <h1 className="font-heading text-6xl md:text-8xl lg:text-9xl text-canvas font-bold mb-8 uppercase tracking-wide leading-none">
+                  <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-canvas font-bold mb-8 uppercase tracking-wide leading-none">
                     Raghuvansh <span className="text-gold">ki Ramayan</span>
                   </h1>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
