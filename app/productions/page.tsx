@@ -115,13 +115,31 @@ export default function ProductionsIndex() {
           </div>
 
           {/* Centered Playbill Layout */}
-          <div className="flex flex-wrap justify-center gap-12 lg:gap-16">
+          <div className="flex flex-wrap justify-center gap-14 lg:gap-16">
             {productionsData.map((prod) => (
               <div key={prod.slug} className="group relative w-full sm:w-[320px] md:w-[350px] aspect-[3/4]">
                 
                 {/* Warm Light Radial Glow Behind each poster */}
                 <div className="absolute -inset-6 bg-gold/10 rounded-full blur-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0"></div>
                 
+                {/* Royal Golden Frame Corners (Floating outside the poster) */}
+                <div className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-gold z-20 pointer-events-none transition-transform duration-500 group-hover:translate-x-[-5px] group-hover:translate-y-[-5px]">
+                  <div className="absolute -top-[3px] -left-[3px] w-1.5 h-1.5 rounded-full bg-gold"></div>
+                  <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t border-l border-gold/40"></div>
+                </div>
+                <div className="absolute -top-3 -right-3 w-8 h-8 border-t-2 border-r-2 border-gold z-20 pointer-events-none transition-transform duration-500 group-hover:translate-x-[5px] group-hover:translate-y-[-5px]">
+                  <div className="absolute -top-[3px] -right-[3px] w-1.5 h-1.5 rounded-full bg-gold"></div>
+                  <div className="absolute top-1.5 right-1.5 w-3 h-3 border-t border-r border-gold/40"></div>
+                </div>
+                <div className="absolute -bottom-3 -left-3 w-8 h-8 border-b-2 border-l-2 border-gold z-20 pointer-events-none transition-transform duration-500 group-hover:translate-x-[-5px] group-hover:translate-y-[5px]">
+                  <div className="absolute -bottom-[3px] -left-[3px] w-1.5 h-1.5 rounded-full bg-gold"></div>
+                  <div className="absolute bottom-1.5 left-1.5 w-3 h-3 border-b border-l border-gold/40"></div>
+                </div>
+                <div className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-gold z-20 pointer-events-none transition-transform duration-500 group-hover:translate-x-[5px] group-hover:translate-y-[5px]">
+                  <div className="absolute -bottom-[3px] -right-[3px] w-1.5 h-1.5 rounded-full bg-gold"></div>
+                  <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b border-r border-gold/40"></div>
+                </div>
+
                 <Link
                   href={`/productions/${prod.slug}`}
                   className="relative flex flex-col justify-end w-full h-full bg-curtain overflow-hidden border border-gold/30 hover:border-gold transition-all duration-500 spotlight-glow rounded-xl z-10"
@@ -134,12 +152,6 @@ export default function ProductionsIndex() {
                     sizes="(max-w-768px) 100vw, 33vw"
                     className="object-cover z-0 group-hover:scale-[1.04] transition-transform duration-700 rounded-xl"
                   />
-                  
-                  {/* Golden Frame Corners */}
-                  <div className="absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 border-gold/80 rounded-tl-sm z-20 pointer-events-none group-hover:translate-x-[-2px] group-hover:translate-y-[-2px] transition-transform duration-300"></div>
-                  <div className="absolute top-4 right-4 w-5 h-5 border-t-2 border-r-2 border-gold/80 rounded-tr-sm z-20 pointer-events-none group-hover:translate-x-[2px] group-hover:translate-y-[-2px] transition-transform duration-300"></div>
-                  <div className="absolute bottom-4 left-4 w-5 h-5 border-b-2 border-l-2 border-gold/80 rounded-bl-sm z-20 pointer-events-none group-hover:translate-x-[-2px] group-hover:translate-y-[2px] transition-transform duration-300"></div>
-                  <div className="absolute bottom-4 right-4 w-5 h-5 border-b-2 border-r-2 border-gold/80 rounded-br-sm z-20 pointer-events-none group-hover:translate-x-[2px] group-hover:translate-y-[2px] transition-transform duration-300"></div>
                   
                   {/* Subtle hover overlay border */}
                   <div className="absolute inset-0 border border-transparent group-hover:border-gold/30 transition-colors duration-500 z-10 rounded-xl"></div>
