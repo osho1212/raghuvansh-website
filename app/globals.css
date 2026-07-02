@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&display=swap');
 
 @theme {
   --color-canvas: #FAF7F2;
@@ -6,7 +7,7 @@
   --color-gold: #C9A24B;
   --color-ink: #1A1512;
   
-  --font-heading: var(--font-cinzel-decorative);
+  --font-heading: 'Cinzel Decorative', serif;
   --font-body: var(--font-inter);
   --font-display: var(--font-tiro);
 }
@@ -18,7 +19,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, .font-heading {
-  font-family: var(--font-cinzel-decorative), serif !important;
+  font-family: 'Cinzel Decorative', serif !important;
 }
 
 @layer utilities {
