@@ -55,7 +55,7 @@ export default function Home() {
           </button>
 
           {/* delayed text at bottom center (flat layout) */}
-          <div className="relative z-20 max-w-3xl text-center mx-auto pb-4">
+          <div className="relative z-20 max-w-5xl text-center mx-auto pb-8">
             <AnimatePresence>
               {showText && (
                 <motion.div
@@ -63,12 +63,9 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                  <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-canvas font-bold mb-3 uppercase tracking-wide">
+                  <h1 className="font-heading text-6xl md:text-8xl lg:text-9xl text-canvas font-bold mb-8 uppercase tracking-wide leading-none">
                     Raghuvansh <span className="text-gold">ki Ramayan</span>
                   </h1>
-                  <p className="font-body text-xs md:text-sm text-canvas/80 max-w-xl mx-auto mb-4 leading-relaxed">
-                    Enter a world where time stands still. We are the custodians of moving poetry, preserving the visceral emotion of Indian classical theatre through
-                  </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button variant="secondary" href="/ramleela">WATCH THE LEELA</Button>
                     <Button variant="outline" href="/contact">BOOK US</Button>
