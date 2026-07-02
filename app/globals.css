@@ -42,3 +42,20 @@ h1, h2, h3, h4, h5, h6, .font-heading {
     box-shadow: 0 0 15px rgba(201, 162, 75, 0.4);
   }
 }
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.55;
+  }
+  85% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateY(-105vh) translateX(30px);
+    opacity: 0;
+  }
+}

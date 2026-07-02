@@ -69,40 +69,82 @@ export const productionsData = [
   }
 ];
 
+const GoldDust = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+      {[...Array(40)].map((_, i) => {
+        const size = Math.random() * 2 + 1; // 1px to 3px
+        const left = Math.random() * 100; // 0% to 100%
+        const delay = Math.random() * 12; // 0s to 12s
+        const duration = Math.random() * 15 + 15; // 15s to 30s
+        return (
+          <div
+            key={i}
+            className="absolute rounded-full bg-gold/50"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              left: `${left}%`,
+              bottom: `-20px`,
+              animation: `floatUp ${duration}s linear infinite`,
+              animationDelay: `${delay}s`,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 export default function ProductionsIndex() {
   return (
     <>
       <Navigation />
-      <main className="flex-grow pt-28 bg-canvas min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h1 className="font-heading text-5xl md:text-6xl text-curtain font-bold mb-6">
+      <main className="relative flex-grow pt-28 bg-ink min-h-screen overflow-hidden">
+        {/* Animated Gold Dust Particles */}
+        <GoldDust />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
+          <div className="text-center max-w-3xl mx-auto mb-20">
+            <h1 className="font-heading text-5xl md:text-6xl text-gold font-bold mb-6">
               Our Productions
             </h1>
-            <p className="font-body text-lg text-ink/75">
+            <p className="font-body text-lg text-canvas/80">
               Explore the major stage productions by Raghuvansh Theatre Group. Click on any playbill to explore its history, cast, and gallery.
             </p>
           </div>
 
-          {/* Playbill Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Centered Playbill Layout */}
+          <div className="flex flex-wrap justify-center gap-12 lg:gap-16">
             {productionsData.map((prod) => (
-              <Link
-                key={prod.slug}
-                href={`/productions/${prod.slug}`}
-                className="group relative flex flex-col justify-end aspect-[3/4] bg-curtain overflow-hidden border border-gold/25 hover:border-gold transition-all duration-500 spotlight-glow rounded-sm"
-              >
-                {/* Real WebP Image */}
-                <Image
-                  src={prod.poster}
-                  alt={prod.title}
-                  fill
-                  sizes="(max-w-768px) 100vw, 33vw"
-                  className="object-cover z-0 group-hover:scale-[1.03] transition-transform duration-700"
-                />
-                {/* Subtle hover overlay border */}
-                <div className="absolute inset-0 border-2 border-transparent group-hover:border-gold/45 transition-colors duration-500 z-10"></div>
-              </Link>
+              <div key={prod.slug} className="group relative w-full sm:w-[320px] md:w-[350px] aspect-[3/4]">
+                
+                {/* Warm Light Radial Glow Behind each poster */}
+                <div className="absolute -inset-6 bg-gold/10 rounded-full blur-3xl opacity-60 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-0"></div>
+                
+                <Link
+                  href={`/productions/${prod.slug}`}
+                  className="relative flex flex-col justify-end w-full h-full bg-curtain overflow-hidden border border-gold/30 hover:border-gold transition-all duration-500 spotlight-glow rounded-xl z-10"
+                >
+                  {/* Real WebP Image */}
+                  <Image
+                    src={prod.poster}
+                    alt={prod.title}
+                    fill
+                    sizes="(max-w-768px) 100vw, 33vw"
+                    className="object-cover z-0 group-hover:scale-[1.04] transition-transform duration-700 rounded-xl"
+                  />
+                  
+                  {/* Golden Frame Corners */}
+                  <div className="absolute top-4 left-4 w-5 h-5 border-t-2 border-l-2 border-gold/80 rounded-tl-sm z-20 pointer-events-none group-hover:translate-x-[-2px] group-hover:translate-y-[-2px] transition-transform duration-300"></div>
+                  <div className="absolute top-4 right-4 w-5 h-5 border-t-2 border-r-2 border-gold/80 rounded-tr-sm z-20 pointer-events-none group-hover:translate-x-[2px] group-hover:translate-y-[-2px] transition-transform duration-300"></div>
+                  <div className="absolute bottom-4 left-4 w-5 h-5 border-b-2 border-l-2 border-gold/80 rounded-bl-sm z-20 pointer-events-none group-hover:translate-x-[-2px] group-hover:translate-y-[2px] transition-transform duration-300"></div>
+                  <div className="absolute bottom-4 right-4 w-5 h-5 border-b-2 border-r-2 border-gold/80 rounded-br-sm z-20 pointer-events-none group-hover:translate-x-[2px] group-hover:translate-y-[2px] transition-transform duration-300"></div>
+                  
+                  {/* Subtle hover overlay border */}
+                  <div className="absolute inset-0 border border-transparent group-hover:border-gold/30 transition-colors duration-500 z-10 rounded-xl"></div>
+                </Link>
+              </div>
             ))}
           </div>
         </div>
