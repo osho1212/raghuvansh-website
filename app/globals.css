@@ -6,7 +6,7 @@
   --color-gold: #C9A24B;
   --color-ink: #1A1512;
   
-  --font-heading: var(--font-playfair);
+  --font-heading: var(--font-cinzel);
   --font-body: var(--font-inter);
   --font-display: var(--font-tiro);
 }
@@ -15,6 +15,10 @@ body {
   background-color: var(--color-canvas);
   color: var(--color-ink);
   font-family: var(--font-body), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-cinzel), serif !important;
 }
 
 @layer utilities {

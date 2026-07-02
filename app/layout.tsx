@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Tiro_Devanagari_Hindi } from "next/font/google";
+import { Cinzel, Inter, Tiro_Devanagari_Hindi } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
 });
 
 const inter = Inter({
@@ -31,7 +32,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} ${tiro.variable} h-full antialiased`}
+      className={`${cinzel.variable} ${inter.variable} ${tiro.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body bg-canvas text-ink">{children}</body>
     </html>

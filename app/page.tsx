@@ -1,37 +1,85 @@
 "use client";
+import React, { useState, useEffect, useRef } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { Button, CtaButton } from "@/components/ui/Buttons";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { Volume2, VolumeX } from "lucide-react";
 
 export default function Home() {
+  const [showText, setShowText] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowText(true);
+    }, 6000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
   return (
     <>
       <Navigation />
       <main className="flex-grow">
         {/* HERO */}
-        <section className="relative min-h-screen flex items-center justify-center bg-curtain text-canvas film-grain pt-20">
-          <div className="absolute inset-0 z-0 bg-gradient-to-t from-ink/80 to-transparent"></div>
-          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="font-heading text-5xl md:text-7xl lg:text-8xl text-gold font-bold mb-8"
-            >
-              Raghuvansh ki Ramaayan
-            </motion.h1>
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.8 }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-12"
-            >
-              <Button variant="secondary" href="/ramleela">Watch the Leela</Button>
-              <Button variant="outline" href="/contact">Book Us</Button>
-            </motion.div>
+        <section className="relative min-h-screen flex items-end justify-center bg-curtain text-canvas film-grain pt-20 p-8 md:p-16 lg:p-24 overflow-hidden">
+          {/* Background Video */}
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover z-0"
+            src="/media%20assets/raghuvansh_1.webm"
+          />
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/80 via-transparent to-ink/40"></div>
+          
+          {/* Mute/Unmute Button (Bottom Right) */}
+          <button
+            onClick={toggleMute}
+            className="absolute bottom-8 right-8 z-30 p-4 bg-ink/60 border border-gold/30 hover:bg-gold hover:text-ink hover:border-gold rounded-full text-canvas transition-all spotlight-glow flex items-center justify-center"
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+          >
+            {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+          </button>
+
+          {/* delayed text at bottom center */}
+          <div className="relative z-20 max-w-4xl text-center mx-auto">
+            <AnimatePresence>
+              {showText && (
+                <motion.div
+                  initial={{ opacity: 0, y: 40 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                >
+                  <span className="font-body text-xs md:text-sm text-gold uppercase tracking-[0.2em] font-semibold block mb-4">
+                    ACT I: THE OVERTURE
+                  </span>
+                  <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-canvas font-bold mb-6 uppercase leading-tight tracking-wide">
+                    Raghuvansh <br />
+                    <span className="text-gold">ki Ramayan</span>
+                  </h1>
+                  <p className="font-body text-sm md:text-base text-canvas/80 max-w-2xl mx-auto mb-8 leading-relaxed">
+                    Enter a world where time stands still. We are the custodians of moving poetry, preserving the visceral emotion of Indian classical theatre through
+                  </p>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-6 mt-8">
+                    <Button variant="secondary" href="/ramleela">WATCH THE LEELA</Button>
+                    <Button variant="outline" href="/contact">BOOK US</Button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
         </section>
 
