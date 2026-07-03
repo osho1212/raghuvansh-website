@@ -144,21 +144,23 @@ const SpotlightBeams = () => {
 
   if (!mounted) return null;
 
-  // Left Spotlight beam polygon calculations
+  // Left Spotlight beam calculations
   const dxLeft = mouse.x;
   const dyLeft = mouse.y;
+  const dLeft = Math.sqrt(dxLeft * dxLeft + dyLeft * dyLeft);
   const angleLeft = Math.atan2(dyLeft, dxLeft);
   const perpLeft = angleLeft + Math.PI / 2;
-  const beamWidth = 85; // slightly wider beam at target
+  const beamWidth = 85;
   
   const lx1 = mouse.x + Math.cos(perpLeft) * beamWidth;
   const ly1 = mouse.y + Math.sin(perpLeft) * beamWidth;
   const lx2 = mouse.x - Math.cos(perpLeft) * beamWidth;
   const ly2 = mouse.y - Math.sin(perpLeft) * beamWidth;
 
-  // Right Spotlight beam polygon calculations
+  // Right Spotlight beam calculations
   const dxRight = mouse.x - size.w;
   const dyRight = mouse.y;
+  const dRight = Math.sqrt(dxRight * dxRight + dyRight * dyRight);
   const angleRight = Math.atan2(dyRight, dxRight);
   const perpRight = angleRight + Math.PI / 2;
 
@@ -169,7 +171,7 @@ const SpotlightBeams = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-30">
-      {/* Dynamic Multi-layered Cursor Focus Spotlight (Light Pool) */}
+      {/* Target Light Pool on Stage - Decreased to a subtle minimum */}
       <div
         className="absolute -translate-x-1/2 -translate-y-1/2 z-20"
         style={{
@@ -177,37 +179,47 @@ const SpotlightBeams = () => {
           top: `${mouse.y}px`,
         }}
       >
-        {/* Outer wide soft pool */}
-        <div className="absolute w-[360px] h-[360px] bg-gold/10 rounded-full blur-[65px] -translate-x-1/2 -translate-y-1/2" />
-        {/* Mid intense halo */}
-        <div className="absolute w-[180px] h-[180px] bg-gold/25 rounded-full blur-[30px] -translate-x-1/2 -translate-y-1/2" />
-        {/* Bright central hot spot */}
-        <div className="absolute w-[60px] h-[60px] bg-canvas/30 rounded-full blur-[10px] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B]" />
-        {/* Tiny white pin-point flare core */}
-        <div className="absolute w-4 h-4 bg-canvas rounded-full blur-[2px] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_12px_#FAF7F2]" />
+        {/* Outer soft pool */}
+        <div className="absolute w-[240px] h-[240px] bg-gold/5 rounded-full blur-[45px] -translate-x-1/2 -translate-y-1/2" />
+        {/* Mid subtle halo */}
+        <div className="absolute w-[120px] h-[120px] bg-gold/10 rounded-full blur-[20px] -translate-x-1/2 -translate-y-1/2" />
       </div>
 
-      {/* Left Spotlight Volumetric Beam */}
-      <div
-        className="absolute inset-0 opacity-85 blur-[12px]"
-        style={{
-          background: "radial-gradient(circle at 0% 0%, rgba(201, 162, 75, 0.28) 0%, rgba(201, 162, 75, 0.05) 55%, transparent 85%)",
-          clipPath: `polygon(0 0, ${lx1}px ${ly1}px, ${lx2}px ${ly2}px)`,
-        }}
-      />
+      {/* Volumetric Spotlight Beams with fully rounded bases (SVG sector shapes) */}
+      <svg className="absolute inset-0 w-full h-full">
+        <defs>
+          <radialGradient id="leftBeamGrad" cx="0%" cy="0%" r="85%">
+            <stop offset="0%" stopColor="#C9A24B" stopOpacity={0.28} />
+            <stop offset="65%" stopColor="#C9A24B" stopOpacity={0.04} />
+            <stop offset="100%" stopColor="#C9A24B" stopOpacity={0} />
+          </radialGradient>
+          <radialGradient id="rightBeamGrad" cx="100%" cy="0%" r="85%">
+            <stop offset="0%" stopColor="#C9A24B" stopOpacity={0.28} />
+            <stop offset="65%" stopColor="#C9A24B" stopOpacity={0.04} />
+            <stop offset="100%" stopColor="#C9A24B" stopOpacity={0} />
+          </radialGradient>
+        </defs>
+
+        {/* Left Beam - Sweeping clockwise */}
+        <path
+          d={`M 0 0 L ${lx1} ${ly1} A ${dLeft} ${dLeft} 0 0 1 ${lx2} ${ly2} Z`}
+          fill="url(#leftBeamGrad)"
+          className="opacity-80 blur-[12px]"
+        />
+
+        {/* Right Beam - Sweeping counter-clockwise */}
+        <path
+          d={`M ${size.w} 0 L ${rx1} ${ry1} A ${dRight} ${dRight} 0 0 0 ${rx2} ${ry2} Z`}
+          fill="url(#rightBeamGrad)"
+          className="opacity-80 blur-[12px]"
+        />
+      </svg>
+
       {/* Left Spotlight Source Glow */}
       <div className="absolute top-0 left-0 w-24 h-24 bg-gold/15 rounded-full blur-xl -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute top-0 left-0 w-12 h-12 bg-gold/30 rounded-full blur-md -translate-x-1/2 -translate-y-1/2" />
       <div className="absolute top-0 left-0 w-5 h-5 bg-canvas rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B,0_0_10px_#FAF7F2]" />
 
-      {/* Right Spotlight Volumetric Beam */}
-      <div
-        className="absolute inset-0 opacity-85 blur-[12px]"
-        style={{
-          background: "radial-gradient(circle at 100% 0%, rgba(201, 162, 75, 0.28) 0%, rgba(201, 162, 75, 0.05) 55%, transparent 85%)",
-          clipPath: `polygon(100% 0, ${rx1}px ${ry1}px, ${rx2}px ${ry2}px)`,
-        }}
-      />
       {/* Right Spotlight Source Glow */}
       <div className="absolute top-0 right-0 w-24 h-24 bg-gold/15 rounded-full blur-xl translate-x-1/2 -translate-y-1/2" />
       <div className="absolute top-0 right-0 w-12 h-12 bg-gold/30 rounded-full blur-md translate-x-1/2 -translate-y-1/2" />
