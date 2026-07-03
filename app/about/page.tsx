@@ -12,7 +12,7 @@ export default function About() {
     offset: ["start 65%", "end 55%"]
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 0.95], ["0%", "100%"]);
+  const lineHeight = useTransform(scrollYProgress, [0, 0.78], ["0%", "100%"]);
 
   return (
     <>
@@ -137,10 +137,10 @@ export default function About() {
             {/* Timeline wrapper with Ref */}
             <div ref={containerRef} className="relative ml-4 md:ml-1/2">
               {/* Glowing scroll-connecting line container */}
-              <div className="absolute left-0 md:left-1/2 top-11 bottom-[140px] w-[2px] -translate-x-1/2 pointer-events-none z-10">
+              <div className="absolute left-0 md:left-1/2 top-11 bottom-[105px] w-[2px] -translate-x-1/2 pointer-events-none z-10">
                 <motion.div 
                   style={{ height: lineHeight }}
-                  className="w-full bg-gradient-to-b from-gold via-curtain to-gold origin-top shadow-[0_0_8px_rgba(201,162,75,0.7)]"
+                  className="w-full bg-gradient-to-b from-gold via-amber-400 to-gold origin-top shadow-[0_0_15px_rgba(201,162,75,0.95),0_0_6px_#C9A24B]"
                 />
               </div>
 
