@@ -1,11 +1,19 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 
 export default function About() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end end"]
+  });
+
+  const lineHeight = useTransform(scrollYProgress, [0, 0.85], ["0%", "100%"]);
+
   return (
     <>
       <Navigation />
@@ -122,10 +130,21 @@ export default function About() {
         </section>
 
         {/* THE GROUP'S STORY */}
-        <section className="py-24 bg-canvas text-ink relative">
+        <section className="py-24 bg-canvas text-ink relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-heading text-4xl text-curtain font-bold mb-16 text-center">Our Journey</h2>
-            <div className="relative border-l border-gold/30 ml-4 md:ml-1/2 md:translate-x-[-0.5px]">
+            
+            {/* Timeline wrapper with Ref */}
+            <div ref={containerRef} className="relative ml-4 md:ml-1/2">
+              {/* Background faded track line */}
+              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gold/15 -translate-x-[1px]"></div>
+              
+              {/* Glowing scroll-connecting line */}
+              <motion.div 
+                style={{ height: lineHeight }}
+                className="absolute left-0 top-0 w-[2px] bg-gradient-to-b from-gold via-curtain to-gold origin-top -translate-x-[1px] shadow-[0_0_8px_rgba(201,162,75,0.7)] z-10"
+              />
+
               {/* Timeline Items */}
               {[
                 { year: "2000", title: "The Inception", desc: "Founded in New Delhi with a vision to revive classical theatre." },
@@ -133,12 +152,31 @@ export default function About() {
                 { year: "2012", title: "National Acclaim", desc: "Recognized by the Sangeet Natak Akademi for contribution to arts." },
                 { year: "Today", title: "A Theatrical Institution", desc: "Performing at the Red Fort and shaping the next generation of artists." }
               ].map((item, idx) => (
-                <div key={idx} className="relative pl-8 md:pl-0 py-6 md:w-1/2 md:odd:ml-0 md:even:ml-auto md:even:pl-12 md:odd:pr-12 md:odd:text-right group">
-                  <div className="absolute left-0 top-8 md:left-auto md:right-[-5px] md:group-even:left-[-5px] w-3 h-3 bg-gold rounded-full -translate-x-[6.5px] md:translate-x-0"></div>
-                  <h3 className="font-heading text-3xl text-ink font-bold mb-2">{item.year}</h3>
+                <motion.div 
+                  key={idx} 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: idx * 0.05 }}
+                  className="relative pl-8 md:pl-0 py-8 md:w-1/2 md:odd:ml-0 md:even:ml-auto md:even:pl-12 md:odd:pr-12 md:odd:text-right group"
+                >
+                  {/* Glowing dynamic connector dot */}
+                  <motion.div 
+                    initial={{ scale: 0.5, backgroundColor: "rgba(201,162,75,0.15)", boxShadow: "none" }}
+                    whileInView={{ 
+                      scale: 1.15, 
+                      backgroundColor: "#C9A24B", 
+                      boxShadow: "0 0 10px rgba(201, 162, 75, 0.8), 0 0 3px #C9A24B"
+                    }}
+                    viewport={{ once: true, margin: "-120px" }}
+                    transition={{ type: "spring", stiffness: 100, damping: 10, delay: 0.15 }}
+                    className="absolute left-0 top-11 w-3.5 h-3.5 rounded-full z-20 border border-canvas -translate-x-[7px] md:left-auto md:right-0 md:translate-x-[7px] md:group-even:left-0 md:group-even:right-auto md:group-even:-translate-x-[7px]"
+                  />
+                  
+                  <h3 className="font-heading text-3xl text-ink font-bold mb-2 group-hover:text-curtain transition-colors duration-300">{item.year}</h3>
                   <h4 className="font-body text-xl text-curtain font-semibold mb-2">{item.title}</h4>
-                  <p className="font-body text-ink/70">{item.desc}</p>
-                </div>
+                  <p className="font-body text-ink/70 leading-relaxed">{item.desc}</p>
+                </motion.div>
               ))}
             </div>
           </div>
