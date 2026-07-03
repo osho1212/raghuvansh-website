@@ -76,15 +76,30 @@ export default function Home() {
           </div>
         </section>
 
-        {/* RECOGNITION BAR */}
-        <section className="bg-canvas border-b border-gold/20 py-8 overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center items-center gap-12 font-heading text-xl text-ink/60 uppercase tracking-widest">
-              <span>BBC</span>
-              <span className="text-gold">•</span>
-              <span>Brut</span>
-              <span className="text-gold">•</span>
-              <span>Red Fort</span>
+        {/* RECOGNITION BAR (Ribbon Form) */}
+        <section className="bg-canvas border-y border-gold/15 py-5 relative z-20">
+          <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-12">
+            <span className="font-body text-[10px] uppercase tracking-[0.25em] text-ink/40 select-none">
+              Featured Coverage
+            </span>
+            <div className="flex items-center gap-10">
+              <div className="relative h-6 w-20 hover:scale-[1.03] transition-transform duration-300">
+                <Image
+                  src="/media-assets/bbc-logo.svg"
+                  alt="BBC News"
+                  fill
+                  className="object-contain filter opacity-65 hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
+              <span className="text-gold/40 text-sm select-none">•</span>
+              <div className="relative h-5.5 w-18 hover:scale-[1.03] transition-transform duration-300">
+                <Image
+                  src="/media-assets/brut.svg"
+                  alt="Brut"
+                  fill
+                  className="object-contain filter opacity-65 hover:opacity-100 transition-opacity duration-300"
+                />
+              </div>
             </div>
           </div>
         </section>
