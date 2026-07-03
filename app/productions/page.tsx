@@ -120,11 +120,99 @@ const GoldDust = () => {
   );
 };
 
+const SpotlightBeams = () => {
+  const [mouse, setMouse] = React.useState({ x: 0, y: 0 });
+  const [size, setSize] = React.useState({ w: 1200, h: 800 });
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+    const updateMouse = (e: MouseEvent) => {
+      setMouse({ x: e.clientX, y: e.clientY });
+    };
+    const updateSize = () => {
+      setSize({ w: window.innerWidth, h: window.innerHeight });
+    };
+    window.addEventListener("mousemove", updateMouse);
+    window.addEventListener("resize", updateSize);
+    updateSize();
+    return () => {
+      window.removeEventListener("mousemove", updateMouse);
+      window.removeEventListener("resize", updateSize);
+    };
+  }, []);
+
+  if (!mounted) return null;
+
+  // Left Spotlight beam polygon calculations
+  const dxLeft = mouse.x;
+  const dyLeft = mouse.y;
+  const angleLeft = Math.atan2(dyLeft, dxLeft);
+  const perpLeft = angleLeft + Math.PI / 2;
+  const beamWidth = 60; // constant width at target
+  
+  const lx1 = mouse.x + Math.cos(perpLeft) * beamWidth;
+  const ly1 = mouse.y + Math.sin(perpLeft) * beamWidth;
+  const lx2 = mouse.x - Math.cos(perpLeft) * beamWidth;
+  const ly2 = mouse.y - Math.sin(perpLeft) * beamWidth;
+
+  // Right Spotlight beam polygon calculations
+  const dxRight = mouse.x - size.w;
+  const dyRight = mouse.y;
+  const angleRight = Math.atan2(dyRight, dxRight);
+  const perpRight = angleRight + Math.PI / 2;
+
+  const rx1 = mouse.x + Math.cos(perpRight) * beamWidth;
+  const ry1 = mouse.y + Math.sin(perpRight) * beamWidth;
+  const rx2 = mouse.x - Math.cos(perpRight) * beamWidth;
+  const ry2 = mouse.y - Math.sin(perpRight) * beamWidth;
+
+  return (
+    <div className="fixed inset-0 pointer-events-none z-30">
+      {/* Target Light Pool on Stage */}
+      <div
+        className="absolute w-[280px] h-[280px] rounded-full bg-gold/10 blur-[60px] -translate-x-1/2 -translate-y-1/2"
+        style={{
+          left: `${mouse.x}px`,
+          top: `${mouse.y}px`,
+        }}
+      />
+
+      {/* Left Spotlight Beam */}
+      <div
+        className="absolute inset-0 opacity-80"
+        style={{
+          background: "radial-gradient(circle at 0% 0%, rgba(201, 162, 75, 0.22) 0%, rgba(201, 162, 75, 0.04) 60%, transparent 90%)",
+          clipPath: `polygon(0 0, ${lx1}px ${ly1}px, ${lx2}px ${ly2}px)`,
+        }}
+      />
+      {/* Left Spotlight Bulb Source */}
+      <div className="absolute top-0 left-0 w-10 h-10 bg-gold/25 rounded-full blur-sm -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 left-0 w-4 h-4 bg-canvas rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_20px_#C9A24B]" />
+
+      {/* Right Spotlight Beam */}
+      <div
+        className="absolute inset-0 opacity-80"
+        style={{
+          background: "radial-gradient(circle at 100% 0%, rgba(201, 162, 75, 0.22) 0%, rgba(201, 162, 75, 0.04) 60%, transparent 90%)",
+          clipPath: `polygon(100% 0, ${rx1}px ${ry1}px, ${rx2}px ${ry2}px)`,
+        }}
+      />
+      {/* Right Spotlight Bulb Source */}
+      <div className="absolute top-0 right-0 w-10 h-10 bg-gold/25 rounded-full blur-sm translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 right-0 w-4 h-4 bg-canvas rounded-full translate-x-1/2 -translate-y-1/2 shadow-[0_0_20px_#C9A24B]" />
+    </div>
+  );
+};
+
 export default function ProductionsIndex() {
   return (
     <>
       <Navigation />
       <main className="relative flex-grow pt-28 bg-ink min-h-screen overflow-hidden">
+        {/* Interactive Spotlight Beams */}
+        <SpotlightBeams />
+
         {/* Play Background Image Overlay */}
         <div className="absolute inset-0 z-0 opacity-70 pointer-events-none mix-blend-lighten">
           <Image
