@@ -130,6 +130,7 @@ export const Navigation = () => {
               <Link href="/gallery" onClick={() => setIsOpen(false)} className="font-heading text-xl hover:text-gold">Gallery</Link>
               <Link href="/media" onClick={() => setIsOpen(false)} className="font-heading text-xl hover:text-gold">Media</Link>
               <Link href="/collaborate" onClick={() => setIsOpen(false)} className="font-heading text-xl hover:text-gold">Collaborate</Link>
+              <Link href="/apply" onClick={() => setIsOpen(false)} className="font-heading text-xl hover:text-gold">Casting Calls</Link>
               <Link href="/contact" onClick={() => setIsOpen(false)} className="font-heading text-xl text-gold mt-4">Contact</Link>
             </div>
           </motion.div>

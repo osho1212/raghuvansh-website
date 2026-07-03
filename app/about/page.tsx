@@ -1,9 +1,42 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
+
+const galleryImages = [
+  { src: "/about-section/gallery-webp/2.webp", category: "stage", caption: "Early Stage Presentations" },
+  { src: "/about-section/gallery-webp/3.webp", category: "stage", caption: "Classical Dance Drama Rehearsals" },
+  { src: "/about-section/gallery-webp/6.webp", category: "stage", caption: "Ensemble Performance Cast" },
+  { src: "/about-section/gallery-webp/7.webp", category: "stage", caption: "Mythological Adaptations" },
+  { src: "/about-section/gallery-webp/17.webp", category: "stage", caption: "Pt. Amitosh Sharma Directing" },
+  { src: "/about-section/gallery-webp/18.webp", category: "stage", caption: "Vintage Play Highlights" },
+  { src: "/about-section/gallery-webp/19.webp", category: "stage", caption: "Character Portrayals" },
+  { src: "/about-section/gallery-webp/20.webp", category: "stage", caption: "Nukkad Natak Street play" },
+  { src: "/about-section/gallery-webp/27.webp", category: "stage", caption: "Behind the Scenes Rehearsal" },
+  
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_2.webp", category: "press", caption: "National Press Reviews" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_5.webp", category: "press", caption: "Sangeet Natak Akademi Features" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_6.webp", category: "press", caption: "Hindi Theatre News Coverage" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_7.webp", category: "press", caption: "Awards & Recognitions Certificate" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_8.webp", category: "press", caption: "Historical Play Pamphlets" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_13.webp", category: "press", caption: "Archival Press Reviews" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_18.webp", category: "press", caption: "Retro Newspaper Clippings" },
+  
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.22.56 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Cast Rehearsal Group Photo" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.22.58 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Workshop Sessions in Progress" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.25.45 AM.webp", category: "behind", caption: "Director Briefing the Actors" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.30.31 AM.webp", category: "behind", caption: "Green Room Preparations" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.10.20 AM (1)_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Outdoor Audition Sessions" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.17.30 AM (1).webp", category: "behind", caption: "Stage Set Construction" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.22.15 AM.webp", category: "behind", caption: "Costume and Makeup Trials" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.34.24 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Script Reading Circle" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.39.55 AM (1)_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Stage Lighting Calibration" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.39.55 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Pt. Amitosh Sharma Mentoring" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.39.56 AM_upscayl_4x_realesrgan-x4plus.webp", category: "behind", caption: "End of Show Bows" }
+];
 
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -13,6 +46,27 @@ export default function About() {
   });
 
   const lineHeight = useTransform(scrollYProgress, [0, 0.78], ["0%", "100%"]);
+
+  const [showAll, setShowAll] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const visibleImages = showAll ? galleryImages : galleryImages.slice(0, 12);
+
+  // Keyboard navigation for Lightbox
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (lightboxIndex === null) return;
+      if (e.key === "ArrowRight") {
+        setLightboxIndex((prev) => (prev !== null && prev < galleryImages.length - 1 ? prev + 1 : 0));
+      } else if (e.key === "ArrowLeft") {
+        setLightboxIndex((prev) => (prev !== null && prev > 0 ? prev - 1 : galleryImages.length - 1));
+      } else if (e.key === "Escape") {
+        setLightboxIndex(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [lightboxIndex]);
 
   return (
     <>
@@ -252,6 +306,65 @@ export default function About() {
           </div>
         </section>
 
+        {/* GALLERY SECTION */}
+        <section className="py-24 bg-canvas text-ink border-t border-gold/15 relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="font-body text-xs text-gold uppercase tracking-[0.2em] font-bold block mb-2">
+                The Archives
+              </span>
+              <h2 className="font-heading text-4xl text-curtain font-bold mb-4">
+                Historic Memories
+              </h2>
+              <p className="font-body text-lg text-ink/75">
+                Explore a visual record of Pt. Amitosh Sharma's directions, news publications, certifications, and behind-the-scenes milestones spanning over two decades.
+              </p>
+            </div>
+
+            {/* Gallery Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <AnimatePresence mode="popLayout">
+                {visibleImages.map((img, index) => (
+                  <motion.div
+                    layout
+                    key={img.src}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    transition={{ duration: 0.4 }}
+                    onClick={() => setLightboxIndex(index)}
+                    className="relative aspect-[4/3] overflow-hidden border border-gold/15 bg-white shadow-sm rounded-sm hover:border-gold hover:shadow-md transition-all duration-500 cursor-pointer group"
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.caption}
+                      fill
+                      sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
+                    />
+                    {/* Subtle Click Indicator Hover Overlay */}
+                    <div className="absolute inset-0 bg-black/35 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 flex items-center justify-center">
+                      <div className="w-[calc(100%-24px)] h-[calc(100%-24px)] border border-gold/40 rounded-sm"></div>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+
+            {/* Show More/Less Button */}
+            {galleryImages.length > 12 && (
+              <div className="text-center mt-12">
+                <button
+                  onClick={() => setShowAll(!showAll)}
+                  className="bg-curtain hover:bg-gold text-canvas hover:text-ink font-body uppercase tracking-widest text-xs px-8 py-3 rounded-sm transition-all duration-300 font-bold border border-gold/25 cursor-pointer"
+                >
+                  {showAll ? "Show Less" : `Show More (${galleryImages.length - 12} Images)`}
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+
         {/* VISION */}
         <section className="py-32 bg-canvas text-center px-4">
           <div className="max-w-3xl mx-auto">
@@ -260,6 +373,85 @@ export default function About() {
             </h2>
           </div>
         </section>
+
+        {/* LIGHTBOX MODAL */}
+        <AnimatePresence>
+          {lightboxIndex !== null && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
+              onClick={() => setLightboxIndex(null)}
+            >
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex(null);
+                }}
+                className="absolute top-6 right-6 p-2 bg-black/50 border border-gold/30 hover:bg-gold hover:text-ink text-canvas rounded-full transition-colors z-50 cursor-pointer animate-fadeIn"
+              >
+                <X size={24} />
+              </button>
+
+              {/* Prev Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex((prev) =>
+                    prev !== null && prev > 0 ? prev - 1 : galleryImages.length - 1
+                  );
+                }}
+                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 border border-gold/30 hover:bg-gold hover:text-ink text-canvas rounded-full transition-colors z-50 cursor-pointer"
+              >
+                <ChevronLeft size={24} />
+              </button>
+
+              {/* Next Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex((prev) =>
+                    prev !== null && prev < galleryImages.length - 1 ? prev + 1 : 0
+                  );
+                }}
+                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-black/50 border border-gold/30 hover:bg-gold hover:text-ink text-canvas rounded-full transition-colors z-50 cursor-pointer"
+              >
+                <ChevronRight size={24} />
+              </button>
+
+              {/* Lightbox Content Container */}
+              <motion.div
+                initial={{ scale: 0.95, y: 15 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 15 }}
+                transition={{ duration: 0.3 }}
+                className="relative max-w-4xl max-h-[80vh] flex flex-col items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="relative w-[90vw] md:w-[70vw] aspect-[4/3] max-h-[70vh] border border-gold/40 rounded-sm overflow-hidden bg-zinc-900 shadow-2xl">
+                  <Image
+                    src={galleryImages[lightboxIndex].src}
+                    alt={galleryImages[lightboxIndex].caption}
+                    fill
+                    className="object-contain"
+                    sizes="90vw"
+                    priority
+                  />
+                </div>
+                {/* Caption Details Overlay */}
+                <div className="mt-4 text-center text-canvas max-w-xl">
+                  <h3 className="font-heading text-lg md:text-xl text-canvas font-medium">
+                    {galleryImages[lightboxIndex].caption}
+                  </h3>
+                  <span className="text-[10px] text-canvas/50 mt-1 block">
+                    Image {lightboxIndex + 1} of {galleryImages.length}
+                  </span>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
       <Footer />
     </>

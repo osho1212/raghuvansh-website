@@ -6,7 +6,8 @@ import * as z from "zod";
 import { useSearchParams } from "next/navigation";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -94,6 +95,20 @@ function ContactContent() {
                   </div>
                 </div>
               </div>
+
+              {/* Casting Calls Section */}
+              <div className="border-t border-gold/20 pt-6 mt-8">
+                <h3 className="font-heading text-lg text-gold mb-2 uppercase tracking-wider">Casting Calls</h3>
+                <p className="font-body text-xs text-canvas/75 leading-relaxed mb-4">
+                  Are you an actor, dancer, or voice artist? Raghuvansh holds regular auditions for upcoming theatre productions and workshops.
+                </p>
+                <Link
+                  href="/apply"
+                  className="inline-flex items-center gap-1.5 bg-gold text-ink text-xs font-bold uppercase tracking-widest px-4 py-2 hover:bg-canvas hover:text-curtain transition-all rounded-sm shadow-sm font-body"
+                >
+                  Apply for Auditions <ArrowRight size={12} />
+                </Link>
+              </div>
             </div>
 
             <div className="relative z-10 pt-12 border-t border-gold/20 mt-12 text-xs font-body text-canvas/60">
@@ -135,6 +150,7 @@ function ContactContent() {
                   className="w-full bg-canvas border border-gold/20 focus:border-gold outline-none p-3 rounded-sm transition-colors text-ink"
                 >
                   <option value="General">General Enquiry</option>
+                  <option value="Casting">Casting Call / Auditions</option>
                   <option value="RamLeela">RamLeela VIP Pass / Booking</option>
                   <option value="Productions">Theatre Productions Booking</option>
                   <option value="Ghazal">Ghazal Night Booking</option>
