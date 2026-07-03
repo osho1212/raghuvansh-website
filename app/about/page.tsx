@@ -137,12 +137,12 @@ export default function About() {
             {/* Timeline wrapper with Ref */}
             <div ref={containerRef} className="relative ml-4 md:ml-1/2">
               {/* Background faded track line */}
-              <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gold/15 -translate-x-[1px]"></div>
+              <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-[2px] bg-gold/15 -translate-x-1/2"></div>
               
               {/* Glowing scroll-connecting line */}
               <motion.div 
                 style={{ height: lineHeight }}
-                className="absolute left-0 top-0 w-[2px] bg-gradient-to-b from-gold via-curtain to-gold origin-top -translate-x-[1px] shadow-[0_0_8px_rgba(201,162,75,0.7)] z-10"
+                className="absolute left-0 md:left-1/2 top-0 w-[2px] bg-gradient-to-b from-gold via-curtain to-gold origin-top -translate-x-1/2 shadow-[0_0_8px_rgba(201,162,75,0.7)] z-10"
               />
 
               {/* Timeline Items */}
