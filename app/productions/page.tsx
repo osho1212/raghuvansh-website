@@ -126,7 +126,7 @@ export default function ProductionsIndex() {
       <Navigation />
       <main className="relative flex-grow pt-28 bg-ink min-h-screen overflow-hidden">
         {/* Play Background Image Overlay */}
-        <div className="absolute inset-0 z-0 opacity-25 pointer-events-none mix-blend-lighten">
+        <div className="absolute inset-0 z-0 opacity-70 pointer-events-none mix-blend-lighten">
           <Image
             src="/production-assets/page-assets/page-bg.webp"
             alt="Theater Background"
@@ -135,7 +135,7 @@ export default function ProductionsIndex() {
             priority
           />
           {/* Dark overlay to make content readable and blend background */}
-          <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/90 to-ink"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/5 to-ink"></div>
         </div>
 
         {/* Animated Gold Dust Particles & Twinkling Sprinkles */}
