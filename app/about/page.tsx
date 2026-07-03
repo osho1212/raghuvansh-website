@@ -33,10 +33,22 @@ export default function About() {
                   </p>
                 </blockquote>
               </div>
-              <div className="order-1 lg:order-2">
-                <div className="aspect-[3/4] relative border border-gold/30 rounded-sm overflow-hidden bg-ink/20 flex items-center justify-center">
-                  <span className="font-body text-canvas/40">Large Portrait Placeholder</span>
-                </div>
+              <div className="order-1 lg:order-2 relative aspect-[4/3] w-full rounded-lg overflow-hidden border border-gold/30 shadow-2xl group bg-black">
+                {/* Gold frame overlay corner accents */}
+                <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-gold z-20 pointer-events-none"></div>
+                <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-gold z-20 pointer-events-none"></div>
+                <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-gold z-20 pointer-events-none"></div>
+                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-gold z-20 pointer-events-none"></div>
+                
+                <video
+                  src="/media-assets/raghuvansh_1.webm"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 z-0"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent z-10"></div>
               </div>
             </div>
           </div>
