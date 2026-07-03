@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { motion } from "framer-motion";
@@ -73,35 +74,42 @@ export default function About() {
               {[
                 {
                   name: "Animesh Pandit",
-                  relation: "Son of late Pt. Amitosh Sharma",
+                  relation: "Son of Pt. Amitosh Sharma",
                   role: "Director & Music Practitioner",
                   desc: "A trained Hindustani classical musician (Master's in Tabla, Ajrara Gharana) and All India Radio empanelled artist, Animesh integrates structural musical discipline with dramatic stagecraft. He writes and directs Raghuvansh's major productions, carrying forward the artistic lineage of his father.",
-                  placeholder: "Animesh Pandit Portrait"
+                  image: "/about-section/animesh.webp"
                 },
                 {
                   name: "Anoushka Pandit",
-                  relation: "Daughter of late Pt. Amitosh Sharma",
+                  relation: "Daughter of Pt. Amitosh Sharma",
                   role: "Lead Vocalist & Coordinator",
                   desc: "A classical, Ghazal, and devotional vocalist empanelled with Akashvani, Anoushka holds a Master of Music degree. She has performed as the lead vocalist in the annual Red Fort Ramleela productions for over 20 years and coordinates cultural, theatrical, and musical presentations for Raghuvansh.",
-                  placeholder: "Anoushka Pandit Portrait"
+                  image: "/about-section/anushka.webp"
                 },
                 {
                   name: "Shrikant Verma",
                   relation: "Mentor of the Group",
                   role: "Acclaimed Actor & NSD Alumnus",
                   desc: "An alumnus of the National School of Drama, Shrikant Verma is a highly recognized actor in Indian cinema (Panchayat, Dum Laga Ke Haisha) and theatre. As the mentor of Raghuvansh, he provides critical artistic guidance, training, and dramatic calibre to the collective.",
-                  placeholder: "Shrikant Verma Portrait"
+                  image: "/about-section/shrikant-verma.webp"
                 }
               ].map((member, idx) => (
-                <div key={idx} className="flex flex-col items-center text-center bg-white border border-gold/20 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
-                  {/* Portrait Frame Image Holder */}
-                  <div className="w-full aspect-[4/5] bg-ink/5 border border-gold/30 rounded-sm relative overflow-hidden mb-6 flex items-center justify-center">
+                <div key={idx} className="flex flex-col items-center text-center bg-white border border-gold/20 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
+                  {/* Portrait Frame Image */}
+                  <div className="w-full aspect-[2/3] bg-ink/5 border border-gold/30 rounded-sm relative overflow-hidden mb-6 flex items-center justify-center shadow-md">
                     {/* Gold frame overlay corner accents */}
-                    <div className="absolute top-1.5 left-1.5 w-4 h-4 border-t border-l border-gold"></div>
-                    <div className="absolute top-1.5 right-1.5 w-4 h-4 border-t border-r border-gold"></div>
-                    <div className="absolute bottom-1.5 left-1.5 w-4 h-4 border-b border-l border-gold"></div>
-                    <div className="absolute bottom-1.5 right-1.5 w-4 h-4 border-b border-r border-gold"></div>
-                    <span className="font-body text-xs text-ink/30 uppercase tracking-widest">{member.placeholder}</span>
+                    <div className="absolute top-1.5 left-1.5 w-4 h-4 border-t border-l border-gold z-20"></div>
+                    <div className="absolute top-1.5 right-1.5 w-4 h-4 border-t border-r border-gold z-20"></div>
+                    <div className="absolute bottom-1.5 left-1.5 w-4 h-4 border-b border-l border-gold z-20"></div>
+                    <div className="absolute bottom-1.5 right-1.5 w-4 h-4 border-b border-r border-gold z-20"></div>
+                    
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10"></div>
                   </div>
                   <h3 className="font-heading text-2xl text-curtain font-bold mb-1">{member.name}</h3>
                   <div className="font-body text-xs text-gold uppercase tracking-wider font-semibold mb-2">{member.relation}</div>
@@ -158,16 +166,33 @@ export default function About() {
         </section>
 
         {/* AFFILIATIONS */}
-        <section className="py-16 bg-canvas border-b border-gold/20">
+        <section className="py-20 bg-canvas border-b border-gold/20 relative">
           <div className="max-w-7xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center items-center gap-12 font-heading text-2xl text-ink/40 uppercase tracking-widest">
-              <span className="hover:text-curtain transition-colors">NSD</span>
-              <span className="text-gold">•</span>
-              <span className="hover:text-curtain transition-colors">SNA</span>
-              <span className="text-gold">•</span>
-              <span className="hover:text-curtain transition-colors">AIR</span>
-              <span className="text-gold">•</span>
-              <span className="hover:text-curtain transition-colors">FTII</span>
+            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
+              {[
+                { name: "NSD", full: "National School of Drama" },
+                { name: "SNA", full: "Sangeet Natak Akademi" },
+                { name: "AIR", full: "All India Radio" },
+                { name: "FTII", full: "Film & Television Institute of India" }
+              ].map((item, idx) => (
+                <React.Fragment key={idx}>
+                  {idx > 0 && <span className="text-gold/50 select-none hidden md:inline">•</span>}
+                  <div className="flex flex-col items-center group relative cursor-help">
+                    <span className="font-heading text-3xl md:text-4xl text-ink font-semibold tracking-widest group-hover:text-curtain transition-all duration-300 transform group-hover:scale-[1.03]">
+                      {item.name}
+                    </span>
+                    <span className="h-[2px] w-0 bg-gold group-hover:w-full transition-all duration-500 mt-1"></span>
+                    
+                    {/* Tooltip */}
+                    <div className="absolute bottom-full mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center pointer-events-none z-30">
+                      <div className="bg-ink text-canvas text-[10px] tracking-widest uppercase py-1.5 px-3 rounded-sm shadow-xl border border-gold/20 whitespace-nowrap">
+                        {item.full}
+                      </div>
+                      <div className="w-2 h-2 bg-ink border-r border-b border-gold/20 rotate-45 -mt-1"></div>
+                    </div>
+                  </div>
+                </React.Fragment>
+              ))}
             </div>
           </div>
         </section>
