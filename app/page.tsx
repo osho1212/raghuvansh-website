@@ -41,7 +41,7 @@ export default function Home() {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="/media%20assets/raghuvansh_1.webm"
+            src="/media-assets/raghuvansh_1.webm"
           />
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/90 via-transparent to-ink/30"></div>
           
@@ -101,7 +101,7 @@ export default function Home() {
               </p>
               <Button variant="primary" href="/about">Discover Our Story</Button>
             </div>
-            <div className="order-1 md:order-2 relative aspect-[3/4] md:aspect-[4/5] w-full rounded-lg overflow-hidden border border-gold/30 shadow-2xl group">
+            <div className="order-1 md:order-2 relative aspect-[7/5] w-full rounded-lg overflow-hidden border border-gold/30 shadow-2xl group">
               {/* Gold frame overlay corner accents */}
               <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-gold z-20 pointer-events-none"></div>
               <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-gold z-20 pointer-events-none"></div>
@@ -112,9 +112,9 @@ export default function Home() {
                 src="/media-assets/founder-img2.webp"
                 alt="Pt. Amitosh Sharma"
                 fill
-                className="object-cover object-top filter grayscale contrast-[1.05] group-hover:scale-105 group-hover:filter-none transition-all duration-700"
+                className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/20 via-transparent to-transparent z-10"></div>
             </div>
           </div>
         </section>
