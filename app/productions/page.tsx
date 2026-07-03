@@ -149,7 +149,7 @@ const SpotlightBeams = () => {
   const dyLeft = mouse.y;
   const angleLeft = Math.atan2(dyLeft, dxLeft);
   const perpLeft = angleLeft + Math.PI / 2;
-  const beamWidth = 60; // constant width at target
+  const beamWidth = 85; // slightly wider beam at target
   
   const lx1 = mouse.x + Math.cos(perpLeft) * beamWidth;
   const ly1 = mouse.y + Math.sin(perpLeft) * beamWidth;
@@ -169,38 +169,49 @@ const SpotlightBeams = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-30">
-      {/* Target Light Pool on Stage */}
+      {/* Dynamic Multi-layered Cursor Focus Spotlight (Light Pool) */}
       <div
-        className="absolute w-[280px] h-[280px] rounded-full bg-gold/10 blur-[60px] -translate-x-1/2 -translate-y-1/2"
+        className="absolute -translate-x-1/2 -translate-y-1/2 z-20"
         style={{
           left: `${mouse.x}px`,
           top: `${mouse.y}px`,
         }}
-      />
+      >
+        {/* Outer wide soft pool */}
+        <div className="absolute w-[360px] h-[360px] bg-gold/10 rounded-full blur-[65px] -translate-x-1/2 -translate-y-1/2" />
+        {/* Mid intense halo */}
+        <div className="absolute w-[180px] h-[180px] bg-gold/25 rounded-full blur-[30px] -translate-x-1/2 -translate-y-1/2" />
+        {/* Bright central hot spot */}
+        <div className="absolute w-[60px] h-[60px] bg-canvas/30 rounded-full blur-[10px] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B]" />
+        {/* Tiny white pin-point flare core */}
+        <div className="absolute w-4 h-4 bg-canvas rounded-full blur-[2px] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_12px_#FAF7F2]" />
+      </div>
 
-      {/* Left Spotlight Beam */}
+      {/* Left Spotlight Volumetric Beam */}
       <div
-        className="absolute inset-0 opacity-80"
+        className="absolute inset-0 opacity-85 blur-[12px]"
         style={{
-          background: "radial-gradient(circle at 0% 0%, rgba(201, 162, 75, 0.22) 0%, rgba(201, 162, 75, 0.04) 60%, transparent 90%)",
+          background: "radial-gradient(circle at 0% 0%, rgba(201, 162, 75, 0.28) 0%, rgba(201, 162, 75, 0.05) 55%, transparent 85%)",
           clipPath: `polygon(0 0, ${lx1}px ${ly1}px, ${lx2}px ${ly2}px)`,
         }}
       />
-      {/* Left Spotlight Bulb Source */}
-      <div className="absolute top-0 left-0 w-10 h-10 bg-gold/25 rounded-full blur-sm -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-0 left-0 w-4 h-4 bg-canvas rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_20px_#C9A24B]" />
+      {/* Left Spotlight Source Glow */}
+      <div className="absolute top-0 left-0 w-24 h-24 bg-gold/15 rounded-full blur-xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 left-0 w-12 h-12 bg-gold/30 rounded-full blur-md -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 left-0 w-5 h-5 bg-canvas rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B,0_0_10px_#FAF7F2]" />
 
-      {/* Right Spotlight Beam */}
+      {/* Right Spotlight Volumetric Beam */}
       <div
-        className="absolute inset-0 opacity-80"
+        className="absolute inset-0 opacity-85 blur-[12px]"
         style={{
-          background: "radial-gradient(circle at 100% 0%, rgba(201, 162, 75, 0.22) 0%, rgba(201, 162, 75, 0.04) 60%, transparent 90%)",
+          background: "radial-gradient(circle at 100% 0%, rgba(201, 162, 75, 0.28) 0%, rgba(201, 162, 75, 0.05) 55%, transparent 85%)",
           clipPath: `polygon(100% 0, ${rx1}px ${ry1}px, ${rx2}px ${ry2}px)`,
         }}
       />
-      {/* Right Spotlight Bulb Source */}
-      <div className="absolute top-0 right-0 w-10 h-10 bg-gold/25 rounded-full blur-sm translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-0 right-0 w-4 h-4 bg-canvas rounded-full translate-x-1/2 -translate-y-1/2 shadow-[0_0_20px_#C9A24B]" />
+      {/* Right Spotlight Source Glow */}
+      <div className="absolute top-0 right-0 w-24 h-24 bg-gold/15 rounded-full blur-xl translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 right-0 w-12 h-12 bg-gold/30 rounded-full blur-md translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-0 right-0 w-5 h-5 bg-canvas rounded-full translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B,0_0_10px_#FAF7F2]" />
     </div>
   );
 };
