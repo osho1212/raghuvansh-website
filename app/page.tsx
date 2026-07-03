@@ -101,11 +101,20 @@ export default function Home() {
               </p>
               <Button variant="primary" href="/about">Discover Our Story</Button>
             </div>
-            <div className="order-1 md:order-2 relative aspect-[3/4] md:aspect-square w-full">
-              {/* Image Placeholder */}
-              <div className="absolute inset-0 bg-gold/10 border border-gold/30 rounded-sm flex items-center justify-center">
-                <span className="font-body text-ink/40">Founder Portrait</span>
-              </div>
+            <div className="order-1 md:order-2 relative aspect-[3/4] md:aspect-[4/5] w-full rounded-lg overflow-hidden border border-gold/30 shadow-2xl group">
+              {/* Gold frame overlay corner accents */}
+              <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-gold z-20 pointer-events-none"></div>
+              <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-gold z-20 pointer-events-none"></div>
+              <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-gold z-20 pointer-events-none"></div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-gold z-20 pointer-events-none"></div>
+              
+              <Image
+                src="/media-assets/founder-img2.webp"
+                alt="Pt. Amitosh Sharma"
+                fill
+                className="object-cover object-top filter grayscale contrast-[1.05] group-hover:scale-105 group-hover:filter-none transition-all duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent z-10"></div>
             </div>
           </div>
         </section>
