@@ -128,7 +128,7 @@ export default function ProductionsIndex() {
         {/* Play Background Image Overlay */}
         <div className="absolute inset-0 z-0 opacity-25 pointer-events-none mix-blend-lighten">
           <Image
-            src="/production-bg.webp"
+            src="/production-assets/page-assets/page-bg.webp"
             alt="Theater Background"
             fill
             className="object-cover"
