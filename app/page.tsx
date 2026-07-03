@@ -83,7 +83,7 @@ export default function Home() {
               Featured Coverage
             </span>
             <div className="flex items-center gap-10">
-              <div className="relative h-6 w-20 hover:scale-[1.03] transition-transform duration-300">
+              <div className="relative h-10 md:h-12 w-28 md:w-36 hover:scale-[1.03] transition-transform duration-300">
                 <Image
                   src="/media-assets/bbc-logo.svg"
                   alt="BBC News"
@@ -92,7 +92,7 @@ export default function Home() {
                 />
               </div>
               <span className="text-gold/40 text-sm select-none">•</span>
-              <div className="relative h-5.5 w-18 hover:scale-[1.03] transition-transform duration-300">
+              <div className="relative h-10 md:h-12 w-28 md:w-36 hover:scale-[1.03] transition-transform duration-300">
                 <Image
                   src="/media-assets/brut.svg"
                   alt="Brut"
