@@ -9,10 +9,10 @@ export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "end end"]
+    offset: ["start 65%", "end 55%"]
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 0.85], ["0%", "100%"]);
+  const lineHeight = useTransform(scrollYProgress, [0, 0.95], ["0%", "100%"]);
 
   return (
     <>
@@ -64,10 +64,10 @@ export default function About() {
             </div>
           </div>
         </section>
-
+ 
         {/* GOLD DIVIDER */}
         <div className="h-px w-full bg-gold/50"></div>
-
+ 
         {/* CORE MEMBERS / LEGACY */}
         <section className="py-24 bg-canvas text-ink border-b border-gold/20 relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -77,7 +77,7 @@ export default function About() {
                 Continuing the rich theatrical traditions established by Pt. Amitosh Sharma, his children and the group's mentors lead Raghuvansh into a new era of artistic expression.
               </p>
             </div>
-
+ 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {[
                 {
@@ -128,7 +128,7 @@ export default function About() {
             </div>
           </div>
         </section>
-
+ 
         {/* THE GROUP'S STORY */}
         <section className="py-24 bg-canvas text-ink relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -136,14 +136,13 @@ export default function About() {
             
             {/* Timeline wrapper with Ref */}
             <div ref={containerRef} className="relative ml-4 md:ml-1/2">
-              {/* Background faded track line */}
-              <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-[2px] bg-gold/15 -translate-x-1/2"></div>
-              
-              {/* Glowing scroll-connecting line */}
-              <motion.div 
-                style={{ height: lineHeight }}
-                className="absolute left-0 md:left-1/2 top-0 w-[2px] bg-gradient-to-b from-gold via-curtain to-gold origin-top -translate-x-1/2 shadow-[0_0_8px_rgba(201,162,75,0.7)] z-10"
-              />
+              {/* Glowing scroll-connecting line container */}
+              <div className="absolute left-0 md:left-1/2 top-11 bottom-[140px] w-[2px] -translate-x-1/2 pointer-events-none z-10">
+                <motion.div 
+                  style={{ height: lineHeight }}
+                  className="w-full bg-gradient-to-b from-gold via-curtain to-gold origin-top shadow-[0_0_8px_rgba(201,162,75,0.7)]"
+                />
+              </div>
 
               {/* Timeline Items */}
               {[
