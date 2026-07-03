@@ -127,21 +127,57 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Playbill Cards */}
               {[
-                { title: "RamLeela", href: "/ramleela", desc: "Our flagship production" },
-                { title: "Productions", href: "/productions", desc: "Contemporary plays" },
-                { title: "Ghazal", href: "/ghazal-events", desc: "Musical evenings" },
-                { title: "Annual Day", href: "/annual-day", desc: "School productions" }
+                { 
+                  title: "RamLeela", 
+                  href: "/ramleela", 
+                  desc: "Our flagship production",
+                  video: "/ramleela-assets/teaser.webm"
+                },
+                { 
+                  title: "Productions", 
+                  href: "/productions", 
+                  desc: "Contemporary plays",
+                  video: "/production-assets/teaser.webm"
+                },
+                { 
+                  title: "Ghazal", 
+                  href: "/ghazal-events", 
+                  desc: "Musical evenings",
+                  video: "/ghazal-assets/ghazal.webm"
+                },
+                { 
+                  title: "Annual Day", 
+                  href: "/annual-day", 
+                  desc: "School productions",
+                  video: null
+                }
               ].map((item, idx) => (
-                <Link key={idx} href={item.href} className="group block aspect-[3/4] relative overflow-hidden bg-curtain">
-                  {/* Image Placeholder */}
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-500 z-10" />
-                  <div className="absolute inset-0 flex items-center justify-center bg-canvas/5 z-0">
-                    <span className="font-body text-canvas/40">Image Placeholder</span>
-                  </div>
+                <Link key={idx} href={item.href} className="group block aspect-[3/4] relative overflow-hidden bg-curtain rounded-lg border border-gold/15 hover:border-gold/45 shadow-xl transition-all duration-500">
+                  {item.video ? (
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover z-0 filter brightness-[0.65] group-hover:brightness-[0.75] group-hover:scale-105 transition-all duration-700"
+                      src={item.video}
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-curtain to-ink z-0 filter brightness-[0.65] group-hover:scale-105 transition-all duration-700" />
+                  )}
+                  
+                  {/* Dark gradient overlay for text readability */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent z-10" />
+                  
                   <div className="absolute inset-0 border border-gold/0 group-hover:border-gold/50 transition-colors duration-500 z-20 m-4" />
+                  
                   <div className="absolute bottom-0 left-0 p-8 z-30">
-                    <h3 className="font-heading text-3xl text-gold mb-2 group-hover:-translate-y-2 transition-transform duration-300">{item.title}</h3>
-                    <p className="font-body text-sm tracking-widest uppercase text-canvas opacity-0 group-hover:opacity-100 group-hover:-translate-y-2 transition-all duration-300 delay-100">{item.desc}</p>
+                    <h3 className="font-heading text-3xl text-gold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:-translate-y-2 transition-transform duration-300">
+                      {item.title}
+                    </h3>
+                    <p className="font-body text-xs tracking-widest uppercase text-canvas opacity-0 group-hover:opacity-100 group-hover:-translate-y-2 transition-all duration-300 delay-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] font-semibold">
+                      {item.desc}
+                    </p>
                   </div>
                 </Link>
               ))}
