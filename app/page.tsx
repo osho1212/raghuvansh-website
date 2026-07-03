@@ -11,6 +11,7 @@ import { Volume2, VolumeX } from "lucide-react";
 export default function Home() {
   const [showText, setShowText] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
+  const [heroHighlight, setHeroHighlight] = useState("ki Ramayan");
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -27,6 +28,17 @@ export default function Home() {
     }
   };
 
+  const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const time = e.currentTarget.currentTime;
+    if (time >= 36) {
+      setHeroHighlight("Ki Mehfil");
+    } else if (time >= 23) {
+      setHeroHighlight("ki Peshkash");
+    } else {
+      setHeroHighlight("ki Ramayan");
+    }
+  };
+
   return (
     <>
       <Navigation />
@@ -40,6 +52,7 @@ export default function Home() {
             loop
             muted
             playsInline
+            onTimeUpdate={handleTimeUpdate}
             className="absolute inset-0 w-full h-full object-cover z-0"
             src="/media-assets/raghuvansh-hero-template-final.webm"
           />
@@ -63,8 +76,22 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                  <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-canvas font-bold mb-8 uppercase tracking-wide leading-none">
-                    Raghuvansh <span className="text-gold">ki Ramayan</span>
+                  <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-canvas font-bold mb-8 uppercase tracking-wide leading-none min-h-[5rem] sm:min-h-0">
+                    Raghuvansh{" "}
+                    <span className="relative inline-block sm:inline min-w-[15rem] sm:min-w-0">
+                      <AnimatePresence mode="wait">
+                        <motion.span
+                          key={heroHighlight}
+                          initial={{ opacity: 0, y: 15 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -15 }}
+                          transition={{ duration: 0.6, ease: "easeInOut" }}
+                          className="text-gold block sm:inline-block"
+                        >
+                          {heroHighlight}
+                        </motion.span>
+                      </AnimatePresence>
+                    </span>
                   </h1>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Button variant="secondary" href="/ramleela">WATCH THE LEELA</Button>
