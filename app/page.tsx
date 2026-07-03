@@ -41,7 +41,7 @@ export default function Home() {
             muted
             playsInline
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="/media-assets/raghuvansh_1.webm"
+            src="/media-assets/raghuvansh-hero-template-final.webm"
           />
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/90 via-transparent to-ink/30"></div>
           
