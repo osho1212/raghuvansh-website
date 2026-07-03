@@ -5,69 +5,9 @@ import Image from "next/image";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 
-export const productionsData = [
-  {
-    slug: "baaki-itihaas",
-    title: "Baaki Itihaas",
-    year: 2024,
-    director: "Animesh Pandit",
-    excerpt: "Baaki Itihaas transcends the boundaries of conventional theatre, emerging as a profound reflection on human existence, memory, guilt, and the enduring search for life's meaning.",
-    genre: "Drama / Reflection",
-    duration: "120 mins",
-    poster: "/production-assets/baaki-itihaas/poster-1.webp",
-    posterBackup: "/production-assets/baaki-itihaas/poster-2.webp",
-    brochure: "/production-assets/baaki-itihaas/brochure.pdf",
-    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
-    playwright: "Badal Sircar",
-    quote: "History is not only what is written in books; it is also what every individual silently carries within, yet never finds the words to tell.",
-    directorsNote: "History is not merely what is recorded; it is equally what is remembered, forgotten, and silently carried within us."
-  },
-  {
-    slug: "saari-raat",
-    title: "Saari Raat",
-    year: 2024,
-    director: "Animesh Pandit",
-    excerpt: "Saari Raat transcends the boundaries of conventional theatre, emerging as a deeply philosophical exploration of loneliness, human relationships, and the timeless search for truth.",
-    genre: "Philosophical Drama",
-    duration: "110 mins",
-    poster: "/production-assets/saari-raat/poster.webp",
-    brochure: "/production-assets/saari-raat/brochure.pdf",
-    cast: ["Husband", "Wife", "Old Man"],
-    playwright: "Badal Sircar",
-    quote: "Sometimes, it takes an entire night to discover what a lifetime of routine has kept hidden.",
-    directorsNote: "The longest journeys are often not measured in miles, but in moments of silence, reflection, and self-discovery."
-  },
-  {
-    slug: "shabd-baan",
-    title: "Shabd Baan",
-    year: 2026,
-    director: "Animesh Pandit",
-    excerpt: "Shabd Baan is an intense dramatic exploration of grief, dharma, and divine accountability, imagined through a searing conversation between Gandhari and Shri Krishna in the aftermath of the Mahabharata.",
-    genre: "Musical & Poetic Drama",
-    duration: "90 mins",
-    poster: "/production-assets/shabd-baan/poster.webp",
-    brochure: "/production-assets/shabd-baan/brochure.pdf",
-    cast: ["Krishn", "Gaandhari", "Kaurav", "Draupadi"],
-    playwright: "Animesh Pandit",
-    quote: "True justice is not the destruction of an enemy, but the destruction of enmity.",
-    directorsNote: "ऐसा भी कभी तुम न्याय करो, शत्रू को नहीं — शत्रुता हरो। Shabd Baan - 'word arrows' - is a theatrical experiment where words become weapons, wounds, and windows. It is envisioned as a larger series of unfiltered, uncomfortable, extended conversations between iconic figures from Indian history."
-  },
-  {
-    slug: "wrong-turn",
-    title: "Wrong Turn",
-    year: 2024,
-    director: "Animesh Pandit",
-    excerpt: "Wrong Turn is a thought-provoking contemporary play that explores the complex relationship between human choices and their consequences, adapting Frederick Dürrenmatt's The Dangerous Game.",
-    genre: "Contemporary Drama / Psychological Theatre",
-    duration: "100 mins",
-    poster: "/production-assets/wrong-turn/poster.webp",
-    brochure: "/production-assets/wrong-turn/brochure.pdf",
-    cast: ["Arun Mehra", "Lateef Zaidi", "Makarand Joshi", "Jagdeesh Mathur", "Neena Oberoi", "Banne Miyaan", "Raghu", "White Man", "Shivani"],
-    playwright: "Ranjit Kapoor",
-    quote: "Does every wrong decision inevitably lead to downfall, or can mistakes also become pathways to self-discovery and transformation?",
-    directorsNote: "Wrong Turn is not merely an incident or a story; it is a theatrical exploration of those moments in life when, often unknowingly, a person takes a turn that challenges their beliefs, relationships, and sense of self."
-  }
-];
+import { productionsData } from "./data";
+export { productionsData };
+import { Volume2, VolumeX, Play, Download, X, ArrowLeft } from "lucide-react";
 
 const GoldDust = () => {
   return (
@@ -229,6 +169,20 @@ const SpotlightBeams = () => {
 };
 
 export default function ProductionsIndex() {
+  const [selectedProd, setSelectedProd] = React.useState<any | null>(null);
+  const [isMuted, setIsMuted] = React.useState(true);
+
+  React.useEffect(() => {
+    if (selectedProd) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [selectedProd]);
+
   return (
     <>
       <Navigation />
@@ -258,7 +212,7 @@ export default function ProductionsIndex() {
               Our Productions
             </h1>
             <p className="font-body text-lg text-canvas/80">
-              Explore the major stage productions by Raghuvansh Theatre Group. Click on any playbill to explore its history, cast, and gallery.
+              Explore the major stage productions by Raghuvansh Theatre Group. Click on any playbill to open its immersive overview, watch the teaser, and view the full credits.
             </p>
           </div>
 
@@ -288,9 +242,9 @@ export default function ProductionsIndex() {
                   <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b border-r border-gold/40"></div>
                 </div>
 
-                <Link
-                  href={`/productions/${prod.slug}`}
-                  className="relative flex flex-col justify-end w-full h-full bg-curtain overflow-hidden border border-gold/30 hover:border-gold transition-all duration-500 spotlight-glow rounded-xl z-10"
+                <button
+                  onClick={() => setSelectedProd(prod)}
+                  className="relative flex flex-col justify-end w-full h-full bg-curtain overflow-hidden border border-gold/30 hover:border-gold transition-all duration-500 spotlight-glow rounded-xl z-10 text-left cursor-pointer"
                 >
                   {/* Real WebP Image */}
                   <Image
@@ -303,13 +257,215 @@ export default function ProductionsIndex() {
                   
                   {/* Subtle hover overlay border */}
                   <div className="absolute inset-0 border border-transparent group-hover:border-gold/30 transition-colors duration-500 z-10 rounded-xl"></div>
-                </Link>
+                </button>
               </div>
             ))}
           </div>
         </div>
       </main>
       <Footer />
+
+      {/* Netflix Info Window */}
+      {selectedProd && (
+        <div className="fixed inset-0 z-[100] bg-ink overflow-y-auto w-full h-full font-body animate-fadeIn">
+          {/* Header Bar */}
+          <div className="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-black/80 to-transparent flex items-center justify-between px-6 md:px-12 z-50 pointer-events-none">
+            <button
+              onClick={() => setSelectedProd(null)}
+              className="pointer-events-auto flex items-center gap-2 text-canvas/80 hover:text-gold transition-colors duration-300 font-body text-xs uppercase tracking-widest cursor-pointer"
+            >
+              <ArrowLeft size={16} />
+              <span>Back to Productions</span>
+            </button>
+            <span className="font-heading text-lg tracking-widest text-gold font-bold">RAGHUVANSH</span>
+            <button
+              onClick={() => setSelectedProd(null)}
+              className="pointer-events-auto p-2 bg-black/40 hover:bg-gold/80 hover:text-ink text-canvas rounded-full transition-all duration-300 cursor-pointer"
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          {/* Hero Banner Area */}
+          <div className="relative h-[65vh] md:h-[75vh] w-full bg-black overflow-hidden flex flex-col justify-end flex-shrink-0">
+            {selectedProd.teaser ? (
+              <video
+                src={selectedProd.teaser}
+                autoPlay
+                loop
+                muted={isMuted}
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover object-top z-0"
+              />
+            ) : (
+              <div className="absolute inset-0 w-full h-full">
+                <Image
+                  src={selectedProd.poster}
+                  alt={selectedProd.title}
+                  fill
+                  className="object-cover object-top opacity-45 scale-105 z-0"
+                  priority
+                />
+              </div>
+            )}
+
+            {/* Premium Volumetric Dark Overlay to blend the bottom and top edges of the video */}
+            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-transparent z-10"></div>
+            <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/80 to-transparent z-10 pointer-events-none"></div>
+            
+            {/* Info details floating on top of banner */}
+            <div className="relative z-20 max-w-7xl mx-auto w-full px-6 md:px-12 pb-10 flex justify-between items-end gap-6">
+              <div className="max-w-2xl text-left">
+                <span className="text-gold uppercase tracking-[0.2em] text-xs font-semibold block mb-2 font-heading">
+                  Raghuvansh Presentation
+                </span>
+                <h2 className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold text-canvas mb-4 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                  {selectedProd.title}
+                </h2>
+                
+                {/* Horizontal row of tags */}
+                <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-canvas/70 mb-6 font-body">
+                  <span className="text-gold">{selectedProd.year}</span>
+                  <span className="w-1 h-1 rounded-full bg-canvas/30"></span>
+                  <span>{selectedProd.duration}</span>
+                  <span className="w-1 h-1 rounded-full bg-canvas/30"></span>
+                  <span>{selectedProd.genre}</span>
+                  <span className="w-1 h-1 rounded-full bg-canvas/30"></span>
+                  <span>Written by {selectedProd.playwright}</span>
+                </div>
+
+                {/* Primary actions */}
+                <div className="flex items-center gap-4 flex-wrap">
+                  <a
+                    href={selectedProd.brochure}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 bg-gold hover:bg-canvas text-ink font-body font-bold text-xs sm:text-sm tracking-wider uppercase px-8 py-3.5 rounded-sm transition-all duration-300 shadow-lg cursor-pointer transform hover:scale-[1.02]"
+                  >
+                    <Download size={16} />
+                    <span>Download Brochure</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* Sound Toggle (only if video available) */}
+              {selectedProd.teaser && (
+                <button
+                  onClick={() => setIsMuted(!isMuted)}
+                  className="p-3 bg-black/60 hover:bg-gold hover:text-ink text-canvas border border-canvas/20 hover:border-gold rounded-full transition-all duration-300 cursor-pointer shadow-lg transform hover:scale-[1.05]"
+                  title={isMuted ? "Unmute Teaser" : "Mute Teaser"}
+                >
+                  {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Detailed Info Area */}
+          <div className="w-full flex-grow bg-ink text-canvas py-16 px-6 md:px-12 border-t border-gold/15">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-16">
+              
+              {/* Left Column (Synopsis & Notes) */}
+              <div className="lg:col-span-2 space-y-12">
+                {/* Synopsis */}
+                <div>
+                  <h3 className="font-heading text-2xl text-gold font-bold mb-6 tracking-wide border-b border-gold/20 pb-3 uppercase text-left">
+                    Synopsis
+                  </h3>
+                  <div className="space-y-6 text-canvas/80 leading-relaxed font-body text-base md:text-lg text-left">
+                    {selectedProd.synopsisFull.map((para: string, idx: number) => (
+                      <p key={idx}>{para}</p>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Director's Note */}
+                <div className="bg-canvas/5 p-8 rounded-lg border border-gold/10 relative overflow-hidden group">
+                  <div className="absolute top-0 left-0 h-full w-[3px] bg-gold" />
+                  <h4 className="font-heading text-xl text-gold font-bold mb-4 uppercase tracking-wider text-left">
+                    Director's Note
+                  </h4>
+                  <div className="space-y-4 text-canvas/70 font-body text-base leading-relaxed text-left">
+                    {selectedProd.directorsNoteFull.map((para: string, idx: number) => (
+                      <p key={idx}>{para}</p>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Play Quote */}
+                <div className="py-8 px-6 text-center border-y border-gold/15">
+                  <span className="text-gold/20 text-7xl font-serif block -mb-8 leading-none">“</span>
+                  <p className="font-heading text-lg md:text-xl text-gold italic leading-relaxed px-4">
+                    {selectedProd.quote}
+                  </p>
+                  <span className="text-gold/20 text-7xl font-serif block -mt-4 leading-none text-right">”</span>
+                </div>
+              </div>
+
+              {/* Right Column (Cast & Credits) */}
+              <div className="space-y-12">
+                {/* Cast */}
+                <div>
+                  <h3 className="font-heading text-2xl text-gold font-bold mb-6 tracking-wide border-b border-gold/20 pb-3 uppercase text-left">
+                    Cast
+                  </h3>
+                  <div className="divide-y divide-canvas/10 max-h-[350px] overflow-y-auto pr-2 scrollbar-thin">
+                    {selectedProd.castRoles.map((item: any, idx: number) => (
+                      <div key={idx} className="py-3 flex justify-between gap-4 font-body text-sm text-left">
+                        <span className="text-gold font-semibold tracking-wider">{item.role}</span>
+                        <span className="text-canvas/60">{item.actor}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Credits / Production Metadata */}
+                <div>
+                  <h3 className="font-heading text-2xl text-gold font-bold mb-6 tracking-wide border-b border-gold/20 pb-3 uppercase text-left">
+                    Credits
+                  </h3>
+                  <div className="space-y-4 font-body text-sm text-left">
+                    <div className="flex justify-between py-1 border-b border-canvas/5">
+                      <span className="text-canvas/50">Director</span>
+                      <span className="text-canvas/80 font-medium">{selectedProd.director}</span>
+                    </div>
+                    <div className="flex justify-between py-1 border-b border-canvas/5">
+                      <span className="text-canvas/50">Playwright</span>
+                      <span className="text-canvas/80 font-medium">{selectedProd.playwright}</span>
+                    </div>
+                    <div className="flex justify-between py-1 border-b border-canvas/5">
+                      <span className="text-canvas/50">Year</span>
+                      <span className="text-canvas/80 font-medium">{selectedProd.year}</span>
+                    </div>
+                    <div className="flex justify-between py-1 border-b border-canvas/5">
+                      <span className="text-canvas/50">Genre</span>
+                      <span className="text-canvas/80 font-medium">{selectedProd.genre}</span>
+                    </div>
+                    <div className="flex justify-between py-1">
+                      <span className="text-canvas/50">Duration</span>
+                      <span className="text-canvas/80 font-medium">{selectedProd.duration}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Secondary Brochure Button */}
+                <div className="pt-4">
+                  <a
+                    href={selectedProd.brochure}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 border border-gold/40 hover:border-gold hover:bg-gold/5 text-gold font-body font-bold text-xs tracking-wider uppercase py-4 rounded-sm transition-all duration-300 cursor-pointer"
+                  >
+                    <Download size={14} />
+                    <span>View Full Brochure PDF</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

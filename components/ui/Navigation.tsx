@@ -3,12 +3,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [visible, setVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +33,9 @@ export const Navigation = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // Determine if the current page starts with a dark background at the top
+  const isDarkPage = pathname === "/" || pathname === "/ramleela" || pathname === "/productions" || pathname?.startsWith("/productions/");
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
@@ -47,7 +52,9 @@ export const Navigation = () => {
         className={`fixed top-0 w-full z-50 transition-all duration-300 transform ${
           visible ? "translate-y-0" : "-translate-y-full"
         } ${
-          scrolled ? "bg-canvas text-ink shadow-sm" : "bg-transparent text-canvas"
+          scrolled 
+            ? "bg-canvas text-ink shadow-sm" 
+            : (isDarkPage ? "bg-transparent text-canvas" : "bg-transparent text-ink")
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +85,14 @@ export const Navigation = () => {
             {/* Mobile Menu Button */}
             <div className="lg:hidden">
               <button onClick={() => setIsOpen(true)} className="p-2">
-                <Menu size={28} className={scrolled ? "text-ink" : "text-canvas"} />
+                <Menu 
+                  size={28} 
+                  className={
+                    scrolled 
+                      ? "text-ink" 
+                      : (isDarkPage ? "text-canvas" : "text-ink")
+                  } 
+                />
               </button>
             </div>
           </div>
