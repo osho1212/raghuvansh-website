@@ -59,6 +59,60 @@ export default function About() {
         {/* GOLD DIVIDER */}
         <div className="h-px w-full bg-gold/50"></div>
 
+        {/* CORE MEMBERS / LEGACY */}
+        <section className="py-24 bg-canvas text-ink border-b border-gold/20 relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <h2 className="font-heading text-4xl text-curtain font-bold mb-4">Carrying the Legacy</h2>
+              <p className="font-body text-lg text-ink/80">
+                Continuing the rich theatrical traditions established by Pt. Amitosh Sharma, his children and the group's mentors lead Raghuvansh into a new era of artistic expression.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {[
+                {
+                  name: "Animesh Pandit",
+                  relation: "Son of late Pt. Amitosh Sharma",
+                  role: "Director & Music Practitioner",
+                  desc: "A trained Hindustani classical musician (Master's in Tabla, Ajrara Gharana) and All India Radio empanelled artist, Animesh integrates structural musical discipline with dramatic stagecraft. He writes and directs Raghuvansh's major productions, carrying forward the artistic lineage of his father.",
+                  placeholder: "Animesh Pandit Portrait"
+                },
+                {
+                  name: "Anoushka Pandit",
+                  relation: "Daughter of late Pt. Amitosh Sharma",
+                  role: "Lead Vocalist & Coordinator",
+                  desc: "A classical, Ghazal, and devotional vocalist empanelled with Akashvani, Anoushka holds a Master of Music degree. She has performed as the lead vocalist in the annual Red Fort Ramleela productions for over 20 years and coordinates cultural, theatrical, and musical presentations for Raghuvansh.",
+                  placeholder: "Anoushka Pandit Portrait"
+                },
+                {
+                  name: "Shrikant Verma",
+                  relation: "Mentor of the Group",
+                  role: "Acclaimed Actor & NSD Alumnus",
+                  desc: "An alumnus of the National School of Drama, Shrikant Verma is a highly recognized actor in Indian cinema (Panchayat, Dum Laga Ke Haisha) and theatre. As the mentor of Raghuvansh, he provides critical artistic guidance, training, and dramatic calibre to the collective.",
+                  placeholder: "Shrikant Verma Portrait"
+                }
+              ].map((member, idx) => (
+                <div key={idx} className="flex flex-col items-center text-center bg-white border border-gold/20 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                  {/* Portrait Frame Image Holder */}
+                  <div className="w-full aspect-[4/5] bg-ink/5 border border-gold/30 rounded-sm relative overflow-hidden mb-6 flex items-center justify-center">
+                    {/* Gold frame overlay corner accents */}
+                    <div className="absolute top-1.5 left-1.5 w-4 h-4 border-t border-l border-gold"></div>
+                    <div className="absolute top-1.5 right-1.5 w-4 h-4 border-t border-r border-gold"></div>
+                    <div className="absolute bottom-1.5 left-1.5 w-4 h-4 border-b border-l border-gold"></div>
+                    <div className="absolute bottom-1.5 right-1.5 w-4 h-4 border-b border-r border-gold"></div>
+                    <span className="font-body text-xs text-ink/30 uppercase tracking-widest">{member.placeholder}</span>
+                  </div>
+                  <h3 className="font-heading text-2xl text-curtain font-bold mb-1">{member.name}</h3>
+                  <div className="font-body text-xs text-gold uppercase tracking-wider font-semibold mb-2">{member.relation}</div>
+                  <div className="font-body text-sm text-ink/65 font-medium italic mb-4">{member.role}</div>
+                  <p className="font-body text-sm text-ink/75 leading-relaxed text-left flex-grow">{member.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* THE GROUP'S STORY */}
         <section className="py-24 bg-canvas text-ink relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
