@@ -2,6 +2,7 @@
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -33,22 +34,23 @@ export default function About() {
                   </p>
                 </blockquote>
               </div>
-              <div className="order-1 lg:order-2 relative aspect-[4/3] w-full rounded-lg overflow-hidden border border-gold/30 shadow-2xl group bg-black">
-                {/* Gold frame overlay corner accents */}
-                <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-gold z-20 pointer-events-none"></div>
-                <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-gold z-20 pointer-events-none"></div>
-                <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-gold z-20 pointer-events-none"></div>
-                <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-gold z-20 pointer-events-none"></div>
-                
-                <video
-                  src="/media-assets/raghuvansh_1.webm"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-cover object-top group-hover:scale-[1.03] transition-transform duration-700 z-0"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent z-10"></div>
+              <div className="order-1 lg:order-2">
+                <div className="aspect-square relative border border-gold/30 rounded-lg overflow-hidden shadow-2xl group">
+                  {/* Gold frame overlay corner accents */}
+                  <div className="absolute -top-1 -left-1 w-6 h-6 border-t-2 border-l-2 border-gold z-20 pointer-events-none"></div>
+                  <div className="absolute -top-1 -right-1 w-6 h-6 border-t-2 border-r-2 border-gold z-20 pointer-events-none"></div>
+                  <div className="absolute -bottom-1 -left-1 w-6 h-6 border-b-2 border-l-2 border-gold z-20 pointer-events-none"></div>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 border-b-2 border-r-2 border-gold z-20 pointer-events-none"></div>
+                  
+                  <Image
+                    src="/media-assets/founder.webp"
+                    alt="Pt. Amitosh Sharma"
+                    fill
+                    className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-700"
+                    priority
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/30 via-transparent to-transparent z-10"></div>
+                </div>
               </div>
             </div>
           </div>
