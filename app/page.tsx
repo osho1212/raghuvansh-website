@@ -110,7 +110,7 @@ export default function Home() {
               Featured Coverage
             </span>
             <div className="flex items-center gap-10">
-              <div className="relative h-20 md:h-24 w-56 md:w-72 hover:scale-[1.03] transition-transform duration-300">
+              <div className="relative h-10 md:h-12 w-28 md:w-36 hover:scale-[1.03] transition-transform duration-300">
                 <Image
                   src="/media-assets/bbc-logo.svg"
                   alt="BBC News"
