@@ -7,14 +7,29 @@ import { Menu, X } from "lucide-react";
 export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+      
+      // Opaque background when scrolled
+      setScrolled(currentScrollY > 50);
+
+      // Hide on scroll down, show on scroll up
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setVisible(false);
+      } else {
+        setVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -29,7 +44,9 @@ export const Navigation = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-colors duration-300 ${
+        className={`fixed top-0 w-full z-50 transition-all duration-300 transform ${
+          visible ? "translate-y-0" : "-translate-y-full"
+        } ${
           scrolled ? "bg-canvas text-ink shadow-sm" : "bg-transparent text-canvas"
         }`}
       >
