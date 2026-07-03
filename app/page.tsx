@@ -93,10 +93,34 @@ export default function Home() {
                       </AnimatePresence>
                     </span>
                   </h1>
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <Button variant="secondary" href="/ramleela">WATCH THE LEELA</Button>
-                    <Button variant="outline" href="/contact">BOOK US</Button>
-                  </div>
+                  
+                  {/* Dynamic CTA buttons mapping */}
+                  {(() => {
+                    const cta = {
+                      "ki Ramayan": { text: "WATCH THE LEELA", href: "/ramleela" },
+                      "ki Peshkash": { text: "VIEW PRODUCTIONS", href: "/productions" },
+                      "Ki Mehfil": { text: "EXPERIENCE GHAZAL", href: "/ghazal-events" }
+                    }[heroHighlight] || { text: "WATCH THE LEELA", href: "/ramleela" };
+                    
+                    return (
+                      <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <AnimatePresence mode="wait">
+                          <motion.div
+                            key={cta.href}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            <Button variant="secondary" href={cta.href}>
+                              {cta.text}
+                            </Button>
+                          </motion.div>
+                        </AnimatePresence>
+                        <Button variant="outline" href="/contact">BOOK US</Button>
+                      </div>
+                    );
+                  })()}
                 </motion.div>
               )}
             </AnimatePresence>
