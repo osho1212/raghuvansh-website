@@ -72,21 +72,45 @@ export const productionsData = [
 const GoldDust = () => {
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-      {[...Array(40)].map((_, i) => {
+      {/* Floating slow dust */}
+      {[...Array(30)].map((_, i) => {
         const size = Math.random() * 2 + 1; // 1px to 3px
         const left = Math.random() * 100; // 0% to 100%
         const delay = Math.random() * 12; // 0s to 12s
-        const duration = Math.random() * 15 + 15; // 15s to 30s
+        const duration = Math.random() * 20 + 20; // 20s to 40s
         return (
           <div
-            key={i}
-            className="absolute rounded-full bg-gold/50"
+            key={`slow-${i}`}
+            className="absolute rounded-full bg-gold/40"
             style={{
               width: `${size}px`,
               height: `${size}px`,
               left: `${left}%`,
               bottom: `-20px`,
               animation: `floatUp ${duration}s linear infinite`,
+              animationDelay: `${delay}s`,
+            }}
+          />
+        );
+      })}
+
+      {/* Twinkling sprinkles scattered all over the page */}
+      {[...Array(50)].map((_, i) => {
+        const size = Math.random() * 1.5 + 0.5; // 0.5px to 2px
+        const left = Math.random() * 100; // 0% to 100%
+        const top = Math.random() * 100; // 0% to 100%
+        const delay = Math.random() * 6; // 0s to 6s
+        const duration = Math.random() * 5 + 4; // 4s to 9s
+        return (
+          <div
+            key={`sprinkle-${i}`}
+            className="absolute rounded-full bg-gold/50"
+            style={{
+              width: `${size}px`,
+              height: `${size}px`,
+              left: `${left}%`,
+              top: `${top}%`,
+              animation: `twinkle ${duration}s ease-in-out infinite`,
               animationDelay: `${delay}s`,
             }}
           />
@@ -101,7 +125,20 @@ export default function ProductionsIndex() {
     <>
       <Navigation />
       <main className="relative flex-grow pt-28 bg-ink min-h-screen overflow-hidden">
-        {/* Animated Gold Dust Particles */}
+        {/* Play Background Image Overlay */}
+        <div className="absolute inset-0 z-0 opacity-25 pointer-events-none mix-blend-lighten">
+          <Image
+            src="/production-bg.webp"
+            alt="Theater Background"
+            fill
+            className="object-cover"
+            priority
+          />
+          {/* Dark overlay to make content readable and blend background */}
+          <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/90 to-ink"></div>
+        </div>
+
+        {/* Animated Gold Dust Particles & Twinkling Sprinkles */}
         <GoldDust />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
