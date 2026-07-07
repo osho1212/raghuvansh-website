@@ -12,6 +12,7 @@
     "@hookform/resolvers": "^5.4.0",
     "@use-gesture/react": "^10.3.1",
     "debug": "^4.4.3",
+    "firebase": "^12.15.0",
     "framer-motion": "^12.42.2",
     "has-property-descriptors": "^1.0.2",
     "lucide-react": "^1.23.0",

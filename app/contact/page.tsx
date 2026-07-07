@@ -8,6 +8,9 @@ import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { Mail, Phone, MapPin, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -41,7 +44,18 @@ function ContactContent() {
   }, [initialSubject, setValue]);
 
   const onSubmit = async (data: FormData) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      await addDoc(collection(db, "enquiries"), {
+        name: data.name,
+        email: data.email,
+        subject: data.subject,
+        message: data.message,
+        createdAt: serverTimestamp(),
+      });
+    } catch (e) {
+      console.error("Error saving enquiry to Firebase: ", e);
+    }
+
     const whatsappNumber = "918585909213";
     const text = encodeURIComponent(
       `Hello Raghuvansh Theatre Group! I have sent an enquiry.\n\n*Name:* ${data.name}\n*Email:* ${data.email}\n*Subject:* ${data.subject}\n*Message:* ${data.message}`
