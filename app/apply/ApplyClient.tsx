@@ -17,6 +17,9 @@ import {
   ArrowLeft,
   Info
 } from "lucide-react";
+import { db, storage } from "@/lib/firebase";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 interface SocialLinks {
   instagram: string;
@@ -37,6 +40,7 @@ interface ExperienceItem {
 
 export default function ApplyClient() {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState<"identity" | "stats" | "media" | "experience">("identity");
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
@@ -347,8 +351,8 @@ export default function ApplyClient() {
     setActiveTab(nextTab);
   };
 
-  // Submission handler via WhatsApp
-  const handleCastingSubmit = (e: React.FormEvent) => {
+  // Submission handler via Firebase and WhatsApp
+  const handleCastingSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Final Validation check
@@ -368,42 +372,94 @@ export default function ApplyClient() {
       return;
     }
 
-    // Format WhatsApp message
-    const formattedProfileImage = formProfileImage.startsWith("data:image/")
-      ? "[Uploaded from Device - Sent on Chat]"
-      : formProfileImage;
-    const formattedCoverImage = formCoverImage.startsWith("data:image/")
-      ? "[Uploaded from Device - Sent on Chat]"
-      : formCoverImage || "None";
-    const formattedGallery = formGallery
-      .map(
-        (url, idx) =>
-          `   ${idx + 1}. ${url.startsWith("data:image/") ? "[Uploaded from Device]" : url}`
-      )
-      .join("\n");
-    const formattedVideos =
-      formVideos.length > 0
-        ? formVideos.map((url, idx) => `   ${idx + 1}. ${url}`).join("\n")
-        : "   None";
-    const formattedCredits =
-      formExperience.length > 0
-        ? formExperience.map((item) => `• [${item.year}] ${item.title} (Role: ${item.role})`).join("\n")
+    setIsSubmitting(true);
+    setValidationError(null);
+
+    try {
+      // Helper function to upload base64 image to Storage
+      const uploadFile = async (base64Str: string, folder: string) => {
+        if (!base64Str.startsWith("data:image/")) {
+          return base64Str; // Already a URL
+        }
+        const fileExt = base64Str.split(";")[0].split("/")[1] || "jpeg";
+        const filename = `${Math.random().toString(36).substring(2, 9)}_${Date.now()}.${fileExt}`;
+        const storageRef = ref(storage, `auditions/${folder}/${filename}`);
+        await uploadString(storageRef, base64Str, "data_url");
+        return await getDownloadURL(storageRef);
+      };
+
+      // Upload Profile Image
+      const finalProfileUrl = await uploadFile(formProfileImage, "profiles");
+
+      // Upload Cover Image if any
+      let finalCoverUrl = "";
+      if (formCoverImage) {
+        finalCoverUrl = await uploadFile(formCoverImage, "covers");
+      }
+
+      // Upload Gallery Images
+      const finalGalleryUrls: string[] = [];
+      for (const item of formGallery) {
+        const url = await uploadFile(item, "gallery");
+        finalGalleryUrls.push(url);
+      }
+
+      // Prepare application details
+      const applicationData = {
+        name: formName.trim(),
+        category: formCategory,
+        location: formLocation,
+        email: formEmail.trim(),
+        phone: formPhone.trim(),
+        bio: formBio.trim(),
+        skills: formSkills,
+        socialLinks: formSocialLinks,
+        age: formAge,
+        height: formHeight,
+        weight: formWeight,
+        hairColor: formHairColor,
+        eyeColor: formEyeColor,
+        profileImage: finalProfileUrl,
+        coverImage: finalCoverUrl,
+        coverPosition: formCoverPosition,
+        introVideo: formIntroVideo,
+        introVideoRatio: formIntroVideoRatio,
+        gallery: finalGalleryUrls,
+        videos: formVideos,
+        experience: formExperience,
+        createdAt: serverTimestamp(),
+      };
+
+      // Save to firestore
+      await addDoc(collection(db, "auditions"), applicationData);
+
+      // Format WhatsApp message with direct Firebase links
+      const formattedGallery = finalGalleryUrls
+        .map((url, idx) => `   ${idx + 1}. ${url}`)
+        .join("\n");
+      const formattedVideos =
+        formVideos.length > 0
+          ? formVideos.map((url, idx) => `   ${idx + 1}. ${url}`).join("\n")
+          : "   None";
+      const formattedCredits =
+        formExperience.length > 0
+          ? formExperience.map((item) => `• [${item.year}] ${item.title} (Role: ${item.role})`).join("\n")
+          : "None";
+      const formattedSkills = formSkills.length > 0 ? formSkills.join(", ") : "None";
+
+      const instagramInfo = formSocialLinks.instagram
+        ? `${formSocialLinks.instagram} ${
+            formSocialLinks.instagramFollowers ? `(${formSocialLinks.instagramFollowers} followers)` : ""
+          }`
         : "None";
-    const formattedSkills = formSkills.length > 0 ? formSkills.join(", ") : "None";
+      const youtubeInfo = formSocialLinks.youtube
+        ? `${formSocialLinks.youtube} ${
+            formSocialLinks.youtubeSubscribers ? `(${formSocialLinks.youtubeSubscribers} subscribers)` : ""
+          }`
+        : "None";
 
-    const instagramInfo = formSocialLinks.instagram
-      ? `${formSocialLinks.instagram} ${
-          formSocialLinks.instagramFollowers ? `(${formSocialLinks.instagramFollowers} followers)` : ""
-        }`
-      : "None";
-    const youtubeInfo = formSocialLinks.youtube
-      ? `${formSocialLinks.youtube} ${
-          formSocialLinks.youtubeSubscribers ? `(${formSocialLinks.youtubeSubscribers} subscribers)` : ""
-        }`
-      : "None";
-
-    const whatsappNumber = "918585909213";
-    const message = `🌟 *RAGHUVANSH THEATRE GROUP - CASTING APPLICATION* 🌟
+      const whatsappNumber = "918585909213";
+      const message = `🌟 *RAGHUVANSH THEATRE GROUP - CASTING APPLICATION* 🌟
 --------------------------------------------------
 👤 *PERSONAL DETAILS*
 • *Name:* ${formName.trim()}
@@ -424,8 +480,8 @@ export default function ApplyClient() {
 • *Eye Color:* ${formEyeColor}
 
 🎥 *MEDIA & ASSETS*
-• *Profile Picture:* ${formattedProfileImage}
-• *Cover Banner:* ${formattedCoverImage}
+• *Profile Picture:* ${finalProfileUrl}
+• *Cover Banner:* ${finalCoverUrl || "None"}
 • *Intro Video:* ${formIntroVideo || "None"} ${formIntroVideo ? `(${formIntroVideoRatio})` : ""}
 • *Gallery Photos:*
 ${formattedGallery}
@@ -437,10 +493,16 @@ ${formattedCredits}
 --------------------------------------------------
 _Submitted via Raghuvansh Casting Portal_`;
 
-    const text = encodeURIComponent(message);
-    setSubmitted(true);
-    localStorage.removeItem("raghuvansh_apply_draft");
-    window.location.href = `https://wa.me/${whatsappNumber}?text=${text}`;
+      const text = encodeURIComponent(message);
+      setSubmitted(true);
+      localStorage.removeItem("raghuvansh_apply_draft");
+      window.location.href = `https://wa.me/${whatsappNumber}?text=${text}`;
+    } catch (e: any) {
+      console.error("Firebase upload/save failed: ", e);
+      setValidationError("Failed to upload portfolio files to Firebase. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // Mock object for live preview modal mapping
@@ -1162,10 +1224,11 @@ _Submitted via Raghuvansh Casting Portal_`;
                         </button>
                         <button
                           type="submit"
+                          disabled={isSubmitting}
                           onClick={handleCastingSubmit}
-                          className="bg-curtain hover:bg-gold text-canvas hover:text-ink px-10 py-3 rounded-sm font-body uppercase tracking-widest text-xs transition-all duration-300 font-bold flex items-center gap-2 shadow-lg"
+                          className="bg-curtain hover:bg-gold text-canvas hover:text-ink px-10 py-3 rounded-sm font-body uppercase tracking-widest text-xs transition-all duration-300 font-bold flex items-center gap-2 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                          Submit & Connect on WhatsApp
+                          {isSubmitting ? "Uploading Portfolio..." : "Submit & Connect on WhatsApp"}
                         </button>
                       </div>
                     </div>
