@@ -3,10 +3,11 @@ import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
   try {
-    const { password } = await request.json();
+    const { email, password } = await request.json();
+    const correctEmail = process.env.ADMIN_EMAIL || "admin@raghuvansh.co";
     const correctPassword = process.env.ADMIN_PASSWORD || "admin123";
 
-    if (password === correctPassword) {
+    if (email === correctEmail && password === correctPassword) {
       const cookieStore = await cookies();
       cookieStore.set("admin_auth", password, {
         httpOnly: true,
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true });
     }
 
-    return NextResponse.json({ success: false, error: "Invalid passcode" }, { status: 401 });
+    return NextResponse.json({ success: false, error: "Invalid email or passcode" }, { status: 401 });
   } catch (error) {
     return NextResponse.json({ success: false, error: "Server error" }, { status: 500 });
   }

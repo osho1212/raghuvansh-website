@@ -38,6 +38,42 @@ interface ExperienceItem {
   year: string;
 }
 
+// Compress base64 image using canvas to prevent exceeding Firestore limits
+const compressBase64Image = (base64Str: string, maxWidth = 300, quality = 0.5): Promise<string> => {
+  return new Promise((resolve) => {
+    if (!base64Str || !base64Str.startsWith("data:image/")) {
+      resolve(base64Str);
+      return;
+    }
+    const img = new Image();
+    img.src = base64Str;
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      let width = img.width;
+      let height = img.height;
+
+      if (width > maxWidth) {
+        height = Math.round((height * maxWidth) / width);
+        width = maxWidth;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      } else {
+        resolve(base64Str);
+      }
+    };
+    img.onerror = () => {
+      resolve(base64Str);
+    };
+  });
+};
+
 export default function ApplyClient() {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -376,16 +412,39 @@ export default function ApplyClient() {
     setValidationError(null);
 
     try {
+      let storageFailed = false;
       // Helper function to upload base64 image to Storage
       const uploadFile = async (base64Str: string, folder: string) => {
-        if (!base64Str.startsWith("data:image/")) {
-          return base64Str; // Already a URL
+        if (!base64Str || !base64Str.startsWith("data:image/")) {
+          return base64Str; // Already a URL or empty
         }
-        const fileExt = base64Str.split(";")[0].split("/")[1] || "jpeg";
-        const filename = `${Math.random().toString(36).substring(2, 9)}_${Date.now()}.${fileExt}`;
-        const storageRef = ref(storage, `auditions/${folder}/${filename}`);
-        await uploadString(storageRef, base64Str, "data_url");
-        return await getDownloadURL(storageRef);
+        if (storageFailed) {
+          console.warn(`Firebase Storage previously failed, compressing base64 for ${folder}...`);
+          try {
+            return await compressBase64Image(base64Str, 300, 0.5);
+          } catch (compressErr) {
+            console.error("Compression failed:", compressErr);
+            return base64Str;
+          }
+        }
+        try {
+          const fileExt = base64Str.split(";")[0].split("/")[1] || "jpeg";
+          const filename = `${Math.random().toString(36).substring(2, 9)}_${Date.now()}.${fileExt}`;
+          const storageRef = ref(storage, `auditions/${folder}/${filename}`);
+          await uploadString(storageRef, base64Str, "data_url");
+          return await getDownloadURL(storageRef);
+        } catch (storageErr) {
+          console.error(`Firebase Storage upload failed for ${folder}:`, storageErr);
+          storageFailed = true; // Skip future storage attempts to avoid wasting time
+          
+          try {
+            console.log(`Compressing fallback base64 image for ${folder}...`);
+            return await compressBase64Image(base64Str, 300, 0.5);
+          } catch (compressErr) {
+            console.error("Compression failed:", compressErr);
+            return base64Str;
+          }
+        }
       };
 
       // Upload Profile Image
@@ -433,73 +492,11 @@ export default function ApplyClient() {
       // Save to firestore
       await addDoc(collection(db, "auditions"), applicationData);
 
-      // Format WhatsApp message with direct Firebase links
-      const formattedGallery = finalGalleryUrls
-        .map((url, idx) => `   ${idx + 1}. ${url}`)
-        .join("\n");
-      const formattedVideos =
-        formVideos.length > 0
-          ? formVideos.map((url, idx) => `   ${idx + 1}. ${url}`).join("\n")
-          : "   None";
-      const formattedCredits =
-        formExperience.length > 0
-          ? formExperience.map((item) => `• [${item.year}] ${item.title} (Role: ${item.role})`).join("\n")
-          : "None";
-      const formattedSkills = formSkills.length > 0 ? formSkills.join(", ") : "None";
-
-      const instagramInfo = formSocialLinks.instagram
-        ? `${formSocialLinks.instagram} ${
-            formSocialLinks.instagramFollowers ? `(${formSocialLinks.instagramFollowers} followers)` : ""
-          }`
-        : "None";
-      const youtubeInfo = formSocialLinks.youtube
-        ? `${formSocialLinks.youtube} ${
-            formSocialLinks.youtubeSubscribers ? `(${formSocialLinks.youtubeSubscribers} subscribers)` : ""
-          }`
-        : "None";
-
-      const whatsappNumber = "918585909213";
-      const message = `🌟 *RAGHUVANSH THEATRE GROUP - CASTING APPLICATION* 🌟
---------------------------------------------------
-👤 *PERSONAL DETAILS*
-• *Name:* ${formName.trim()}
-• *Category:* ${formCategory}
-• *Location:* ${formLocation}
-• *Email:* ${formEmail.trim()}
-• *Phone:* ${formPhone.trim()}
-• *Bio:* ${formBio.trim() || "None"}
-• *Skills:* ${formattedSkills}
-• *Instagram:* ${instagramInfo}
-• *YouTube:* ${youtubeInfo}
-
-📏 *MEASUREMENTS*
-• *Age:* ${formAge} Years
-• *Height:* ${formHeight}
-• *Weight:* ${formWeight}
-• *Hair Color:* ${formHairColor}
-• *Eye Color:* ${formEyeColor}
-
-🎥 *MEDIA & ASSETS*
-• *Profile Picture:* ${finalProfileUrl}
-• *Cover Banner:* ${finalCoverUrl || "None"}
-• *Intro Video:* ${formIntroVideo || "None"} ${formIntroVideo ? `(${formIntroVideoRatio})` : ""}
-• *Gallery Photos:*
-${formattedGallery}
-• *Showreel/Performance Clips:*
-${formattedVideos}
-
-🎭 *THEATRICAL CREDITS*
-${formattedCredits}
---------------------------------------------------
-_Submitted via Raghuvansh Casting Portal_`;
-
-      const text = encodeURIComponent(message);
       setSubmitted(true);
       localStorage.removeItem("raghuvansh_apply_draft");
-      window.location.href = `https://wa.me/${whatsappNumber}?text=${text}`;
     } catch (e: any) {
-      console.error("Firebase upload/save failed: ", e);
-      setValidationError("Failed to upload portfolio files to Firebase. Please try again.");
+      console.error("Firebase save failed: ", e);
+      setValidationError("Failed to save application. Please check your Firebase Firestore rules or connection.");
     } finally {
       setIsSubmitting(false);
     }
@@ -567,13 +564,10 @@ _Submitted via Raghuvansh Casting Portal_`;
                 <CheckCircle2 size={36} />
               </div>
               <h2 className="font-heading text-2xl text-curtain font-bold mb-4">
-                Draft Submitted!
+                Application Submitted!
               </h2>
               <p className="font-body text-sm text-ink/80 leading-relaxed mb-6">
-                Thank you, <strong className="text-curtain">{formName}</strong>. Your profile data has been formatted and redirected to our WhatsApp contact for casting review.
-              </p>
-              <p className="font-body text-xs text-ink/50 leading-relaxed bg-canvas p-4 rounded-sm border border-gold/10 max-w-sm mx-auto">
-                Please make sure to send the pre-filled message in the WhatsApp window that opens. If you uploaded files directly from your device, you can attach them directly on the chat.
+                Thank you, <strong className="text-curtain">{formName}</strong>. Your casting application has been successfully saved and is now visible in the admin panel.
               </p>
               <div className="mt-8 flex justify-center gap-4">
                 <Button variant="primary" onClick={() => setSubmitted(false)}>

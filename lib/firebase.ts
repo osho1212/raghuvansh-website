@@ -13,7 +13,10 @@ const firebaseConfig = {
 
 // Initialize Firebase (SSR Friendly)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
+const dbId = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID;
+const db = dbId && dbId !== "(default)" ? getFirestore(app, dbId) : getFirestore(app);
 const storage = getStorage(app);
+storage.maxUploadRetryTime = 5000; // 5 seconds max upload retry
+storage.maxOperationRetryTime = 5000; // 5 seconds max operation retry
 
 export { app, db, storage };

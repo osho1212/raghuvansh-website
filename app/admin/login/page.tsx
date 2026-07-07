@@ -6,6 +6,7 @@ import { Footer } from "@/components/ui/Footer";
 import { Lock, ArrowRight, AlertCircle } from "lucide-react";
 
 export default function AdminLogin() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ export default function AdminLogin() {
       const res = await fetch("/api/admin/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
@@ -56,6 +57,20 @@ export default function AdminLogin() {
           </p>
 
           <form onSubmit={handleLogin} className="space-y-6">
+            <div>
+              <label className="block text-xs uppercase tracking-wider text-ink/60 mb-2 font-semibold">
+                Admin Email
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-canvas border border-gold/20 focus:border-gold outline-none p-4 rounded-sm transition-colors text-ink text-center text-sm font-semibold"
+                placeholder="admin@raghuvansh.co"
+                required
+              />
+            </div>
+
             <div>
               <label className="block text-xs uppercase tracking-wider text-ink/60 mb-2 font-semibold">
                 Enter Passcode
