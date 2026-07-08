@@ -48,6 +48,7 @@ export default function About() {
 
   const [showAll, setShowAll] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [showLegacyModal, setShowLegacyModal] = useState(false);
 
   const visibleImages = showAll ? galleryImages : galleryImages.slice(0, 12);
 
@@ -90,11 +91,40 @@ export default function About() {
                 <p className="font-body text-lg text-canvas/80 leading-relaxed mb-8">
                   A visionary of the Indian stage, Late Shri Amitosh Sharma dedicated his life to bridging the gap between ancient theatrical traditions and contemporary performance art. His directorial style was characterized by its scale, emotional depth, and uncompromising commitment to the craft.
                 </p>
-                <blockquote className="border-l-2 border-gold pl-6 py-2">
+                
+                {/* Structured Highlights */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3 mb-8 text-sm font-body text-canvas/70 border-t border-b border-gold/15 py-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-gold font-bold">•</span>
+                    <span>Moradabad, UP (Born 1967)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gold font-bold">•</span>
+                    <span>AIR A-Grade Vocal Artist</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gold font-bold">•</span>
+                    <span>Staged Ramayana at Red Fort for 30+ Years</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gold font-bold">•</span>
+                    <span>Urdu Theatre Training at SRC, Delhi</span>
+                  </div>
+                </div>
+
+                <blockquote className="border-l-2 border-gold pl-6 py-2 mb-8">
                   <p className="font-heading text-2xl text-canvas italic">
                     "Theatre is not merely performance; it is a ritual where the actor and the audience breathe together."
                   </p>
                 </blockquote>
+
+                <button
+                  onClick={() => setShowLegacyModal(true)}
+                  className="pointer-events-auto inline-flex items-center gap-2 px-6 py-3 bg-gold hover:bg-canvas text-ink hover:text-ink font-body uppercase tracking-wider text-xs font-bold rounded-sm border border-gold transition-all duration-300 cursor-pointer shadow-lg hover:shadow-gold/20"
+                >
+                  <span>View Full Legacy & Achievements</span>
+                  <span>&rarr;</span>
+                </button>
               </div>
               <div className="order-1 lg:order-2">
                 <div className="aspect-square relative border border-gold/30 rounded-lg overflow-hidden shadow-2xl group">
@@ -441,6 +471,195 @@ export default function About() {
                   />
                 </div>
 
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* FOUNDER LEGACY MODAL */}
+        <AnimatePresence>
+          {showLegacyModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
+              onClick={() => setShowLegacyModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.95, y: 30 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 30 }}
+                transition={{ duration: 0.3 }}
+                className="bg-ink text-canvas border border-gold/30 w-full max-w-4xl max-h-[85vh] rounded-lg overflow-hidden flex flex-col relative shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Header */}
+                <div className="flex justify-between items-center px-6 py-4 border-b border-gold/15 bg-black/40">
+                  <div>
+                    <span className="font-body text-xs text-gold uppercase tracking-widest font-semibold block">Artistic Archive</span>
+                    <h2 className="font-heading text-2xl text-canvas font-bold">Late Shri Amitosh Sharma</h2>
+                  </div>
+                  <button
+                    onClick={() => setShowLegacyModal(false)}
+                    className="p-2 bg-black/40 hover:bg-gold/80 hover:text-ink border border-gold/20 rounded-full transition-all cursor-pointer text-canvas"
+                  >
+                    <X size={20} />
+                  </button>
+                </div>
+
+                {/* Content Area */}
+                <div className="flex-grow overflow-y-auto p-6 md:p-8 space-y-8 font-body text-left">
+                  {/* Grid for Personal / Education / Profile */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 border-b border-gold/10 pb-6">
+                    <div className="md:col-span-1 border-r border-gold/10 pr-6 space-y-4">
+                      <div>
+                        <strong className="text-gold text-xs uppercase tracking-wider block mb-1">Personal Details</strong>
+                        <div className="text-sm text-canvas/80 space-y-1">
+                          <div>Born: 1967, Moradabad, UP</div>
+                          <div>Father: Late Shri Sudarshanacharya Shastri</div>
+                          <div>Mother: Late Smt. Prabha Rani Sharma</div>
+                        </div>
+                      </div>
+                      <div>
+                        <strong className="text-gold text-xs uppercase tracking-wider block mb-1">Education</strong>
+                        <ul className="text-sm text-canvas/80 list-disc pl-4 space-y-1">
+                          <li>Bachelor of Science (B.Sc.)</li>
+                          <li>Sangeet Prabhakar (Vocal & Instrumental)</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-2 space-y-4">
+                      <div>
+                        <strong className="text-gold text-xs uppercase tracking-wider block mb-1">Professional Profile</strong>
+                        <ul className="text-sm text-canvas/80 list-disc pl-4 space-y-1.5">
+                          <li>Head of the Music Department, CRPF School, Delhi</li>
+                          <li>AIR (All India Radio) A-Grade Vocal Artist (Ghazal and Bhajan)</li>
+                          <li>Urdu Theatre Training at Shri Ram Centre for Performing Arts, Delhi</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <strong className="text-gold text-xs uppercase tracking-wider block mb-1">Ramayana Productions</strong>
+                        <p className="text-sm text-canvas/80 leading-relaxed">
+                          For over 30 years, his institution staged the complete Ramayana annually at the Red Fort Parade Ground and Pitampura, Delhi.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Honours & Awards */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-gold/10 pb-6">
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Honours & Recognitions</h3>
+                      <ul className="text-sm text-canvas/70 list-disc pl-4 space-y-2">
+                        <li>Honoured by Union Home Minister <strong className="text-canvas">Shri Rajnath Singh</strong> for theatrical performance at Parade Ground (2015).</li>
+                        <li>Honoured by Vice President <strong className="text-canvas">Shri M. Venkaiah Naidu</strong> for the staging of Ramayana (2017).</li>
+                        <li>Honoured by the Deputy Chief Minister and Education Minister of Delhi for excellence in theatre direction at the Red Fort premises (2018).</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Key Awards</h3>
+                      <ul className="text-sm text-canvas/70 list-disc pl-4 space-y-1.5">
+                        <li><strong>1988:</strong> Udas Trophy, All India Ghazal Singing Competition.</li>
+                        <li>Honoured with the <strong>Shaan-e-Pital Nagari</strong>, Moradabad.</li>
+                        <li>Youth Music Session, Youth Festival, Lucknow.</li>
+                        <li>Honoured by <strong>Sanskar Bharati</strong>.</li>
+                        <li>Music Award by <strong>Mala Sanstha</strong>, Raipur (1999) & Samata, Rampur.</li>
+                        <li>Honoured by the <strong>Hindi Sanskrit Academy</strong>, Delhi (2010, 2012, and 2013).</li>
+                        <li>Performed Ghazal & Bhajan concerts internationally in Dubai, Hong Kong, England, and Kenya.</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Theatre catalog */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 border-b border-gold/10 pb-6">
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Theatre Productions Directed</h3>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-canvas/70">
+                        {[
+                          "Taj for Sale", "Alibaba", "Nai Sadi Ki Ore", "Aage Kya Hoga Rama Re", 
+                          "Golden Owl", "Ajaatshatru Ka Dard", "Big Boss Ki Biwi", "Sanjog", 
+                          "Ek Tha Gadha", "Uljhan", "Singhasan Khali Hai", "Andhon Ka Haathi", 
+                          "Hai Ri Chandramukhi", "Gadhe Ki Baraat", "Pagalon Ki Duniya", 
+                          "Chalta Purza", "Birwa Mangal", "Raghuvansh Navya"
+                        ].map((play) => (
+                          <div key={play} className="flex items-center gap-1.5">
+                            <span className="text-gold/60">•</span>
+                            <span>{play}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Musical Theatre</h3>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-canvas/70">
+                        {[
+                          "Amir Khusro", "Karna", "Aaj Ka Abhimanyu", "Chandragupta Maurya", 
+                          "Naga Agar Ji Rooth", "Jeevan Meet Sangeet", "Wenders of the World", 
+                          "Uday", "Bin Paani Sab Soon", "Prithviraj Chauhan", "Meri Delhi", 
+                          "Navras", "Panch Tatva"
+                        ].map((musical) => (
+                          <div key={musical} className="flex items-center gap-1.5">
+                            <span className="text-gold/60">•</span>
+                            <span>{musical}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Music Catalog */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Music Albums</h3>
+                      <ul className="text-xs text-canvas/70 list-disc pl-4 space-y-1 text-left">
+                        <li>Stuti</li>
+                        <li>Sisodiya</li>
+                        <li>Chandi Chandi (Tips)</li>
+                        <li>Phir Chand (Venus)</li>
+                        <li>Bhole Ki Mauj</li>
+                        <li>Soul Expressions</li>
+                        <li>Dheema Dheema (Venus)</li>
+                        <li>Suraliya Baje (Tips)</li>
+                        <li>Ghazal Guldasta (Tips)</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-3 font-semibold">TV & Feature Films</h3>
+                      <ul className="text-xs text-canvas/70 list-disc pl-4 space-y-1 text-left">
+                        <li>Phool Hoo</li>
+                        <li>Aakash Ke Diye (DD Urdu)</li>
+                        <li>Akbar Birbal (Doordarshan)</li>
+                        <li>Sangharsh (Sony TV)</li>
+                        <li>Yakeel Jasoos Chhori</li>
+                        <li>Hai Tiranga</li>
+                        <li>Hum Ek Hain</li>
+                        <li>Bhor</li>
+                        <li>Kis Ko Pyar Karu</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Literature & Writing</h3>
+                      <div className="space-y-3 text-xs text-canvas/70 text-left">
+                        <div>
+                          <strong className="text-canvas text-xs block mb-0.5">Books Authored</strong>
+                          <div>Tumko Dekha Ghazal Ho Gayi (2015)</div>
+                          <div>Ek Ghazal Ka Safarnama (2021)</div>
+                        </div>
+                        <div>
+                          <strong className="text-canvas text-xs block mb-0.5">Songwriting</strong>
+                          <div>"Nayi Roshni Ki Taraf"</div>
+                        </div>
+                        <div>
+                          <strong className="text-canvas text-xs block mb-0.5">International Film Music (USA)</strong>
+                          <div>Living in America</div>
+                          <div>Where Is the Culture</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
           )}
