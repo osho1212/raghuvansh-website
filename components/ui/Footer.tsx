@@ -16,9 +16,9 @@ export const Footer = () => {
             <h3 className="font-heading text-xl text-gold mb-4">Explore</h3>
             <ul className="space-y-2 font-body text-sm text-canvas/80">
               <li><Link href="/about" className="hover:text-gold transition-colors">About</Link></li>
-              <li><Link href="/ramayan" className="hover:text-gold transition-colors">Ramayan</Link></li>
+              <li><Link href="/ramayan" className="hover:text-gold transition-colors">Flagship</Link></li>
               <li><Link href="/productions" className="hover:text-gold transition-colors">Productions</Link></li>
-              <li><Link href="/mehfil-e-ghazal" className="hover:text-gold transition-colors">Mehfil-e-Ghazal</Link></li>
+              <li><Link href="/mehfil-e-ghazal" className="hover:text-gold transition-colors">Cultural</Link></li>
             </ul>
           </div>
           <div>
