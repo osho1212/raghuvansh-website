@@ -5,6 +5,7 @@ import { Footer } from "@/components/ui/Footer";
 import Image from "next/image";
 
 export default function Team() {
+  const [activeTab, setActiveTab] = React.useState("theatre");
   const members = [
     { name: "Anushka Sharma", role: "Vocalist & Music Lead" },
     { name: "Rohan Sen", role: "Associate Director" },
@@ -101,6 +102,196 @@ export default function Team() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* ARTISTIC LEGACY BROWSER */}
+          <div className="mb-24 bg-ink text-canvas rounded-lg border border-gold/30 p-8 md:p-12 relative overflow-hidden film-grain">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gold/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-curtain/5 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="text-center mb-12">
+              <span className="font-body text-xs text-gold uppercase tracking-widest block mb-2">The Archive</span>
+              <h2 className="font-heading text-4xl text-gold font-bold mb-4">Artistic Legacy</h2>
+              <p className="font-body text-canvas/70 max-w-2xl mx-auto text-sm md:text-base">
+                A lifetime dedicated to the arts. Explore the comprehensive catalog of theatrical directions, musical compositions, published literature, and national honours of Late Shri Amitosh Sharma.
+              </p>
+            </div>
+
+            {/* Tab Headers */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-10 border-b border-gold/15 pb-6">
+              {[
+                { id: "theatre", label: "Theatre Productions" },
+                { id: "music", label: "Music & Film" },
+                { id: "literature", label: "Literature & Honours" },
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-5 py-2.5 rounded-sm font-body text-xs uppercase tracking-wider transition-all duration-300 border cursor-pointer font-bold ${
+                    activeTab === tab.id
+                      ? "bg-gold border-gold text-ink shadow-[0_0_15px_rgba(201,162,75,0.3)]"
+                      : "bg-transparent border-canvas/10 hover:border-gold/50 text-canvas/80 hover:text-gold"
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Tab Contents */}
+            <div className="min-h-[300px]">
+              {activeTab === "theatre" && (
+                <div className="space-y-8 animate-fadeIn">
+                  <div className="bg-canvas/5 p-6 rounded-sm border border-gold/10">
+                    <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Ramayana Productions</h3>
+                    <p className="font-body text-canvas/80 text-sm leading-relaxed">
+                      For over 30 years, his institution staged the complete Ramayana annually at the Red Fort Parade Ground and Pitampura, Delhi. This production remains one of the group's cornerstone heritage works.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-4 border-b border-gold/15 pb-2 font-semibold">Theatre Plays Directed</h3>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-body text-canvas/70 text-sm">
+                        {[
+                          "Taj for Sale", "Alibaba", "Nai Sadi Ki Ore", "Aage Kya Hoga Rama Re", 
+                          "Golden Owl", "Ajaatshatru Ka Dard", "Big Boss Ki Biwi", "Sanjog", 
+                          "Ek Tha Gadha Aur Allah Dad Khan", "Uljhan", "Singhasan Khali Hai", 
+                          "Andhon Ka Haathi", "Hai Ri Chandramukhi", "Gadhe Ki Baraat", 
+                          "Pagalon Ki Duniya", "Chalta Purza", "Birwa Mangal", "Raghuvansh Navya"
+                        ].map((play) => (
+                          <div key={play} className="flex items-center gap-2">
+                            <span className="text-gold/50 text-xs">•</span>
+                            <span>{play}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-4 border-b border-gold/15 pb-2 font-semibold">Musical Theatre Productions</h3>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-body text-canvas/70 text-sm">
+                        {[
+                          "Amir Khusro", "Karna", "Aaj Ka Abhimanyu", "Chandragupta Maurya", 
+                          "Naga Agar Ji Rooth Gayi To", "Jeevan Meet Sangeet", "Wonders of the World", 
+                          "Uday", "Bin Paani Sab Soon", "Prithviraj Chauhan", "Meri Delhi Meri Shaan", 
+                          "Navras", "Panch Tatva"
+                        ].map((musical) => (
+                          <div key={musical} className="flex items-center gap-2">
+                            <span className="text-gold/50 text-xs">•</span>
+                            <span>{musical}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-6 border-t border-gold/10 grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-canvas/80 font-body">
+                    <div className="flex items-start gap-3">
+                      <span className="text-gold mt-1">✈</span>
+                      <div>
+                        <strong className="text-gold block">International Theatre Tour</strong>
+                        Participated in a prestigious theatre tour to Turkey under the guidance of Parsi theatre maestro Master Fida Hussain Jassi.
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <span className="text-gold mt-1">🎭</span>
+                      <div>
+                        <strong className="text-gold block">Theatre Training</strong>
+                        Conducted Urdu Theatre Training at the Shri Ram Centre for Performing Arts, Delhi.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "music" && (
+                <div className="space-y-8 animate-fadeIn">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-4 border-b border-gold/15 pb-2 font-semibold">Music Albums</h3>
+                      <div className="grid grid-cols-2 gap-x-4 gap-y-2 font-body text-canvas/70 text-sm">
+                        {[
+                          "Stuti", "Sisodiya", "Chandi Chandi Ho Gayi (Tips)", "Phir Chand Utar Aaya (Venus)", 
+                          "Bhole Ki Mauj", "Soul Expressions", "Dheema Dheema Hai Dhua (Venus)", 
+                          "Suraliya Baje (Tips)", "Ghazal Guldasta (Tips)"
+                        ].map((album) => (
+                          <div key={album} className="flex items-center gap-2">
+                            <span className="text-gold/50 text-xs">•</span>
+                            <span>{album}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-4 border-b border-gold/15 pb-2 font-semibold">Television & Feature Film Music</h3>
+                      <div className="space-y-4 font-body text-canvas/70 text-sm">
+                        <div>
+                          <strong className="text-canvas block text-xs uppercase tracking-wider mb-1">Television Music Direction</strong>
+                          <span className="text-canvas/60">Phool Hoo, Aakash Ke Diye (DD Urdu), Akbar Birbal (Doordarshan), Sangharsh (Sony TV), Yakeel Jasoos Chhori</span>
+                        </div>
+                        <div>
+                          <strong className="text-canvas block text-xs uppercase tracking-wider mb-1">Feature Film Music</strong>
+                          <span className="text-canvas/60">Hai Tiranga, Hum Ek Hain, Bhor, Kis Ko Pyar Karu</span>
+                        </div>
+                        <div>
+                          <strong className="text-canvas block text-xs uppercase tracking-wider mb-1">International Film Music (USA)</strong>
+                          <span className="text-canvas/60">Living in America, Where Is the Culture</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "literature" && (
+                <div className="space-y-8 animate-fadeIn">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-4 border-b border-gold/15 pb-2 font-semibold">Books Authored</h3>
+                      <div className="space-y-4 font-body text-canvas/80 text-sm">
+                        <div className="flex gap-3">
+                          <span className="text-gold text-lg">📖</span>
+                          <div>
+                            <strong className="text-gold block font-heading text-base">Tumko Dekha Ghazal Ho Gayi (2015)</strong>
+                            A published collection of ghazals capturing classical Hindustani baithak aesthetics.
+                          </div>
+                        </div>
+                        <div className="flex gap-3">
+                          <span className="text-gold text-lg">📖</span>
+                          <div>
+                            <strong className="text-gold block font-heading text-base">Ek Ghazal Ka Safarnama (2021)</strong>
+                            An archival chronicle mapping the evolutionary journey of ghazal performances.
+                          </div>
+                        </div>
+                        <div className="flex gap-3 pt-2 border-t border-gold/10">
+                          <span className="text-gold text-lg">✍</span>
+                          <div>
+                            <strong className="text-gold block font-heading text-base">Songwriting</strong>
+                            "Nayi Roshni Ki Taraf"
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="font-heading text-lg text-gold mb-4 border-b border-gold/15 pb-2 font-semibold">Awards & Honours</h3>
+                      <ul className="space-y-2.5 font-body text-canvas/70 text-sm list-disc pl-5">
+                        <li><strong>1988:</strong> Udas Trophy, All India Ghazal Singing Competition.</li>
+                        <li>Honoured with the <strong>Shaan-e-Pital Nagari</strong> title, Moradabad.</li>
+                        <li>Recipient of the Music Award by <strong>Mala Sanstha</strong>, Raipur (1999).</li>
+                        <li>Honoured by the <strong>Hindi Sanskrit Academy</strong>, Delhi (2010, 2012, and 2013).</li>
+                        <li>Performed Ghazal and Bhajan concerts internationally in <strong>Dubai, Hong Kong, England, and Kenya</strong>.</li>
+                        <li>Honoured by <strong>Sanskar Bharati</strong> for lifetime contribution to arts.</li>
+                        <li>Awarded the Music Award, Moradabad, and Samata Award, Rampur.</li>
+                        <li>Recognized in Lucknow's Youth Music Session at the Youth Festival.</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
