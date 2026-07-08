@@ -54,7 +54,7 @@ export default function Team() {
                 <h1 className="font-heading text-5xl text-curtain font-bold mb-6">Late Shri Amitosh Sharma</h1>
                 
                 <p className="font-body text-lg text-ink/80 leading-relaxed mb-8">
-                  A visionary of the Indian stage, Late Shri Amitosh Sharma founded Raghuvansh Theatre Group to bridge the gap between ancient theatrical traditions and contemporary performance art. Over the past two decades, he has directed over 50 major plays, including the landmark Ramayan performances at the Red Fort.
+                  A visionary of the Indian stage, Late Shri Amitosh Sharma founded Raghuvansh Group of Performing Arts to bridge the gap between ancient theatrical traditions and contemporary performance art. Over the past two decades, he has directed over 50 major plays, including the landmark Ramayan performances at the Red Fort.
                 </p>
 
                 <div className="space-y-8">

@@ -163,7 +163,7 @@ export default function Home() {
                 Preserving the <span className="text-gold">Classical</span>, Pioneering the <span className="text-curtain">Contemporary</span>.
               </h2>
               <p className="font-body text-lg text-ink/80 leading-relaxed mb-8">
-                Raghuvansh Theatre Group is a premier performing arts collective based in New Delhi. Founded by Late Shri Amitosh Sharma, a renowned AIR A-grade artist, we bring centuries of Indian theatrical tradition to the modern stage with unparalleled grandeur.
+                Raghuvansh Group of Performing Arts is a premier performing arts collective based in New Delhi. Founded by Late Shri Amitosh Sharma, a renowned AIR A-grade artist, we bring centuries of Indian theatrical tradition to the modern stage with unparalleled grandeur.
               </p>
               <Button variant="primary" href="/about">Discover Our Story</Button>
             </div>

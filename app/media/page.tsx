@@ -20,7 +20,7 @@ export default function Media() {
               Press & Media
             </h1>
             <p className="font-body text-lg text-ink/75">
-              Explore coverage, interviews, and reviews of Raghuvansh Theatre Group across national and international press outlets.
+              Explore coverage, interviews, and reviews of Raghuvansh Group of Performing Arts across national and international press outlets.
             </p>
           </div>
 
@@ -65,7 +65,7 @@ export default function Media() {
           <div className="text-center py-16 bg-curtain text-canvas film-grain rounded-sm border border-gold/20">
             <h2 className="font-heading text-3xl text-gold mb-6">Government Acknowledgements</h2>
             <p className="font-body text-sm text-canvas/80 max-w-xl mx-auto leading-relaxed">
-              We express our gratitude to the Ministry of Culture, Government of India, and the Sahitya Kala Parishad for their continued support, patronage, and recognition of Raghuvansh Theatre Group's cultural preservation efforts.
+              We express our gratitude to the Ministry of Culture, Government of India, and the Sahitya Kala Parishad for their continued support, patronage, and recognition of Raghuvansh Group of Performing Arts' cultural preservation efforts.
             </p>
           </div>
 

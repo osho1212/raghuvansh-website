@@ -109,10 +109,12 @@ export default function ProductionDetail() {
             <span className="font-body text-sm uppercase tracking-wider text-canvas/70 block mb-6">
               — {prod.title}
             </span>
-            <div className="max-w-3xl mx-auto border-t border-gold/30 pt-6">
-              <span className="font-body text-xs uppercase tracking-widest text-gold block mb-3 font-semibold">Director's Note</span>
-              <p className="font-body text-sm text-canvas/85 italic leading-relaxed">"{prod.directorsNote}"</p>
-            </div>
+            {prod.directorsNote && (
+              <div className="max-w-3xl mx-auto border-t border-gold/30 pt-6">
+                <span className="font-body text-xs uppercase tracking-widest text-gold block mb-3 font-semibold">Director's Note</span>
+                <p className="font-body text-sm text-canvas/85 italic leading-relaxed">"{prod.directorsNote}"</p>
+              </div>
+            )}
           </div>
 
           {/* Production Gallery / Stills */}

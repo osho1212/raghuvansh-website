@@ -33,7 +33,7 @@ export const Footer = () => {
           </div>
         </div>
         <div className="border-t border-gold/20 pt-8 flex flex-col md:flex-row justify-between items-center font-body text-xs text-canvas/60">
-          <p>&copy; {new Date().getFullYear()} Raghuvansh Theatre Group. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Raghuvansh Group of Performing Arts. All rights reserved.</p>
           <div className="space-x-4 mt-4 md:mt-0">
             <Link href="/privacy" className="hover:text-gold">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-gold">Terms of Service</Link>

@@ -254,7 +254,7 @@ export default function ProductionsIndex() {
               Our Productions
             </h1>
             <p className="font-body text-lg text-canvas/80">
-              Explore the major stage productions by Raghuvansh Theatre Group. Click on any playbill to open its immersive overview, watch the teaser, and view the full credits.
+              Explore the major stage productions by Raghuvansh Group of Performing Arts. Click on any playbill to open its immersive overview, watch the teaser, and view the full credits.
             </p>
           </div>
 
@@ -426,17 +426,19 @@ export default function ProductionsIndex() {
                 </div>
 
                 {/* Director's Note */}
-                <div className="bg-canvas/5 p-8 rounded-lg border border-gold/10 relative overflow-hidden group">
-                  <div className="absolute top-0 left-0 h-full w-[3px] bg-gold" />
-                  <h4 className="font-heading text-xl text-gold font-bold mb-4 uppercase tracking-wider text-left">
-                    Director's Note
-                  </h4>
-                  <div className="space-y-4 text-canvas/70 font-body text-base leading-relaxed text-left">
-                    {selectedProd.directorsNoteFull.map((para: string, idx: number) => (
-                      <p key={idx}>{para}</p>
-                    ))}
+                {selectedProd.directorsNoteFull && selectedProd.directorsNoteFull.length > 0 && (
+                  <div className="bg-canvas/5 p-8 rounded-lg border border-gold/10 relative overflow-hidden group">
+                    <div className="absolute top-0 left-0 h-full w-[3px] bg-gold" />
+                    <h4 className="font-heading text-xl text-gold font-bold mb-4 uppercase tracking-wider text-left">
+                      Director's Note
+                    </h4>
+                    <div className="space-y-4 text-canvas/70 font-body text-base leading-relaxed text-left">
+                      {selectedProd.directorsNoteFull.map((para: string, idx: number) => (
+                        <p key={idx}>{para}</p>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Play Quote */}
                 <div className="py-8 px-6 text-center border-y border-gold/15">

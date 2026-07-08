@@ -58,7 +58,7 @@ function ContactContent() {
 
     const whatsappNumber = "918585909213";
     const text = encodeURIComponent(
-      `Hello Raghuvansh Theatre Group! I have sent an enquiry.\n\n*Name:* ${data.name}\n*Email:* ${data.email}\n*Subject:* ${data.subject}\n*Message:* ${data.message}`
+      `Hello Raghuvansh Group of Performing Arts! I have sent an enquiry.\n\n*Name:* ${data.name}\n*Email:* ${data.email}\n*Subject:* ${data.subject}\n*Message:* ${data.message}`
     );
     window.location.href = `https://wa.me/${whatsappNumber}?text=${text}`;
   };
@@ -126,7 +126,7 @@ function ContactContent() {
             </div>
 
             <div className="relative z-10 pt-12 border-t border-gold/20 mt-12 text-xs font-body text-canvas/60">
-              <span>Raghuvansh Theatre Group &copy; {new Date().getFullYear()}</span>
+              <span>Raghuvansh &copy; {new Date().getFullYear()}</span>
             </div>
           </div>
 

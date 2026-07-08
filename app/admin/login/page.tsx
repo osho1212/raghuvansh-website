@@ -53,7 +53,7 @@ export default function AdminLogin() {
             Admin Portal
           </h1>
           <p className="font-body text-xs text-ink/60 text-center mb-8 uppercase tracking-widest font-semibold">
-            Raghuvansh Theatre Group
+            Raghuvansh Group of Performing Arts
           </p>
 
           <form onSubmit={handleLogin} className="space-y-6">
