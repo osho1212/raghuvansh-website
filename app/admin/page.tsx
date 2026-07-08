@@ -79,10 +79,10 @@ interface Enquiry {
 const SUBJECT_LABELS: Record<string, string> = {
   General: "General Enquiry",
   Casting: "Casting Call / Auditions",
-  RamLeela: "RamLeela VIP Pass / Booking",
+  RamLeela: "Ramayan VIP Pass / Booking",
   Productions: "Theatre Productions Booking",
-  Ghazal: "Ghazal Night Booking",
-  AnnualDay: "Annual Day Direction",
+  Ghazal: "Mehfil-e-Ghazal Booking",
+  AnnualDay: "Collaborations",
   Workshop: "Workshops & Training",
   Collaboration: "Collaboration Ideas",
   NGO: "NGO & Community Partnerships",

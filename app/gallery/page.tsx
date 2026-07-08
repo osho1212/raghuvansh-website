@@ -4,15 +4,15 @@ import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 
 export default function Gallery() {
-  const categories = ["All", "RamLeela", "Productions", "Ghazal", "Rehearsals"];
+  const categories = ["All", "Ramayan", "Productions", "Mehfil-e-Ghazal", "Rehearsals"];
   const [activeCategory, setActiveCategory] = useState("All");
 
   const images = [
-    { id: 1, category: "RamLeela", title: "Red Fort Performance" },
+    { id: 1, category: "Ramayan", title: "Red Fort Performance" },
     { id: 2, category: "Productions", title: "Chanakya Stage Setup" },
-    { id: 3, category: "Ghazal", title: "Baithak Evening" },
+    { id: 3, category: "Mehfil-e-Ghazal", title: "Baithak Evening" },
     { id: 4, category: "Rehearsals", title: "Backstage Prep" },
-    { id: 5, category: "RamLeela", title: "Varanasi Tour" },
+    { id: 5, category: "Ramayan", title: "Varanasi Tour" },
     { id: 6, category: "Productions", title: "Andha Yug Climax" },
   ];
 

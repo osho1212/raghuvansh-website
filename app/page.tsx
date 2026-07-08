@@ -97,10 +97,10 @@ export default function Home() {
                   {/* Dynamic CTA buttons mapping */}
                   {(() => {
                     const cta = {
-                      "ki Ramayan": { text: "WATCH THE LEELA", href: "/ramleela" },
+                      "ki Ramayan": { text: "WATCH RAMAYAN", href: "/ramayan" },
                       "ki Peshkash": { text: "VIEW PRODUCTIONS", href: "/productions" },
-                      "Ki Mehfil": { text: "EXPERIENCE GHAZAL", href: "/ghazal-events" }
-                    }[heroHighlight] || { text: "WATCH THE LEELA", href: "/ramleela" };
+                      "Ki Mehfil": { text: "EXPERIENCE MEHFIL-E-GHAZAL", href: "/mehfil-e-ghazal" }
+                    }[heroHighlight] || { text: "WATCH RAMAYAN", href: "/ramayan" };
                     
                     return (
                       <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -163,7 +163,7 @@ export default function Home() {
                 Preserving the <span className="text-gold">Classical</span>, Pioneering the <span className="text-curtain">Contemporary</span>.
               </h2>
               <p className="font-body text-lg text-ink/80 leading-relaxed mb-8">
-                Raghuvansh Theatre Group is a premier performing arts collective based in New Delhi. Founded by Pt. Amitosh Sharma, an NSD alumnus, we bring centuries of Indian theatrical tradition to the modern stage with unparalleled grandeur.
+                Raghuvansh Theatre Group is a premier performing arts collective based in New Delhi. Founded by Late Shri Amitosh Sharma, a renowned AIR A-grade artist, we bring centuries of Indian theatrical tradition to the modern stage with unparalleled grandeur.
               </p>
               <Button variant="primary" href="/about">Discover Our Story</Button>
             </div>
@@ -176,7 +176,7 @@ export default function Home() {
               
               <Image
                 src="/media-assets/founder-img2.webp"
-                alt="Pt. Amitosh Sharma"
+                alt="Late Shri Amitosh Sharma"
                 fill
                 className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
               />
@@ -194,10 +194,10 @@ export default function Home() {
               {/* Playbill Cards */}
               {[
                 { 
-                  title: "RamLeela", 
-                  href: "/ramleela", 
+                  title: "Ramayan", 
+                  href: "/ramayan", 
                   desc: "Our flagship production",
-                  video: "/ramleela-assets/teaser.webm"
+                  video: "/ramayan-assets/teaser.webm"
                 },
                 { 
                   title: "Productions", 
@@ -206,14 +206,14 @@ export default function Home() {
                   video: "/production-assets/teaser.webm"
                 },
                 { 
-                  title: "Ghazal", 
-                  href: "/ghazal-events", 
+                  title: "Mehfil-e-Ghazal", 
+                  href: "/mehfil-e-ghazal", 
                   desc: "Musical evenings",
-                  video: "/ghazal-assets/ghazal.webm"
+                  video: "/mehfil-e-ghazal-assets/ghazal.webm"
                 },
                 { 
-                  title: "Annual Day", 
-                  href: "/annual-day", 
+                  title: "Collaboration", 
+                  href: "/collaborations", 
                   desc: "School productions",
                   video: null
                 }
@@ -237,8 +237,8 @@ export default function Home() {
                   
                   <div className="absolute inset-0 border border-gold/0 group-hover:border-gold/50 transition-colors duration-500 z-20 m-4" />
                   
-                  <div className="absolute bottom-0 left-0 p-8 z-30">
-                    <h3 className="font-heading text-3xl text-gold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:-translate-y-2 transition-transform duration-300">
+                  <div className="absolute bottom-0 left-0 right-0 p-6 z-30">
+                    <h3 className="font-heading text-xl lg:text-2xl text-gold mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] group-hover:-translate-y-2 transition-transform duration-300 tracking-tight">
                       {item.title}
                     </h3>
                     <p className="font-body text-xs tracking-widest uppercase text-canvas opacity-0 group-hover:opacity-100 group-hover:-translate-y-2 transition-all duration-300 delay-100 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)] font-semibold">

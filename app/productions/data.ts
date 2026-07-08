@@ -21,7 +21,7 @@ export interface Production {
   directorsNote: string;
   directorsNoteFull: string[];
   synopsisFull: string[];
-  teaser: string | null;
+  teaser: string | string[] | null;
 }
 
 export const productionsData: Production[] = [
@@ -39,7 +39,7 @@ export const productionsData: Production[] = [
     playwright: "Badal Sircar",
     quote: "History is not only what is written in books; it is also what every individual silently carries within, yet never finds the words to tell.",
     directorsNote: "History is not merely what is recorded; it is equally what is remembered, forgotten, and silently carried within us.",
-    teaser: "/production-assets/baaki-itihaas/teaser.webm",
+    teaser: "/production-assets/baaki-itihaas/rgv-baaki-itihaas.webm",
     cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
     castRoles: [
       { role: "Sharad", actor: "Krishna Shrivastav" },
@@ -80,7 +80,14 @@ export const productionsData: Production[] = [
     playwright: "Badal Sircar",
     quote: "Sometimes, it takes an entire night to discover what a lifetime of routine has kept hidden.",
     directorsNote: "The longest journeys are often not measured in miles, but in moments of silence, reflection, and self-discovery.",
-    teaser: null,
+    teaser: [
+      "/production-assets/saari-raat/IMG_8868~2.webp",
+      "/production-assets/saari-raat/IMG_8898.webp",
+      "/production-assets/saari-raat/IMG_8909.webp",
+      "/production-assets/saari-raat/IMG_8928.webp",
+      "/production-assets/saari-raat/IMG_8935.webp",
+      "/production-assets/saari-raat/IMG_8946.webp"
+    ],
     cast: ["Husband", "Wife", "Old Man"],
     castRoles: [
       { role: "Husband", actor: "Cast Member" },

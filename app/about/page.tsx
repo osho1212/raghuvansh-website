@@ -25,7 +25,6 @@ const galleryImages = [
   { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_13.webp", category: "press", caption: "Archival Press Reviews" },
   { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_18.webp", category: "press", caption: "Retro Newspaper Clippings" },
   
-  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.22.56 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Cast Rehearsal Group Photo" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.22.58 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Workshop Sessions in Progress" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.25.45 AM.webp", category: "behind", caption: "Director Briefing the Actors" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.30.31 AM.webp", category: "behind", caption: "Green Room Preparations" },
@@ -83,13 +82,13 @@ export default function About() {
                   transition={{ duration: 0.8 }}
                   className="font-heading text-5xl md:text-7xl text-gold font-bold mb-6"
                 >
-                  Pt. Amitosh Sharma
+                  Late Shri Amitosh Sharma
                 </motion.h1>
                 <div className="font-body text-gold uppercase tracking-widest text-sm mb-8">
-                  Founder & Director • NSD Alumnus
+                  Founder & Director • AIR A-Grade Vocal Artist
                 </div>
                 <p className="font-body text-lg text-canvas/80 leading-relaxed mb-8">
-                  A visionary of the Indian stage, Pt. Amitosh Sharma has dedicated his life to bridging the gap between ancient theatrical traditions and contemporary performance art. His directorial style is characterized by its scale, emotional depth, and uncompromising commitment to the craft.
+                  A visionary of the Indian stage, Late Shri Amitosh Sharma dedicated his life to bridging the gap between ancient theatrical traditions and contemporary performance art. His directorial style was characterized by its scale, emotional depth, and uncompromising commitment to the craft.
                 </p>
                 <blockquote className="border-l-2 border-gold pl-6 py-2">
                   <p className="font-heading text-2xl text-canvas italic">
@@ -107,7 +106,7 @@ export default function About() {
                   
                   <Image
                     src="/media-assets/founder.webp"
-                    alt="Pt. Amitosh Sharma"
+                    alt="Late Shri Amitosh Sharma"
                     fill
                     className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-700"
                     priority
@@ -128,7 +127,7 @@ export default function About() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="font-heading text-4xl text-curtain font-bold mb-4">Carrying the Legacy</h2>
               <p className="font-body text-lg text-ink/80">
-                Continuing the rich theatrical traditions established by Pt. Amitosh Sharma, his children and the group's mentors lead Raghuvansh into a new era of artistic expression.
+                Continuing the rich theatrical traditions established by Late Shri Amitosh Sharma, his children and the group's mentors lead Raghuvansh into a new era of artistic expression.
               </p>
             </div>
  
@@ -136,16 +135,16 @@ export default function About() {
               {[
                 {
                   name: "Animesh Pandit",
-                  relation: "Son of Pt. Amitosh Sharma",
+                  relation: "Son of Late Shri Amitosh Sharma",
                   role: "Director & Music Practitioner",
-                  desc: "A trained Hindustani classical musician (Master's in Tabla, Ajrara Gharana) and All India Radio empanelled artist, Animesh integrates structural musical discipline with dramatic stagecraft. He writes and directs Raghuvansh's major productions, carrying forward the artistic lineage of his father.",
+                  desc: "A trained Hindustani classical musician (Master's in Tabla, Ajrara Gharana) and All India Radio empanelled artist, Animesh integrates structural musical discipline with dramatic stagecraft. He writes and directs Raghuvansh's major productions, carrying forward the artistic legacy of his father.",
                   image: "/about-section/animesh.webp"
                 },
                 {
                   name: "Anoushka Pandit",
-                  relation: "Daughter of Pt. Amitosh Sharma",
+                  relation: "Daughter of Late Shri Amitosh Sharma",
                   role: "Lead Vocalist & Coordinator",
-                  desc: "A classical, Ghazal, and devotional vocalist empanelled with Akashvani, Anoushka holds a Master of Music degree. She has performed as the lead vocalist in the annual Red Fort Ramleela productions for over 20 years and coordinates cultural, theatrical, and musical presentations for Raghuvansh.",
+                  desc: "A classical, Mehfil-e-Ghazal, and devotional vocalist empanelled with Akashvani, Anoushka holds a Master of Music degree. She has performed as the lead vocalist in the annual Red Fort Ramayan productions for over 20 years and coordinates cultural, theatrical, and musical presentations for Raghuvansh.",
                   image: "/about-section/anushka.webp"
                 },
                 {
@@ -200,8 +199,8 @@ export default function About() {
 
               {/* Timeline Items */}
               {[
-                { year: "2000", title: "The Inception", desc: "Founded in New Delhi with a vision to revive classical theatre." },
-                { year: "2005", title: "The First RamLeela", desc: "A groundbreaking production that redefined mythological storytelling." },
+                { year: "2000", title: "The Inception", desc: "Founded in Muradabad, Uttar Pradesh  with a vision to preserve and promote the rich heritage of the performing arts." },
+                { year: "2005", title: "The First Ramayan", desc: "A groundbreaking production that redefined historical storytelling." },
                 { year: "2012", title: "National Acclaim", desc: "Recognized by the Sangeet Natak Akademi for contribution to arts." },
                 { year: "Today", title: "A Theatrical Institution", desc: "Performing at the Red Fort and shaping the next generation of artists." }
               ].map((item, idx) => (
@@ -264,7 +263,9 @@ export default function About() {
                 { name: "NSD", full: "National School of Drama" },
                 { name: "SNA", full: "Sangeet Natak Akademi" },
                 { name: "AIR", full: "All India Radio" },
-                { name: "FTII", full: "Film & Television Institute of India" }
+                { name: "FTII", full: "Film & Television Institute of India" },
+                { name: "SRC", full: "Shree Ram Centre" },
+                { name: "PSS", full: "Prayag Sangeet Samiti" }
               ].map((item, idx) => (
                 <React.Fragment key={idx}>
                   {idx > 0 && <span className="text-gold/50 select-none hidden md:inline">•</span>}
@@ -317,7 +318,7 @@ export default function About() {
                 Historic Memories
               </h2>
               <p className="font-body text-lg text-ink/75">
-                Explore a visual record of Pt. Amitosh Sharma's directions, news publications, certifications, and behind-the-scenes milestones spanning over two decades.
+                Explore a visual record of Late Shri Amitosh Sharma's directions, news publications, certifications, and behind-the-scenes milestones spanning over two decades.
               </p>
             </div>
 
@@ -439,15 +440,7 @@ export default function About() {
                     priority
                   />
                 </div>
-                {/* Caption Details Overlay */}
-                <div className="mt-4 text-center text-canvas max-w-xl">
-                  <h3 className="font-heading text-lg md:text-xl text-canvas font-medium">
-                    {galleryImages[lightboxIndex].caption}
-                  </h3>
-                  <span className="text-[10px] text-canvas/50 mt-1 block">
-                    Image {lightboxIndex + 1} of {galleryImages.length}
-                  </span>
-                </div>
+
               </motion.div>
             </motion.div>
           )}

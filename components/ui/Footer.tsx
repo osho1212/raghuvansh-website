@@ -9,17 +9,16 @@ export const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <h2 className="font-heading text-3xl text-gold mb-4 font-bold">RAGHUVANSH</h2>
             <p className="font-body text-canvas/80 max-w-md">
-              The Curtain Rises. A professional theatre group based in New Delhi, 
-              preserving the classical and pioneering the contemporary since 2000.
+              A professional group of performing arts based out in new delhi, preserving the classical and pioneering the contemporary since 2000
             </p>
           </div>
           <div>
             <h3 className="font-heading text-xl text-gold mb-4">Explore</h3>
             <ul className="space-y-2 font-body text-sm text-canvas/80">
               <li><Link href="/about" className="hover:text-gold transition-colors">About</Link></li>
-              <li><Link href="/ramleela" className="hover:text-gold transition-colors">RamLeela</Link></li>
+              <li><Link href="/ramayan" className="hover:text-gold transition-colors">Ramayan</Link></li>
               <li><Link href="/productions" className="hover:text-gold transition-colors">Productions</Link></li>
-              <li><Link href="/ghazal-events" className="hover:text-gold transition-colors">Ghazal Evenings</Link></li>
+              <li><Link href="/mehfil-e-ghazal" className="hover:text-gold transition-colors">Mehfil-e-Ghazal</Link></li>
             </ul>
           </div>
           <div>

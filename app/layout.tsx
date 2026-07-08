@@ -21,7 +21,7 @@ const tiro = Tiro_Devanagari_Hindi({
 
 export const metadata: Metadata = {
   title: "Raghuvansh Theatre Group",
-  description: "The Curtain Rises - Raghuvansh Theatre Group, directed by Pt. Amitosh Sharma",
+  description: "The Curtain Rises - Raghuvansh Theatre Group, founded by Late Shri Amitosh Sharma",
 };
 
 export default function RootLayout({

@@ -30,7 +30,7 @@ export default function Media() {
               <span className="font-body text-xs text-gold uppercase tracking-widest block mb-4">Video Interview</span>
               <div>
                 <h3 className="font-heading text-3xl font-bold mb-2">BBC Hindi Features</h3>
-                <p className="font-body text-sm text-canvas/70 mb-6">A deep-dive interview with Pt. Amitosh Sharma on the historical significance of the RamLeela performances at the Red Fort.</p>
+                <p className="font-body text-sm text-canvas/70 mb-6">A deep-dive interview with Late Shri Amitosh Sharma on the historical significance of the Ramayan performances at the Red Fort.</p>
               </div>
               <a href="#" className="font-body text-xs uppercase tracking-wider text-gold hover:underline">Watch Video &rarr;</a>
             </div>

@@ -24,7 +24,7 @@ export default function Collaborate() {
             <div className="p-8 bg-white border border-gold/20 rounded-sm">
               <h3 className="font-heading text-2xl text-curtain font-bold mb-4">Educational Institutions</h3>
               <p className="font-body text-sm text-ink/70">
-                School productions, annual days, college theatre societies, script consultation, acting workshops, and street play training.
+                School productions, collaborations, college theatre societies, script consultation, acting workshops, and street play training.
               </p>
             </div>
             <div className="p-8 bg-white border border-gold/20 rounded-sm">

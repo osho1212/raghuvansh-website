@@ -165,10 +165,10 @@ function ContactContent() {
                 >
                   <option value="General">General Enquiry</option>
                   <option value="Casting">Casting Call / Auditions</option>
-                  <option value="RamLeela">RamLeela VIP Pass / Booking</option>
+                  <option value="RamLeela">Ramayan VIP Pass / Booking</option>
                   <option value="Productions">Theatre Productions Booking</option>
-                  <option value="Ghazal">Ghazal Night Booking</option>
-                  <option value="AnnualDay">Annual Day Direction</option>
+                  <option value="Ghazal">Mehfil-e-Ghazal Booking</option>
+                  <option value="AnnualDay">Collaborations</option>
                   <option value="Workshop">Workshops & Training</option>
                   <option value="Collaboration">Collaboration Ideas</option>
                   <option value="NGO">NGO & Community Partnerships</option>

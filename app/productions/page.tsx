@@ -109,61 +109,103 @@ const SpotlightBeams = () => {
   const rx2 = mouse.x - Math.cos(perpRight) * beamWidth;
   const ry2 = mouse.y - Math.sin(perpRight) * beamWidth;
 
+  const rLeft = Math.max(dLeft, 50);
+  const rRight = Math.max(dRight, 50);
+  const leftRadius = Math.sqrt(dLeft * dLeft + beamWidth * beamWidth);
+  const rightRadius = Math.sqrt(dRight * dRight + beamWidth * beamWidth);
+
   return (
     <div className="fixed inset-0 pointer-events-none z-30">
       {/* Target Light Pool on Stage - Decreased to a subtle minimum */}
       <div
-        className="absolute -translate-x-1/2 -translate-y-1/2 z-20"
+        className="absolute -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none"
         style={{
           left: `${mouse.x}px`,
           top: `${mouse.y}px`,
         }}
       >
         {/* Outer soft pool */}
-        <div className="absolute w-[240px] h-[240px] bg-gold/5 rounded-full blur-[45px] -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute w-[240px] h-[240px] bg-gold/5 rounded-full blur-[45px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
         {/* Mid subtle halo */}
-        <div className="absolute w-[120px] h-[120px] bg-gold/10 rounded-full blur-[20px] -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute w-[120px] h-[120px] bg-gold/10 rounded-full blur-[20px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       </div>
 
       {/* Volumetric Spotlight Beams with fully rounded bases (SVG sector shapes) */}
-      <svg className="absolute inset-0 w-full h-full">
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" pointerEvents="none">
         <defs>
-          <radialGradient id="leftBeamGrad" cx="0%" cy="0%" r="85%">
-            <stop offset="0%" stopColor="#C9A24B" stopOpacity={0.28} />
-            <stop offset="65%" stopColor="#C9A24B" stopOpacity={0.04} />
+          <filter id="beamBlur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="12" />
+          </filter>
+          <radialGradient id="leftBeamGrad" cx="0" cy="0" r={rLeft} gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#C9A24B" stopOpacity={0.55} />
+            <stop offset="70%" stopColor="#C9A24B" stopOpacity={0.15} />
             <stop offset="100%" stopColor="#C9A24B" stopOpacity={0} />
           </radialGradient>
-          <radialGradient id="rightBeamGrad" cx="100%" cy="0%" r="85%">
-            <stop offset="0%" stopColor="#C9A24B" stopOpacity={0.28} />
-            <stop offset="65%" stopColor="#C9A24B" stopOpacity={0.04} />
+          <radialGradient id="rightBeamGrad" cx={size.w} cy="0" r={rRight} gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#C9A24B" stopOpacity={0.55} />
+            <stop offset="70%" stopColor="#C9A24B" stopOpacity={0.15} />
             <stop offset="100%" stopColor="#C9A24B" stopOpacity={0} />
           </radialGradient>
         </defs>
 
         {/* Left Beam - Sweeping clockwise */}
         <path
-          d={`M 0 0 L ${lx1} ${ly1} A ${dLeft} ${dLeft} 0 0 1 ${lx2} ${ly2} Z`}
+          d={`M 0 0 L ${lx1} ${ly1} A ${leftRadius} ${leftRadius} 0 0 1 ${lx2} ${ly2} Z`}
           fill="url(#leftBeamGrad)"
-          className="opacity-80 blur-[12px]"
+          filter="url(#beamBlur)"
+          className="opacity-90 pointer-events-none"
         />
 
         {/* Right Beam - Sweeping counter-clockwise */}
         <path
-          d={`M ${size.w} 0 L ${rx1} ${ry1} A ${dRight} ${dRight} 0 0 0 ${rx2} ${ry2} Z`}
+          d={`M ${size.w} 0 L ${rx1} ${ry1} A ${rightRadius} ${rightRadius} 0 0 0 ${rx2} ${ry2} Z`}
           fill="url(#rightBeamGrad)"
-          className="opacity-80 blur-[12px]"
+          filter="url(#beamBlur)"
+          className="opacity-90 pointer-events-none"
         />
       </svg>
 
       {/* Left Spotlight Source Glow */}
-      <div className="absolute top-0 left-0 w-24 h-24 bg-gold/15 rounded-full blur-xl -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-0 left-0 w-12 h-12 bg-gold/30 rounded-full blur-md -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-0 left-0 w-5 h-5 bg-canvas rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B,0_0_10px_#FAF7F2]" />
+      <div className="absolute top-0 left-0 w-24 h-24 bg-gold/15 rounded-full blur-xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-12 h-12 bg-gold/30 rounded-full blur-md -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 left-0 w-5 h-5 bg-canvas rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B,0_0_10px_#FAF7F2] pointer-events-none" />
 
       {/* Right Spotlight Source Glow */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gold/15 rounded-full blur-xl translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-0 right-0 w-12 h-12 bg-gold/30 rounded-full blur-md translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-0 right-0 w-5 h-5 bg-canvas rounded-full translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B,0_0_10px_#FAF7F2]" />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-gold/15 rounded-full blur-xl translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-12 h-12 bg-gold/30 rounded-full blur-md translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-5 h-5 bg-canvas rounded-full translate-x-1/2 -translate-y-1/2 shadow-[0_0_30px_#C9A24B,0_0_10px_#FAF7F2] pointer-events-none" />
+    </div>
+  );
+};
+
+const ImageSlideshow = ({ images }: { images: string[] }) => {
+  const [index, setIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 3000); // 3 seconds per image
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      {images.map((img, i) => (
+        <div
+          key={img}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            i === index ? "opacity-45" : "opacity-0"
+          }`}
+        >
+          <Image
+            src={img}
+            alt="Slideshow Frame"
+            fill
+            className="object-cover object-center scale-105"
+            priority={i === 0}
+          />
+        </div>
+      ))}
     </div>
   );
 };
@@ -289,21 +331,25 @@ export default function ProductionsIndex() {
           {/* Hero Banner Area */}
           <div className="relative h-[65vh] md:h-[75vh] w-full bg-black overflow-hidden flex flex-col justify-end flex-shrink-0">
             {selectedProd.teaser ? (
-              <video
-                src={selectedProd.teaser}
-                autoPlay
-                loop
-                muted={isMuted}
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover object-top z-0"
-              />
+              Array.isArray(selectedProd.teaser) ? (
+                <ImageSlideshow images={selectedProd.teaser} />
+              ) : (
+                <video
+                  src={selectedProd.teaser}
+                  autoPlay
+                  loop
+                  muted={isMuted}
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover object-center z-0"
+                />
+              )
             ) : (
               <div className="absolute inset-0 w-full h-full">
                 <Image
                   src={selectedProd.poster}
                   alt={selectedProd.title}
                   fill
-                  className="object-cover object-top opacity-45 scale-105 z-0"
+                  className="object-cover object-center opacity-45 scale-105 z-0"
                   priority
                 />
               </div>
@@ -349,7 +395,7 @@ export default function ProductionsIndex() {
               </div>
 
               {/* Sound Toggle (only if video available) */}
-              {selectedProd.teaser && (
+              {selectedProd.teaser && typeof selectedProd.teaser === "string" && (
                 <button
                   onClick={() => setIsMuted(!isMuted)}
                   className="p-3 bg-black/60 hover:bg-gold hover:text-ink text-canvas border border-canvas/20 hover:border-gold rounded-full transition-all duration-300 cursor-pointer shadow-lg transform hover:scale-[1.05]"

@@ -34,15 +34,15 @@ export const Navigation = () => {
   }, [lastScrollY]);
 
   // Determine if the current page starts with a dark background at the top
-  const isDarkPage = pathname === "/" || pathname === "/ramleela" || pathname === "/productions" || pathname?.startsWith("/productions/");
+  const isDarkPage = pathname === "/" || pathname === "/ramayan" || pathname === "/productions" || pathname?.startsWith("/productions/");
 
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
-    { name: "RamLeela", path: "/ramleela" },
+    { name: "Flagship", path: "/ramayan" },
     { name: "Productions", path: "/productions" },
-    { name: "Ghazal", path: "/ghazal-events" },
-    { name: "Annual Day", path: "/annual-day" },
+    { name: "Cultural", path: "/mehfil-e-ghazal" },
+    { name: "Collaborations", path: "/collaborations" },
     { name: "Workshops", path: "/workshops" },
   ];
 
