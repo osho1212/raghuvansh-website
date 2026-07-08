@@ -1,8 +1,57 @@
 "use client";
+import { useState, useRef } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { CtaButton } from "@/components/ui/Buttons";
 import { motion } from "framer-motion";
+
+function VideoCard({ id }: { id: string }) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseEnter = () => {
+    // Start play stream after card finishes zoom/enlarge transition (300ms)
+    timeoutRef.current = setTimeout(() => {
+      setIsPlaying(true);
+    }, 300);
+  };
+
+  const handleMouseLeave = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setIsPlaying(false);
+  };
+
+  return (
+    <div 
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative w-full h-full overflow-hidden bg-black border border-gold/25 rounded-sm transition-all duration-500 ease-out hover:scale-[1.06] hover:border-gold/60 hover:shadow-[0_15px_35px_rgba(201,162,75,0.3)]"
+    >
+      {isPlaying ? (
+        <div className="w-full h-full pointer-events-none">
+          <iframe
+            className="w-full h-full pointer-events-none"
+            src={`https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&loop=1&playlist=${id}&modestbranding=1&rel=0`}
+            title="Glimpses of Glory Video Player"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          ></iframe>
+        </div>
+      ) : (
+        <div className="relative w-full h-full">
+          <img
+            src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
+            alt="Glimpses of Glory"
+            className="w-full h-full object-cover transition-transform duration-500 opacity-85"
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function Ramayan() {
   return (
@@ -83,9 +132,8 @@ export default function Ramayan() {
         <section className="bg-curtain film-grain text-canvas py-16 border-y border-gold/40">
           <div className="max-w-7xl mx-auto px-4 text-center overflow-hidden relative">
             <h3 className="font-body uppercase tracking-widest text-gold/80 mb-8 text-sm">Supported By</h3>
-            <div className="flex justify-center space-x-12 whitespace-nowrap">
-              {/* Marquee/Row Placeholder */}
-              {["Ministry of Culture", "Delhi Government", "Sahitya Kala Parishad", "Red Fort Authority"].map((name, i) => (
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-16 whitespace-nowrap">
+              {["Delhi Government", "Nav Shree Dharmik Leela Committee"].map((name, i) => (
                 <span key={i} className="font-heading text-2xl md:text-3xl">{name}</span>
               ))}
             </div>
@@ -97,23 +145,29 @@ export default function Ramayan() {
           <div className="max-w-7xl mx-auto px-4 mb-12">
             <h2 className="font-heading text-4xl text-gold">Glimpses of Glory</h2>
           </div>
-          <div className="flex gap-4 px-4 pb-8 overflow-x-auto snap-x hide-scrollbar">
-            {[1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="flex-shrink-0 w-80 h-96 bg-canvas/10 border border-gold/20 snap-center flex items-center justify-center hover:border-gold/60 transition-colors">
-                <span className="font-body text-canvas/40">Gallery {i}</span>
+          <div className="flex gap-6 px-4 md:px-8 pb-8 overflow-x-auto snap-x hide-scrollbar">
+            {[
+              "myAHgdaFJbk",
+              "Q7sO8kL0S88",
+              "xhj7PqgMrDI",
+              "I5Rs8_zG-FA",
+              "sILv2SqlBsI"
+            ].map((id) => (
+              <div key={id} className="flex-shrink-0 w-[420px] sm:w-[480px] aspect-video snap-center transition-all duration-300 relative z-10 hover:z-20">
+                <VideoCard id={id} />
               </div>
             ))}
           </div>
         </section>
 
-        {/* BOOKING CTA */}
+        {/* ARTIST CALL TO ACTION */}
         <section className="bg-canvas py-32 text-center px-4">
           <div className="max-w-3xl mx-auto">
-            <h2 className="font-heading text-4xl md:text-5xl text-curtain mb-6">Book VIP Passes</h2>
-            <p className="font-body text-ink/70 mb-12">
-              Experience the grandeur from the best seats. Register your interest for the upcoming Dussehra season.
+            <h2 className="font-heading text-4xl md:text-5xl text-curtain mb-6">Work with Raghuvansh as an Artist</h2>
+            <p className="font-body text-ink/70 mb-12 max-w-xl mx-auto">
+              We are always looking for passionate performers, actors, musicians, and stagecraft designers to join our ensemble. Take the stage with us and keep the heritage of performing arts alive.
             </p>
-            <CtaButton href="/contact?subject=RamLeela">Reserve Your Seat</CtaButton>
+            <CtaButton href="/apply">Join the Ensemble</CtaButton>
           </div>
         </section>
       </main>
