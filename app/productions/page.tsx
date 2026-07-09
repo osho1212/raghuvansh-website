@@ -10,6 +10,13 @@ export { productionsData };
 import { Volume2, VolumeX, Play, Download, X, ArrowLeft } from "lucide-react";
 
 const GoldDust = () => {
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
       {/* Floating slow dust */}
