@@ -45,6 +45,17 @@ export default function ProfilePreviewModal({ isOpen, onClose, data }: ProfilePr
   const [activeTab, setActiveTab] = useState<"about" | "media" | "credits">("about");
   const [zoomImage, setZoomImage] = useState<string | null>(null);
 
+  const isActorOrDancer = data.category === "Actor" || data.category === "Dancer";
+
+  const getRoleLabel = (category?: string) => {
+    if (category === "Director") return "Direction / Writing Role";
+    if (category === "Voice Artist") return "Voice Character / Role";
+    if (category === "Production Crew") return "Technical / Production Role";
+    if (category === "Others") return "Role / Contribution";
+    return "Role / Character";
+  };
+  const roleLabel = getRoleLabel(data.category);
+
   if (!isOpen) return null;
 
   // Extract embed URLs
@@ -190,7 +201,7 @@ export default function ProfilePreviewModal({ isOpen, onClose, data }: ProfilePr
                         : "text-ink/60 hover:text-ink"
                     }`}
                   >
-                    {tab === "about" && "Bio & Stats"}
+                    {tab === "about" && (isActorOrDancer ? "Bio & Stats" : "Bio & Skills")}
                     {tab === "media" && "Media Portfolio"}
                     {tab === "credits" && `Credits (${data.experience?.length || 0})`}
                   </button>
@@ -202,7 +213,7 @@ export default function ProfilePreviewModal({ isOpen, onClose, data }: ProfilePr
                 {/* 1. BIO & STATS */}
                 {activeTab === "about" && (
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-2 space-y-6">
+                    <div className={`${isActorOrDancer ? "lg:col-span-2" : "lg:col-span-3"} space-y-6`}>
                       <div>
                         <h3 className="font-heading text-lg text-curtain mb-3 font-semibold">Artist Biography</h3>
                         <p className="font-body text-sm text-ink/80 leading-relaxed whitespace-pre-wrap">
@@ -228,33 +239,27 @@ export default function ProfilePreviewModal({ isOpen, onClose, data }: ProfilePr
                     </div>
 
                     {/* Stats Sidebar */}
-                    <div className="bg-white border border-gold/20 p-6 rounded-sm space-y-4 shadow-sm self-start">
-                      <h3 className="font-heading text-md text-curtain font-bold border-b border-gold/15 pb-2 mb-4">
-                        Physical Stats
-                      </h3>
-                      <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm font-body">
-                        <div>
-                          <span className="text-[10px] text-ink/40 uppercase block">Age</span>
-                          <span className="font-bold text-ink">{data.stats?.age || "25"} Years</span>
-                        </div>
-                        <div>
-                          <span className="text-[10px] text-ink/40 uppercase block">Height</span>
-                          <span className="font-bold text-ink">{data.stats?.height || "5'8\""}</span>
-                        </div>
-                        <div>
-                          <span className="text-[10px] text-ink/40 uppercase block">Weight</span>
-                          <span className="font-bold text-ink">{data.stats?.weight || "60 kg"}</span>
-                        </div>
-                        <div>
-                          <span className="text-[10px] text-ink/40 uppercase block">Hair Color</span>
-                          <span className="font-bold text-ink">{data.stats?.hairColor || "Black"}</span>
-                        </div>
-                        <div className="col-span-2">
-                          <span className="text-[10px] text-ink/40 uppercase block">Eye Color</span>
-                          <span className="font-bold text-ink">{data.stats?.eyeColor || "Brown"}</span>
+                    {isActorOrDancer && (
+                      <div className="bg-white border border-gold/20 p-6 rounded-sm space-y-4 shadow-sm self-start">
+                        <h3 className="font-heading text-md text-curtain font-bold border-b border-gold/15 pb-2 mb-4">
+                          Physical Stats
+                        </h3>
+                        <div className="grid grid-cols-2 gap-y-4 gap-x-2 text-sm font-body">
+                          <div>
+                            <span className="text-[10px] text-ink/40 uppercase block">Age</span>
+                            <span className="font-bold text-ink">{data.stats?.age || "25"} Years</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-ink/40 uppercase block">Height</span>
+                            <span className="font-bold text-ink">{data.stats?.height || "5'8\""}</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-ink/40 uppercase block">Weight</span>
+                            <span className="font-bold text-ink">{data.stats?.weight || "60 kg"}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    )}
                   </div>
                 )}
 
@@ -386,7 +391,7 @@ export default function ProfilePreviewModal({ isOpen, onClose, data }: ProfilePr
                                 {item.title}
                               </h4>
                               <p className="font-body text-sm text-ink/70">
-                                Role / Character: <span className="font-semibold text-curtain">{item.role}</span>
+                                {roleLabel}: <span className="font-semibold text-curtain">{item.role}</span>
                               </p>
                             </div>
                           </div>

@@ -79,17 +79,30 @@ export default function ProductionDetail() {
                   <p className="font-body text-sm text-ink/80 leading-relaxed mb-6">
                     <strong>Director:</strong> {prod.director}
                   </p>
-                  {prod.brochure && (
-                    <a
-                      href={prod.brochure}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-5 py-3 bg-curtain hover:bg-gold text-canvas hover:text-ink font-body text-xs uppercase tracking-widest font-semibold rounded-sm transition-colors border border-gold/30 hover:border-gold"
-                    >
-                      <span>Download Brochure (PDF)</span>
-                      <span>&darr;</span>
-                    </a>
-                  )}
+                  <div className="flex flex-wrap gap-3 mt-4">
+                    {prod.brochure && (
+                      <a
+                        href={prod.brochure}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-3 bg-curtain hover:bg-gold text-canvas hover:text-ink font-body text-xs uppercase tracking-widest font-semibold rounded-sm transition-colors border border-gold/30 hover:border-gold"
+                      >
+                        <span>Download Brochure (PDF)</span>
+                        <span>&darr;</span>
+                      </a>
+                    )}
+                    {prod.youtube && (
+                      <a
+                        href={prod.youtube}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-5 py-3 bg-[#FF0000] hover:bg-white text-white hover:text-[#FF0000] font-body text-xs uppercase tracking-widest font-semibold rounded-sm transition-colors border border-[#FF0000] hover:border-[#FF0000]"
+                      >
+                        <span>Watch on YouTube</span>
+                        <span>&rarr;</span>
+                      </a>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <h3 className="font-heading text-xl text-curtain mb-3">Cast</h3>

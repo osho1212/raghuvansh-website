@@ -26,9 +26,9 @@ export const Footer = () => {
             <ul className="space-y-2 font-body text-sm text-canvas/80">
               <li><Link href="/contact" className="hover:text-gold transition-colors">Contact Us</Link></li>
               <li><Link href="/collaborate" className="hover:text-gold transition-colors">Collaborate</Link></li>
-              <li><Link href="/apply" className="hover:text-gold transition-colors">Casting Auditions</Link></li>
+              <li><Link href="/apply" className="hover:text-gold transition-colors">Work with Raghuvansh</Link></li>
               <li><a href="#" className="hover:text-gold transition-colors">Instagram</a></li>
-              <li><a href="#" className="hover:text-gold transition-colors">YouTube</a></li>
+              <li><a href="https://youtube.com/@raghuvanshgpa?si=Hq6ZrKGME2DSsyyN" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">YouTube</a></li>
             </ul>
           </div>
         </div>

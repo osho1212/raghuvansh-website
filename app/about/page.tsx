@@ -168,7 +168,7 @@ export default function About() {
                   relation: "Son of Late Shri Amitosh Sharma",
                   role: "Director & Music Practitioner",
                   desc: "A trained Hindustani classical musician (Master's in Tabla, Ajrara Gharana) and All India Radio empanelled artist, Animesh integrates structural musical discipline with dramatic stagecraft. He writes and directs Raghuvansh's major productions, carrying forward the artistic legacy of his father.",
-                  image: "/about-section/animesh.webp"
+                  image: "/about-section/Animesh 2.webp"
                 },
                 {
                   name: "Anoushka Pandit",

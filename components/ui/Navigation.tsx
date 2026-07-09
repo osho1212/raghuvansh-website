@@ -5,6 +5,44 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 
+const SpotlightLink = ({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) => {
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [hovered, setHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setCoords({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  };
+
+  return (
+    <Link
+      href={href}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className={`relative overflow-hidden transition-all duration-300 ${className}`}
+    >
+      {/* Spotlight layer */}
+      {hovered && (
+        <span
+          className="absolute pointer-events-none rounded-full animate-fadeIn"
+          style={{
+            width: "120px",
+            height: "120px",
+            left: coords.x - 60,
+            top: coords.y - 60,
+            background: "radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, rgba(212, 175, 55, 0) 70%)",
+          }}
+        />
+      )}
+      <span className="relative z-10">{children}</span>
+    </Link>
+  );
+};
+
 export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -64,22 +102,22 @@ export const Navigation = () => {
             </Link>
             
             {/* Desktop Nav */}
-            <div className="hidden lg:flex space-x-6 items-center">
+            <div className="hidden lg:flex space-x-3 items-center">
               {navLinks.map((link) => (
-                <Link
+                <SpotlightLink
                   key={link.name}
                   href={link.path}
-                  className="font-body text-xs uppercase tracking-widest hover:text-gold transition-colors"
+                  className="font-body text-xs uppercase tracking-widest hover:text-gold px-3 py-2 rounded-sm"
                 >
                   {link.name}
-                </Link>
+                </SpotlightLink>
               ))}
-              <Link
+              <SpotlightLink
                 href="/contact"
-                className="bg-curtain text-canvas px-6 py-2 rounded-sm font-body uppercase text-xs tracking-widest hover:bg-gold transition-colors"
+                className="bg-curtain text-canvas px-6 py-2 rounded-sm font-body uppercase text-xs tracking-widest hover:bg-curtain/90"
               >
                 Contact
-              </Link>
+              </SpotlightLink>
             </div>
 
             {/* Mobile Menu Button */}

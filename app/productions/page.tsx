@@ -503,17 +503,32 @@ export default function ProductionsIndex() {
                   </div>
                 </div>
 
-                {/* Secondary Brochure Button */}
-                <div className="pt-4">
-                  <a
-                    href={selectedProd.brochure}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-center gap-2 border border-gold/40 hover:border-gold hover:bg-gold/5 text-gold font-body font-bold text-xs tracking-wider uppercase py-4 rounded-sm transition-all duration-300 cursor-pointer"
-                  >
-                    <Download size={14} />
-                    <span>View Full Brochure PDF</span>
-                  </a>
+                {/* Secondary Brochure & YouTube Buttons */}
+                <div className="pt-4 flex flex-col gap-3">
+                  {selectedProd.brochure && (
+                    <a
+                      href={selectedProd.brochure}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 border border-gold/40 hover:border-gold hover:bg-gold/5 text-gold font-body font-bold text-xs tracking-wider uppercase py-4 rounded-sm transition-all duration-300 cursor-pointer"
+                    >
+                      <Download size={14} />
+                      <span>View Full Brochure PDF</span>
+                    </a>
+                  )}
+                  {selectedProd.youtube && (
+                    <a
+                      href={selectedProd.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2 border border-[#FF0000] bg-[#FF0000] hover:bg-white text-white hover:text-[#FF0000] font-body font-bold text-xs tracking-wider uppercase py-4 rounded-sm transition-all duration-300 cursor-pointer"
+                    >
+                      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                        <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.108C19.524 3.545 12 3.545 12 3.545s-7.525 0-9.387.51a3.003 3.003 0 0 0-2.11 2.108C0 8.025 0 12 0 12s0 3.975.503 5.837a3.003 3.003 0 0 0 2.11 2.108c1.862.51 9.387.51 9.387.51s7.525 0 9.387-.51a3.003 3.003 0 0 0 2.11-2.108C24 15.975 24 12 24 12s0-3.975-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                      </svg>
+                      <span>Watch on YouTube</span>
+                    </a>
+                  )}
                 </div>
               </div>
 

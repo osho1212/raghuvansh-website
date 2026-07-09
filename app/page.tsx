@@ -128,29 +128,32 @@ export default function Home() {
         </section>
 
         {/* RECOGNITION BAR (Ribbon Form) */}
-        <section className="bg-canvas border-y border-gold/15 py-5 relative z-20">
-          <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-12">
-            <span className="font-body text-[10px] uppercase tracking-[0.25em] text-ink/40 select-none">
+        <section className="bg-canvas border-y border-gold/15 py-6 relative z-20">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-16">
+            <span className="font-body text-[10px] uppercase tracking-[0.25em] text-ink/40 select-none whitespace-nowrap">
               Featured Coverage
             </span>
-            <div className="flex items-center gap-10">
-              <div className="relative h-10 md:h-12 w-28 md:w-36 hover:scale-[1.03] transition-transform duration-300">
-                <Image
-                  src="/media-assets/bbc-logo.svg"
-                  alt="BBC News"
-                  fill
-                  className="object-contain filter opacity-65 hover:opacity-100 transition-opacity duration-300"
-                />
-              </div>
-              <span className="text-gold/40 text-sm select-none">•</span>
-              <div className="relative h-7.5 md:h-9 w-22 md:w-26 hover:scale-[1.03] transition-transform duration-300">
-                <Image
-                  src="/media-assets/brut.svg"
-                  alt="Brut"
-                  fill
-                  className="object-contain filter opacity-65 hover:opacity-100 transition-opacity duration-300"
-                />
-              </div>
+            <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-14">
+              {[
+                { src: "/media-assets/bbc-logo.svg", alt: "BBC News", className: "w-20 h-6 md:w-24 md:h-7" },
+                { src: "/media-assets/brut.svg", alt: "Brut", className: "w-16 h-6 md:w-20 md:h-7" },
+                { src: "/media-assets/Aaj_Tak_logo transparent .svg", alt: "Aaj Tak", className: "w-11 h-9 md:w-14 md:h-11" },
+                { src: "/media-assets/DD national.svg", alt: "DD National", className: "w-14 h-12 md:w-18 md:h-16", fullColor: true },
+                { src: "/media-assets/india today logo transparent.webp", alt: "India Today", className: "w-12 h-9 md:w-15 md:h-11" },
+                { src: "/media-assets/nbt_logo_-removebg-preview.webp", alt: "Navbharat Times", className: "w-24 h-9 md:w-30 md:h-11", fullColor: true }
+              ].map((logo) => (
+                <div
+                  key={logo.alt}
+                  className={`relative flex items-center justify-center hover:scale-[1.03] transition-transform duration-300 ${logo.className}`}
+                >
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    fill
+                    className={`object-contain transition-opacity duration-300 ${logo.fullColor ? "opacity-100" : "filter opacity-65 hover:opacity-100"}`}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </section>

@@ -22,6 +22,7 @@ export interface Production {
   directorsNoteFull: string[];
   synopsisFull: string[];
   teaser: string | string[] | null;
+  youtube?: string;
 }
 
 export const productionsData: Production[] = [
@@ -154,6 +155,7 @@ export const productionsData: Production[] = [
       "As the narrative unfolds, seemingly insignificant decisions evolve into sources of conflict, fractured relationships, regret, and self-discovery. More than a sequence of events, Wrong Turn journeys into the inner lives of its characters, where unspoken truths, lingering guilt, and unresolved questions carry as much weight as the dialogue itself. Every silence and confrontation deepens the emotional resonance of the story.",
       "Blending realism with subtle symbolism, Wrong Turn asks a timeless question: Do wrong decisions inevitably lead to downfall, or can they become the first step towards growth and redemption? Rather than offering easy answers, the play invites audiences to reflect on the turning points in their own lives, leaving them with questions and insights that linger long after the performance ends."
     ],
-    directorsNoteFull: []
+    directorsNoteFull: [],
+    youtube: "https://youtu.be/V-u5rKnQuTs?si=Q9K_ARu_DaKYk-21"
   }
 ];

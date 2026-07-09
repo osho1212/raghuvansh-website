@@ -84,6 +84,7 @@ export default function ApplyClient() {
   // Form State: Identity
   const [formName, setFormName] = useState("");
   const [formCategory, setFormCategory] = useState("Actor");
+  const [formCategoryOthers, setFormCategoryOthers] = useState("");
   const [formLocation, setFormLocation] = useState("");
   const [formEmail, setFormEmail] = useState("");
   const [formPhone, setFormPhone] = useState("");
@@ -124,6 +125,40 @@ export default function ApplyClient() {
   const [expRole, setExpRole] = useState("");
   const [expYear, setExpYear] = useState("");
 
+  const isActorOrDancer = formCategory === "Actor" || formCategory === "Dancer";
+
+  const getCreditLabels = () => {
+    let titleLabel = "Project / Play Title";
+    let titlePlaceholder = "e.g. Shakuntala";
+    let roleLabel = "Character / Role";
+    let rolePlaceholder = "e.g. King Dushyanta";
+
+    if (formCategory === "Director") {
+      titleLabel = "Project / Play Title";
+      titlePlaceholder = "e.g. Baaki Itihaas";
+      roleLabel = "Direction / Writing Role";
+      rolePlaceholder = "e.g. Director, Playwright, Assistant Director";
+    } else if (formCategory === "Voice Artist") {
+      titleLabel = "Project / Client Name";
+      titlePlaceholder = "e.g. Audio Drama Series / Brand Ad";
+      roleLabel = "Voice Character / Role";
+      rolePlaceholder = "e.g. Lead Narrator, Voiceover Artist";
+    } else if (formCategory === "Production Crew") {
+      titleLabel = "Project / Production Name";
+      titlePlaceholder = "e.g. Rang De Basanti Stage Play";
+      roleLabel = "Technical / Production Role";
+      rolePlaceholder = "e.g. Stage Manager, Lighting Designer, Sound Engineer";
+    } else if (formCategory === "Others") {
+      titleLabel = "Project / Play Title";
+      titlePlaceholder = "e.g. Theater Festival";
+      roleLabel = "Role / Contribution";
+      rolePlaceholder = "e.g. Musician, Composer, Set Helper";
+    }
+    return { titleLabel, titlePlaceholder, roleLabel, rolePlaceholder };
+  };
+
+  const { titleLabel, titlePlaceholder, roleLabel, rolePlaceholder } = getCreditLabels();
+
   // Load draft from localStorage on mount
   useEffect(() => {
     try {
@@ -132,6 +167,7 @@ export default function ApplyClient() {
         const draft = JSON.parse(draftStr);
         if (draft.name) setFormName(draft.name);
         if (draft.category) setFormCategory(draft.category);
+        if (draft.categoryOthers) setFormCategoryOthers(draft.categoryOthers);
         if (draft.location) setFormLocation(draft.location);
         if (draft.email) setFormEmail(draft.email);
         if (draft.phone) setFormPhone(draft.phone);
@@ -178,6 +214,7 @@ export default function ApplyClient() {
     const draft = {
       name: formName,
       category: formCategory,
+      categoryOthers: formCategoryOthers,
       location: formLocation,
       email: formEmail,
       phone: formPhone,
@@ -206,6 +243,7 @@ export default function ApplyClient() {
   }, [
     formName,
     formCategory,
+    formCategoryOthers,
     formLocation,
     formEmail,
     formPhone,
@@ -232,6 +270,7 @@ export default function ApplyClient() {
       localStorage.removeItem("raghuvansh_apply_draft");
       setFormName("");
       setFormCategory("Actor");
+      setFormCategoryOthers("");
       setFormLocation("");
       setFormEmail("");
       setFormPhone("");
@@ -351,6 +390,10 @@ export default function ApplyClient() {
         setValidationError("Full Name is required (minimum 2 characters).");
         return;
       }
+      if (formCategory === "Others" && !formCategoryOthers.trim()) {
+        setValidationError("Please specify your primary art category.");
+        return;
+      }
       if (!formLocation) {
         setValidationError("Please select your Location Hub.");
         return;
@@ -394,6 +437,11 @@ export default function ApplyClient() {
     // Final Validation check
     if (!formName.trim() || !formLocation || !formEmail || !formPhone) {
       setValidationError("Please complete required Identity fields.");
+      setActiveTab("identity");
+      return;
+    }
+    if (formCategory === "Others" && !formCategoryOthers.trim()) {
+      setValidationError("Please specify your primary art category.");
       setActiveTab("identity");
       return;
     }
@@ -466,18 +514,20 @@ export default function ApplyClient() {
       // Prepare application details
       const applicationData = {
         name: formName.trim(),
-        category: formCategory,
+        category: formCategory === "Others" ? formCategoryOthers.trim() : formCategory,
         location: formLocation,
         email: formEmail.trim(),
         phone: formPhone.trim(),
         bio: formBio.trim(),
         skills: formSkills,
         socialLinks: formSocialLinks,
-        age: formAge,
-        height: formHeight,
-        weight: formWeight,
-        hairColor: formHairColor,
-        eyeColor: formEyeColor,
+        ...(isActorOrDancer ? {
+          age: formAge,
+          height: formHeight,
+          weight: formWeight,
+          hairColor: formHairColor,
+          eyeColor: formEyeColor,
+        } : {}),
         profileImage: finalProfileUrl,
         coverImage: finalCoverUrl,
         coverPosition: formCoverPosition,
@@ -505,7 +555,7 @@ export default function ApplyClient() {
   // Mock object for live preview modal mapping
   const previewData = {
     name: formName || "Artist Name",
-    category: formCategory,
+    category: formCategory === "Others" ? formCategoryOthers || "Others" : formCategory,
     location: formLocation || "Hub Center",
     email: formEmail || "contact@domain.com",
     phone: formPhone || "+91 99999 99999",
@@ -584,9 +634,9 @@ export default function ApplyClient() {
               <div className="flex border-b border-gold/15 bg-canvas/30 overflow-x-auto select-none scrollbar-none">
                 {[
                   { key: "identity", label: "1. Profile Info" },
-                  { key: "stats", label: "2. Measurements" },
-                  { key: "media", label: "3. Media Gallery" },
-                  { key: "experience", label: "4. Credits" }
+                  ...(isActorOrDancer ? [{ key: "stats", label: "2. Measurements" }] : []),
+                  { key: "media", label: isActorOrDancer ? "3. Media Gallery" : "2. Media Gallery" },
+                  { key: "experience", label: isActorOrDancer ? "4. Credits" : "3. Credits" }
                 ].map((tab) => (
                   <button
                     key={tab.key}
@@ -636,7 +686,12 @@ export default function ApplyClient() {
                         <select
                           id="category"
                           value={formCategory}
-                          onChange={(e) => setFormCategory(e.target.value)}
+                          onChange={(e) => {
+                            setFormCategory(e.target.value);
+                            if (e.target.value !== "Others") {
+                              setFormCategoryOthers("");
+                            }
+                          }}
                           className="w-full bg-canvas border border-gold/20 focus:border-gold outline-none p-3 rounded-sm transition-colors text-ink text-sm"
                         >
                           <option value="Actor">Actor / Performer</option>
@@ -644,7 +699,24 @@ export default function ApplyClient() {
                           <option value="Voice Artist">Voice Artist</option>
                           <option value="Director">Director / Writer</option>
                           <option value="Production Crew">Production Crew / Tech</option>
+                          <option value="Others">Others</option>
                         </select>
+                        {formCategory === "Others" && (
+                          <div className="mt-3">
+                            <label htmlFor="category-others" className="block text-[10px] uppercase tracking-wider text-ink/50 mb-1.5 font-semibold">
+                              Specify Art Category *
+                            </label>
+                            <input
+                              id="category-others"
+                              type="text"
+                              value={formCategoryOthers}
+                              onChange={(e) => setFormCategoryOthers(e.target.value.replace(/[^a-zA-Z\s\-'.]/g, ""))}
+                              placeholder="e.g. Musician, Set Designer, Stage Manager..."
+                              required
+                              className="w-full bg-canvas border border-gold/20 focus:border-gold outline-none p-3 rounded-sm transition-colors text-ink text-sm animate-fadeIn"
+                            />
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -821,7 +893,7 @@ export default function ApplyClient() {
                     <div className="flex justify-end pt-4 border-t border-gold/15">
                       <button
                         type="button"
-                        onClick={() => validateAndNext("stats")}
+                        onClick={() => validateAndNext(isActorOrDancer ? "stats" : "media")}
                         className="bg-curtain hover:bg-gold text-canvas hover:text-ink px-8 py-3 rounded-sm font-body uppercase tracking-widest text-xs transition-all duration-300 flex items-center gap-2 font-bold"
                       >
                         Next Step <ArrowRight size={14} />
@@ -883,35 +955,7 @@ export default function ApplyClient() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="hair" className="block text-xs uppercase tracking-wider text-ink/60 mb-2 font-semibold">
-                          Hair Color
-                        </label>
-                        <input
-                          id="hair"
-                          type="text"
-                          value={formHairColor}
-                          onChange={(e) => setFormHairColor(e.target.value)}
-                          placeholder="e.g. Dark Brown"
-                          className="w-full bg-canvas border border-gold/20 focus:border-gold outline-none p-3 rounded-sm transition-colors text-ink text-sm"
-                        />
-                      </div>
 
-                      <div>
-                        <label htmlFor="eyes" className="block text-xs uppercase tracking-wider text-ink/60 mb-2 font-semibold">
-                          Eye Color
-                        </label>
-                        <input
-                          id="eyes"
-                          type="text"
-                          value={formEyeColor}
-                          onChange={(e) => setFormEyeColor(e.target.value)}
-                          placeholder="e.g. Brown"
-                          className="w-full bg-canvas border border-gold/20 focus:border-gold outline-none p-3 rounded-sm transition-colors text-ink text-sm"
-                        />
-                      </div>
-                    </div>
 
                     {/* Step buttons */}
                     <div className="flex justify-between pt-6 border-t border-gold/15">
@@ -949,13 +993,13 @@ export default function ApplyClient() {
                       <ImageUploader
                         value={formProfileImage}
                         onChange={setFormProfileImage}
-                        label="Profile Picture * (Headshot)"
+                        label={isActorOrDancer ? "Profile Picture * (Headshot)" : "Profile Picture *"}
                         aspectRatio="1/1"
                       />
                       <ImageUploader
                         value={formCoverImage}
                         onChange={setFormCoverImage}
-                        label="Cover Banner (Landscape Backdrop)"
+                        label={isActorOrDancer ? "Cover Banner (Landscape Backdrop)" : "Cover Banner / Portfolio Backdrop"}
                         isCover={true}
                         coverPosition={formCoverPosition}
                         onCoverPositionChange={setFormCoverPosition}
@@ -965,7 +1009,11 @@ export default function ApplyClient() {
                     {/* Gallery Photos */}
                     <div className="border-t border-gold/15 pt-6 space-y-4">
                       <label className="block text-xs uppercase tracking-wider text-ink/70 font-semibold">
-                        Photo Portfolio Gallery * (At least 2 photos, Max 6)
+                        {formCategory === "Actor" || formCategory === "Dancer"
+                          ? "Photo Portfolio Gallery * (At least 2 photos, Max 6)"
+                          : formCategory === "Production Crew"
+                            ? "Work Portfolio / Stage & Design Photos * (At least 2 photos, Max 6)"
+                            : "Portfolio Gallery / Project Photos * (At least 2 photos, Max 6)"}
                       </label>
                       {formGallery.length < 6 && (
                         <ImageUploader
@@ -1004,14 +1052,14 @@ export default function ApplyClient() {
                     <div className="border-t border-gold/15 pt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="intro-video" className="block text-xs uppercase tracking-wider text-ink/60 mb-2 font-semibold">
-                          Introduction Video Link
+                          {formCategory === "Voice Artist" ? "Introduction Audio/Video Link" : formCategory === "Director" ? "Director Intro / Showreel Video Link" : formCategory === "Production Crew" ? "Introduction Video / Portfolio Link (optional)" : "Introduction Video Link"}
                         </label>
                         <input
                           id="intro-video"
                           type="url"
                           value={formIntroVideo}
                           onChange={(e) => setFormIntroVideo(e.target.value)}
-                          placeholder="YouTube, Vimeo or Google Drive video share link..."
+                          placeholder={formCategory === "Voice Artist" ? "Link to your voice intro, podcast sample, or video bio..." : formCategory === "Production Crew" ? "Link to video introduction, design reel, or digital document..." : "YouTube, Vimeo or Google Drive video share link..."}
                           className="w-full bg-canvas border border-gold/20 focus:border-gold outline-none p-3 rounded-sm transition-colors text-ink text-sm mb-3"
                         />
                         {formIntroVideo && (
@@ -1037,14 +1085,14 @@ export default function ApplyClient() {
 
                       <div>
                         <label className="block text-xs uppercase tracking-wider text-ink/60 mb-2 font-semibold">
-                          Showreel & Performance Clip Links (Max 5)
+                          {formCategory === "Voice Artist" ? "Voice Demos & Audio Clips (Max 5)" : formCategory === "Director" ? "Project / Work Video Links (Max 5)" : formCategory === "Production Crew" ? "Design Portfolio / Stage Clip Links (Max 5)" : "Showreel & Performance Clip Links (Max 5)"}
                         </label>
                         <div className="flex gap-2">
                           <input
                             type="url"
                             value={videoInput}
                             onChange={(e) => setVideoInput(e.target.value)}
-                            placeholder="Paste performance / showreel URL..."
+                            placeholder={formCategory === "Voice Artist" ? "Paste audio/video demo URL..." : "Paste performance / showreel URL..."}
                             className="flex-grow bg-canvas border border-gold/20 focus:border-gold outline-none p-3 rounded-sm transition-colors text-ink text-sm"
                             onKeyDown={(e) => {
                               if (e.key === "Enter") {
@@ -1088,7 +1136,7 @@ export default function ApplyClient() {
                     <div className="flex justify-between pt-6 border-t border-gold/15">
                       <button
                         type="button"
-                        onClick={() => setActiveTab("stats")}
+                        onClick={() => setActiveTab(isActorOrDancer ? "stats" : "identity")}
                         className="bg-canvas border border-gold/30 hover:border-gold text-ink px-6 py-3 rounded-sm font-body uppercase tracking-widest text-xs transition-all flex items-center gap-2"
                       >
                         <ArrowLeft size={14} /> Back
@@ -1114,27 +1162,27 @@ export default function ApplyClient() {
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end bg-canvas/30 p-4 border border-gold/10 rounded-sm">
                       <div className="sm:col-span-2">
                         <label htmlFor="exp-title" className="block text-[10px] uppercase tracking-wider text-ink/60 mb-1.5 font-semibold">
-                          Project / Play Title
+                          {titleLabel}
                         </label>
                         <input
                           id="exp-title"
                           type="text"
                           value={expTitle}
                           onChange={(e) => setExpTitle(e.target.value.slice(0, 80))}
-                          placeholder="e.g. Shakuntala"
+                          placeholder={titlePlaceholder}
                           className="w-full bg-white border border-gold/25 focus:border-gold outline-none p-2.5 rounded-sm transition-colors text-ink text-xs"
                         />
                       </div>
                       <div>
                         <label htmlFor="exp-role" className="block text-[10px] uppercase tracking-wider text-ink/60 mb-1.5 font-semibold">
-                          Character / Role
+                          {roleLabel}
                         </label>
                         <input
                           id="exp-role"
                           type="text"
                           value={expRole}
                           onChange={(e) => setExpRole(e.target.value.slice(0, 60))}
-                          placeholder="e.g. King Dushyanta"
+                          placeholder={rolePlaceholder}
                           className="w-full bg-white border border-gold/25 focus:border-gold outline-none p-2.5 rounded-sm transition-colors text-ink text-xs"
                         />
                       </div>
@@ -1178,7 +1226,7 @@ export default function ApplyClient() {
                               {item.title}
                             </h4>
                             <p className="font-body text-xs text-ink/60 mt-0.5">
-                              Role / Character: <span className="font-semibold text-ink/80">{item.role}</span>
+                              {roleLabel}: <span className="font-semibold text-ink/80">{item.role}</span>
                             </p>
                           </div>
                           <button
