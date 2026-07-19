@@ -15,13 +15,13 @@ export default function MehfilEGhazal() {
           <div className="absolute inset-0 bg-black/60 z-0"></div>
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
             <span className="font-heading text-xl text-gold uppercase tracking-widest block mb-4">
-              Mehfil-e-Ghazal
+              Ghazal, Devotional & Sufi Music
             </span>
             <h1 className="font-heading text-5xl md:text-7xl text-gold font-bold mb-6">
-              Where Urdu Poetry Meets the Stage
+              Where Poetry & Devotion Meet the Stage
             </h1>
             <p className="font-body text-lg md:text-xl text-canvas/80 max-w-2xl mx-auto">
-              Immerse yourself in soul-stirring melodies and profound poetic verses curated by Raghuvansh's music wing.
+              Immerse yourself in soul-stirring Ghazals, devotional bhajans, and Sufi melodies curated by Raghuvansh's music wing.
             </p>
           </div>
         </section>
@@ -31,7 +31,7 @@ export default function MehfilEGhazal() {
           <div className="text-center mb-16">
             <h2 className="font-heading text-4xl text-curtain font-bold mb-6">The Musical Wing</h2>
             <p className="font-body text-lg text-ink/80 leading-relaxed max-w-3xl mx-auto">
-              Our music wing brings together classical Hindustani musicians and seasoned vocalists to revive the traditional baithak-style ghazal presentation. Carrying forward the musical legacy of Late Shri Amitosh Sharma, we perform timeless compositions of Ghalib, Faiz, and Meer.
+              Our music wing brings together classical Hindustani musicians and seasoned vocalists to revive the traditional baithak-style ghazal presentation. Carrying forward the musical legacy of Pt. Amitosh Sharma, we perform timeless compositions of Ghalib, Faiz, and Meer.
             </p>
           </div>
         </section>
@@ -45,10 +45,10 @@ export default function MehfilEGhazal() {
                   Featured Vocalist
                 </span>
                 <h2 className="font-heading text-4xl md:text-5xl text-canvas mb-6 font-bold">
-                  Anushka Sharma
+                  Anoushka Pandit
                 </h2>
                 <p className="font-body text-lg text-canvas/80 leading-relaxed mb-6">
-                  Hear the mesmerizing voice that has captivated ghazal lovers nationwide. Anushka Sharma brings a contemporary depth to classical ghazals, making Urdu poetry accessible and emotional for audiences of all ages.
+                  A Sangeet Natak Akademi awardee, Anoushka Pandit has captivated audiences nationwide with her mesmerizing voice. She brings a contemporary depth to classical Ghazals, devotional music, and Sufi compositions, making these rich traditions accessible and emotional for listeners of all ages.
                 </p>
               </div>
               <div>
@@ -92,7 +92,7 @@ export default function MehfilEGhazal() {
 
         {/* CTA */}
         <section className="bg-curtain film-grain py-24 text-center px-4">
-          <h2 className="font-heading text-4xl md:text-5xl text-gold mb-12">Book a Mehfil-e-Ghazal Night</h2>
+          <h2 className="font-heading text-4xl md:text-5xl text-gold mb-12">Book a Musical Presentation</h2>
           <CtaButton href="/contact?subject=Ghazal">Request Booking</CtaButton>
         </section>
 

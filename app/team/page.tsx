@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function Team() {
   const [activeTab, setActiveTab] = React.useState("theatre");
   const members = [
-    { name: "Anushka Sharma", role: "Vocalist & Music Lead" },
+    { name: "Anoushka Pandit", role: "Vocalist and Music Practitioner" },
     { name: "Rohan Sen", role: "Associate Director" },
     { name: "Priya Das", role: "Lead Choreographer" },
     { name: "Vikram Malhotra", role: "Stage & Set Designer" },
@@ -28,7 +28,7 @@ export default function Team() {
                 <div className="aspect-[3/4] bg-curtain relative border border-gold/30 rounded-sm overflow-hidden flex items-center justify-center film-grain mb-6">
                   <Image
                     src="/media-assets/founder.webp"
-                    alt="Late Shri Amitosh Sharma"
+                    alt="Pt. Amitosh Sharma"
                     fill
                     className="object-cover object-top"
                     priority
@@ -51,10 +51,10 @@ export default function Team() {
               
               <div className="lg:col-span-2">
                 <span className="font-body text-sm text-gold uppercase tracking-widest font-semibold block mb-2">Founder & Artistic Director</span>
-                <h1 className="font-heading text-5xl text-curtain font-bold mb-6">Late Shri Amitosh Sharma</h1>
+                <h1 className="font-heading text-5xl text-curtain font-bold mb-6">Pt. Amitosh Sharma</h1>
                 
                 <p className="font-body text-lg text-ink/80 leading-relaxed mb-8">
-                  A visionary of the Indian stage, Late Shri Amitosh Sharma founded Raghuvansh Group of Performing Arts to bridge the gap between ancient theatrical traditions and contemporary performance art. Over the past two decades, he has directed over 50 major plays, including the landmark Ramayan performances at the Red Fort.
+                  A visionary of the Indian stage, Pt. Amitosh Sharma founded Raghuvansh Group of Performing Arts to bridge the gap between ancient theatrical traditions and contemporary performance art. Over the past two decades, he has directed over 50 major plays, including the landmark Ramayan performances at the Red Fort.
                 </p>
 
                 <div className="space-y-8">
@@ -114,7 +114,7 @@ export default function Team() {
               <span className="font-body text-xs text-gold uppercase tracking-widest block mb-2">The Archive</span>
               <h2 className="font-heading text-4xl text-gold font-bold mb-4">Artistic Legacy</h2>
               <p className="font-body text-canvas/70 max-w-2xl mx-auto text-sm md:text-base">
-                A lifetime dedicated to the arts. Explore the comprehensive catalog of theatrical directions, musical compositions, published literature, and national honours of Late Shri Amitosh Sharma.
+                A lifetime dedicated to the arts. Explore the comprehensive catalog of theatrical directions, musical compositions, published literature, and national honours of Pt. Amitosh Sharma.
               </p>
             </div>
 
@@ -279,7 +279,7 @@ export default function Team() {
                     <div>
                       <h3 className="font-heading text-lg text-gold mb-4 border-b border-gold/15 pb-2 font-semibold">Awards & Honours</h3>
                       <ul className="space-y-2.5 font-body text-canvas/70 text-sm list-disc pl-5">
-                        <li><strong>1988:</strong> Udas Trophy, All India Ghazal Singing Competition.</li>
+                        <li><strong>1988:</strong> Udhaas Trophy, All India Ghazal Singing Competition.</li>
                         <li>Honoured with the <strong>Shaan-e-Pital Nagari</strong> title, Moradabad.</li>
                         <li>Recipient of the Music Award by <strong>Mala Sanstha</strong>, Raipur (1999).</li>
                         <li>Honoured by the <strong>Hindi Sanskrit Academy</strong>, Delhi (2010, 2012, and 2013).</li>

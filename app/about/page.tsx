@@ -2,35 +2,34 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const galleryImages = [
-  { src: "/about-section/gallery-webp/2.webp", category: "stage", caption: "Early Stage Presentations" },
-  { src: "/about-section/gallery-webp/3.webp", category: "stage", caption: "Classical Dance Drama Rehearsals" },
   { src: "/about-section/gallery-webp/6.webp", category: "stage", caption: "Ensemble Performance Cast" },
-  { src: "/about-section/gallery-webp/7.webp", category: "stage", caption: "Mythological Adaptations" },
-  { src: "/about-section/gallery-webp/17.webp", category: "stage", caption: "Pt. Amitosh Sharma Directing" },
-  { src: "/about-section/gallery-webp/18.webp", category: "stage", caption: "Vintage Play Highlights" },
   { src: "/about-section/gallery-webp/19.webp", category: "stage", caption: "Character Portrayals" },
-  { src: "/about-section/gallery-webp/20.webp", category: "stage", caption: "Nukkad Natak Street play" },
-  { src: "/about-section/gallery-webp/27.webp", category: "stage", caption: "Behind the Scenes Rehearsal" },
-  
-  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_2.webp", category: "press", caption: "National Press Reviews" },
-  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_5.webp", category: "press", caption: "Sangeet Natak Akademi Features" },
   { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_6.webp", category: "press", caption: "Hindi Theatre News Coverage" },
   { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_7.webp", category: "press", caption: "Awards & Recognitions Certificate" },
   { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_8.webp", category: "press", caption: "Historical Play Pamphlets" },
   { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_13.webp", category: "press", caption: "Archival Press Reviews" },
   { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_18.webp", category: "press", caption: "Retro Newspaper Clippings" },
+  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.22.15 AM.webp", category: "behind", caption: "Costume and Makeup Trials" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_2.webp", category: "press", caption: "National Press Reviews" },
+  { src: "/about-section/gallery-webp/18.webp", category: "stage", caption: "Vintage Play Highlights" },
+  { src: "/about-section/gallery-webp/2.webp", category: "stage", caption: "Early Stage Presentations" },
+  { src: "/about-section/gallery-webp/17.webp", category: "stage", caption: "Pt. Amitosh Sharma Directing" },
   
+  { src: "/about-section/gallery-webp/3.webp", category: "stage", caption: "Classical Dance Drama Rehearsals" },
+  { src: "/about-section/gallery-webp/7.webp", category: "stage", caption: "Mythological Adaptations" },
+  { src: "/about-section/gallery-webp/20.webp", category: "stage", caption: "Nukkad Natak Street play" },
+  { src: "/about-section/gallery-webp/27.webp", category: "stage", caption: "Behind the Scenes Rehearsal" },
+  { src: "/about-section/gallery-webp/New Doc 07-28-2024 08.48_5.webp", category: "press", caption: "Sangeet Natak Akademi Features" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.22.58 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Workshop Sessions in Progress" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.25.45 AM.webp", category: "behind", caption: "Director Briefing the Actors" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 11.30.31 AM.webp", category: "behind", caption: "Green Room Preparations" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.10.20 AM (1)_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Outdoor Audition Sessions" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.17.30 AM (1).webp", category: "behind", caption: "Stage Set Construction" },
-  { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.22.15 AM.webp", category: "behind", caption: "Costume and Makeup Trials" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.34.24 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Script Reading Circle" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.39.55 AM (1)_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Stage Lighting Calibration" },
   { src: "/about-section/gallery-webp/WhatsApp Image 2024-06-28 at 9.39.55 AM_upscayl_3x_realesrgan-x4plus.webp", category: "behind", caption: "Pt. Amitosh Sharma Mentoring" },
@@ -38,13 +37,7 @@ const galleryImages = [
 ];
 
 export default function About() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start 65%", "end 55%"]
-  });
-
-  const lineHeight = useTransform(scrollYProgress, [0, 0.78], ["0%", "100%"]);
+  // Removed scroll hooks since timeline was removed
 
   const [showAll, setShowAll] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -71,9 +64,9 @@ export default function About() {
   return (
     <>
       <Navigation />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow">
         {/* FOUNDER TRIBUTE */}
-        <section className="bg-curtain text-canvas film-grain pt-24 pb-32">
+        <section className="bg-curtain text-canvas film-grain pt-44 pb-32">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div className="order-2 lg:order-1">
@@ -83,13 +76,13 @@ export default function About() {
                   transition={{ duration: 0.8 }}
                   className="font-heading text-5xl md:text-7xl text-gold font-bold mb-6"
                 >
-                  Late Shri Amitosh Sharma
+                  Pt. Amitosh Sharma
                 </motion.h1>
                 <div className="font-body text-gold uppercase tracking-widest text-sm mb-8">
                   Founder & Director • AIR A-Grade Vocal Artist
                 </div>
                 <p className="font-body text-lg text-canvas/80 leading-relaxed mb-8">
-                  A visionary of the Indian stage, Late Shri Amitosh Sharma dedicated his life to bridging the gap between ancient theatrical traditions and contemporary performance art. His directorial style was characterized by its scale, emotional depth, and uncompromising commitment to the craft.
+                  A visionary of the Indian stage, Pt. Amitosh Sharma dedicated his life to bridging the gap between ancient theatrical traditions and contemporary performance art. His directorial style was characterized by its scale, emotional depth, and uncompromising commitment to the craft.
                 </p>
                 
                 {/* Structured Highlights */}
@@ -136,7 +129,7 @@ export default function About() {
                   
                   <Image
                     src="/media-assets/founder.webp"
-                    alt="Late Shri Amitosh Sharma"
+                    alt="Pt. Amitosh Sharma"
                     fill
                     className="object-cover object-top group-hover:scale-[1.03] transition-transform duration-700"
                     priority
@@ -157,24 +150,24 @@ export default function About() {
             <div className="text-center max-w-3xl mx-auto mb-16">
               <h2 className="font-heading text-4xl text-curtain font-bold mb-4">Carrying the Legacy</h2>
               <p className="font-body text-lg text-ink/80">
-                Continuing the rich theatrical traditions established by Late Shri Amitosh Sharma, his children and the group's mentors lead Raghuvansh into a new era of artistic expression.
+                Continuing the rich theatrical traditions established by Pt. Amitosh Sharma, his associates, team and disciples lead Raghuvansh into a new era of artistic expression.
               </p>
             </div>
- 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {[
                 {
                   name: "Animesh Pandit",
-                  relation: "Son of Late Shri Amitosh Sharma",
-                  role: "Director & Music Practitioner",
-                  desc: "A trained Hindustani classical musician (Master's in Tabla, Ajrara Gharana) and All India Radio empanelled artist, Animesh integrates structural musical discipline with dramatic stagecraft. He writes and directs Raghuvansh's major productions, carrying forward the artistic legacy of his father.",
+                  relation: "Son of Pt. Amitosh Sharma",
+                  role: "Theatre and Music Practitioner",
+                  desc: "A Sangeet Natak Akademi awardee, Animesh is a trained Hindustani classical musician holding a Master's in Tabla (Ajrara Gharana) and an empanelled artist with All India Radio. He seamlessly integrates classical musical discipline with theatrical stagecraft. As the writer and director of Raghuvansh's major productions, he plays a pivotal role in carrying forward the artistic legacy of his father, Pt. Amitosh Sharma.",
                   image: "/about-section/Animesh 2.webp"
                 },
                 {
                   name: "Anoushka Pandit",
-                  relation: "Daughter of Late Shri Amitosh Sharma",
-                  role: "Lead Vocalist & Coordinator",
-                  desc: "A classical, Mehfil-e-Ghazal, and devotional vocalist empanelled with Akashvani, Anoushka holds a Master of Music degree. She has performed as the lead vocalist in the annual Red Fort Ramayan productions for over 20 years and coordinates cultural, theatrical, and musical presentations for Raghuvansh.",
+                  relation: "Daughter of Pt. Amitosh Sharma",
+                  role: "Vocalist and Music Practitioner",
+                  desc: "A Sangeet Natak Akademi awardee, Anoushka is a distinguished classical, Mehfil-e-Ghazal, and devotional vocalist empanelled with Akashvani (All India Radio). Holding a Master of Music degree, she has performed as the lead vocalist in Raghuvansh's prestigious annual Red Fort Ramayan productions for over two decades. She also coordinates the collective's cultural, theatrical, and musical presentations, preserving the legacy of her father, Pt. Amitosh Sharma.",
                   image: "/about-section/anushka.webp"
                 },
                 {
@@ -183,9 +176,16 @@ export default function About() {
                   role: "Acclaimed Actor & NSD Alumnus",
                   desc: "An alumnus of the National School of Drama, Shrikant Verma is a highly recognized actor in Indian cinema (Panchayat, Dum Laga Ke Haisha) and theatre. As the mentor of Raghuvansh, he provides critical artistic guidance, training, and dramatic calibre to the collective.",
                   image: "/about-section/shrikant-verma.webp"
+                },
+                {
+                  name: "Mazibur Rehman",
+                  relation: "Creative Advisor",
+                  role: "Indian Actor & NSD Repertory Artist",
+                  desc: "With over 12 years of professional experience in theatre and screen performance, Mazibur holds a Diploma in Acting from SRCPA, New Delhi. He has performed extensively as a Repertory Artist with the National School of Drama (NSD) Repertory Company, including Bollywood musicals like Zangoora at Kingdom of Dreams. With a versatile theatrical foundation and screen presence across films/OTT, he has also represented Indian theatre internationally in Russia, Singapore, and Morocco.",
+                  image: "/about-section/Mazibur Rehman.webp"
                 }
               ].map((member, idx) => (
-                <div key={idx} className="flex flex-col items-center text-center bg-white border border-gold/20 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
+                <div key={idx} className="flex flex-col items-center text-center bg-white border border-gold/20 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group h-full">
                   {/* Portrait Frame Image */}
                   <div className="w-full aspect-[2/3] bg-ink/5 border border-gold/30 rounded-sm relative overflow-hidden mb-6 flex items-center justify-center shadow-md">
                     {/* Gold frame overlay corner accents */}
@@ -212,57 +212,7 @@ export default function About() {
           </div>
         </section>
  
-        {/* THE GROUP'S STORY */}
-        <section className="py-24 bg-canvas text-ink relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-heading text-4xl text-curtain font-bold mb-16 text-center">Our Journey</h2>
-            
-            {/* Timeline wrapper with Ref */}
-            <div ref={containerRef} className="relative ml-4 md:ml-1/2">
-              {/* Glowing scroll-connecting line container */}
-              <div className="absolute left-0 md:left-1/2 top-11 bottom-[105px] w-[2px] -translate-x-1/2 pointer-events-none z-10">
-                <motion.div 
-                  style={{ height: lineHeight }}
-                  className="w-full bg-gradient-to-b from-gold via-amber-400 to-gold origin-top shadow-[0_0_15px_rgba(201,162,75,0.95),0_0_6px_#C9A24B]"
-                />
-              </div>
-
-              {/* Timeline Items */}
-              {[
-                { year: "2000", title: "The Inception", desc: "Founded in Muradabad, Uttar Pradesh  with a vision to preserve and promote the rich heritage of the performing arts." },
-                { year: "2005", title: "The First Ramayan", desc: "A groundbreaking production that redefined historical storytelling." },
-                { year: "2012", title: "National Acclaim", desc: "Recognized by the Sangeet Natak Akademi for contribution to arts." },
-                { year: "Today", title: "A Theatrical Institution", desc: "Performing at the Red Fort and shaping the next generation of artists." }
-              ].map((item, idx) => (
-                <motion.div 
-                  key={idx} 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.6, delay: idx * 0.05 }}
-                  className="relative pl-8 md:pl-0 py-8 md:w-1/2 md:odd:ml-0 md:even:ml-auto md:even:pl-12 md:odd:pr-12 md:odd:text-right group"
-                >
-                  {/* Glowing dynamic connector dot */}
-                  <motion.div 
-                    initial={{ scale: 0.5, backgroundColor: "rgba(201,162,75,0.15)", boxShadow: "none" }}
-                    whileInView={{ 
-                      scale: 1.15, 
-                      backgroundColor: "#C9A24B", 
-                      boxShadow: "0 0 10px rgba(201, 162, 75, 0.8), 0 0 3px #C9A24B"
-                    }}
-                    viewport={{ once: true, margin: "-120px" }}
-                    transition={{ type: "spring", stiffness: 100, damping: 10, delay: 0.15 }}
-                    className="absolute left-0 top-11 w-3.5 h-3.5 rounded-full z-20 border border-canvas -translate-x-[7px] md:left-auto md:right-0 md:translate-x-[7px] md:group-even:left-0 md:group-even:right-auto md:group-even:-translate-x-[7px]"
-                  />
-                  
-                  <h3 className="font-heading text-3xl text-ink font-bold mb-2 group-hover:text-curtain transition-colors duration-300">{item.year}</h3>
-                  <h4 className="font-body text-xl text-curtain font-semibold mb-2">{item.title}</h4>
-                  <p className="font-body text-ink/70 leading-relaxed">{item.desc}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Removed Our Journey timeline section */}
 
         {/* WHAT WE DO */}
         <section className="py-24 bg-ink text-canvas">
@@ -286,34 +236,58 @@ export default function About() {
         </section>
 
         {/* AFFILIATIONS */}
-        <section className="py-20 bg-canvas border-b border-gold/20 relative">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
-              {[
-                { name: "NSD", full: "National School of Drama" },
-                { name: "SNA", full: "Sangeet Natak Akademi" },
-                { name: "AIR", full: "All India Radio" },
-                { name: "FTII", full: "Film & Television Institute of India" },
-                { name: "SRC", full: "Shree Ram Centre" },
-                { name: "PSS", full: "Prayag Sangeet Samiti" }
-              ].map((item, idx) => (
-                <React.Fragment key={idx}>
-                  {idx > 0 && <span className="text-gold/50 select-none hidden md:inline">•</span>}
-                  <div className="flex flex-col items-center group relative cursor-help">
-                    <span className="font-heading text-3xl md:text-4xl text-ink font-semibold tracking-widest group-hover:text-curtain transition-all duration-300 transform group-hover:scale-[1.03]">
-                      {item.name}
-                    </span>
-                    <span className="h-[2px] w-0 bg-gold group-hover:w-full transition-all duration-500 mt-1"></span>
-                    
-                    {/* Tooltip */}
-                    <div className="absolute bottom-full mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center pointer-events-none z-30">
-                      <div className="bg-ink text-canvas text-[10px] tracking-widest uppercase py-1.5 px-3 rounded-sm shadow-xl border border-gold/20 whitespace-nowrap">
-                        {item.full}
+        <section className="py-16 bg-canvas border-b border-gold/20 relative overflow-hidden">
+          <div className="w-full relative">
+            <style dangerouslySetInnerHTML={{__html: `
+              @keyframes marquee {
+                0% { transform: translateX(-50%); }
+                100% { transform: translateX(0%); }
+              }
+              .animate-marquee {
+                display: flex;
+                width: max-content;
+                animation: marquee 30s linear infinite;
+              }
+              .animate-marquee:hover {
+                animation-play-state: paused;
+              }
+            `}} />
+            
+            <div className="animate-marquee flex items-center gap-16 md:gap-24">
+              {/* Render twice for seamless loop */}
+              {[1, 2].map((loop) => (
+                <div key={loop} className="flex items-center gap-16 md:gap-24 flex-shrink-0">
+                  {[
+                    { name: "NSD", logo: "/about-section/worked with/NSD.svg", full: "National School of Drama", size: "h-[126px] w-[280px] md:h-[157px] md:w-[378px]" },
+                    { name: "SNA", logo: "/about-section/worked with/SNN.svg", full: "Sangeet Natak Akademi", size: "h-[126px] w-[280px] md:h-[157px] md:w-[378px]" },
+                    { name: "AIR", logo: "/about-section/worked with/AIR India.svg", full: "All India Radio", size: "h-[90px] w-[200px] md:h-[112px] md:w-[270px]" },
+                    { name: "FTII", logo: "/about-section/worked with/FTII.svg", full: "Film & Television Institute of India", size: "h-[90px] w-[200px] md:h-[112px] md:w-[270px]" },
+                    { name: "SRC", logo: "/about-section/worked with/SRC.svg", full: "Shree Ram Centre", size: "h-[126px] w-[280px] md:h-[157px] md:w-[378px]" },
+                    { name: "PSS", logo: "/about-section/worked with/PSS.svg", full: "Prayag Sangeet Samiti", size: "h-[126px] w-[280px] md:h-[157px] md:w-[378px]" }
+                  ].map((item, idx) => (
+                    <React.Fragment key={`${loop}-${idx}`}>
+                      <div className="flex flex-col items-center group relative cursor-help">
+                        <div className={`${item.size} relative transition-all duration-300 transform group-hover:scale-[1.05]`}>
+                          <Image
+                            src={item.logo}
+                            alt={item.name}
+                            fill
+                            className="object-contain transition-all duration-300"
+                          />
+                        </div>
+                        
+                        {/* Tooltip */}
+                        <div className="absolute bottom-full mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center pointer-events-none z-30">
+                          <div className="bg-ink text-canvas text-[10px] tracking-widest uppercase py-1.5 px-3 rounded-sm shadow-xl border border-gold/20 whitespace-nowrap">
+                            {item.full}
+                          </div>
+                          <div className="w-2 h-2 bg-ink border-r border-b border-gold/20 rotate-45 -mt-1"></div>
+                        </div>
                       </div>
-                      <div className="w-2 h-2 bg-ink border-r border-b border-gold/20 rotate-45 -mt-1"></div>
-                    </div>
-                  </div>
-                </React.Fragment>
+                      <span className="text-gold/70 select-none text-2xl font-bold">•</span>
+                    </React.Fragment>
+                  ))}
+                </div>
               ))}
             </div>
           </div>
@@ -323,13 +297,13 @@ export default function About() {
         <section className="py-24 bg-curtain text-canvas film-grain">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="font-heading text-4xl text-gold mb-16">Accolades</h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="flex overflow-x-auto gap-6 pb-6 px-4 md:px-0 scrollbar-thin scrollbar-thumb-gold/50 scrollbar-track-transparent snap-x snap-mandatory justify-start md:justify-center">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="flex flex-col items-center">
-                  <div className="w-20 h-20 rounded-full border-2 border-gold/50 flex items-center justify-center mb-4">
-                    <span className="font-heading text-gold text-2xl">{2024 - i}</span>
-                  </div>
-                  <h4 className="font-body font-bold text-lg">National Award {i}</h4>
+                <div 
+                  key={i} 
+                  className="flex-shrink-0 snap-center min-w-[240px] bg-black/30 border border-gold/30 hover:border-gold px-8 py-6 rounded-sm text-center transition-all duration-300"
+                >
+                  <h4 className="font-body font-semibold text-lg text-gold">National Award {i}</h4>
                   <p className="font-body text-sm text-canvas/70 uppercase tracking-wider mt-2">Best Production</p>
                 </div>
               ))}
@@ -348,7 +322,7 @@ export default function About() {
                 Historic Memories
               </h2>
               <p className="font-body text-lg text-ink/75">
-                Explore a visual record of Late Shri Amitosh Sharma's directions, news publications, certifications, and behind-the-scenes milestones spanning over two decades.
+                Explore a visual record of Pt. Amitosh Sharma's directions, news publications, certifications, and behind-the-scenes milestones spanning over two decades.
               </p>
             </div>
 
@@ -498,7 +472,7 @@ export default function About() {
                 <div className="flex justify-between items-center px-6 py-4 border-b border-gold/15 bg-black/40">
                   <div>
                     <span className="font-body text-xs text-gold uppercase tracking-widest font-semibold block">Artistic Archive</span>
-                    <h2 className="font-heading text-2xl text-canvas font-bold">Late Shri Amitosh Sharma</h2>
+                    <h2 className="font-heading text-2xl text-canvas font-bold">Pt. Amitosh Sharma</h2>
                   </div>
                   <button
                     onClick={() => setShowLegacyModal(false)}
@@ -542,7 +516,7 @@ export default function About() {
                       <div>
                         <strong className="text-gold text-xs uppercase tracking-wider block mb-1">Ramayana Productions</strong>
                         <p className="text-sm text-canvas/80 leading-relaxed">
-                          For over 30 years, his institution staged the complete Ramayana annually at the Red Fort Parade Ground and Pitampura, Delhi.
+                          For over 30 years, his institution staged the complete Ramayana annually at the Red Fort Parade Ground and Pitampura, Delhi. Productions have also been staged PAN India, including prestigious venues like Red Fort and Vidhan Sabha, Delhi.
                         </p>
                       </div>
                     </div>
@@ -561,7 +535,7 @@ export default function About() {
                     <div>
                       <h3 className="font-heading text-lg text-gold mb-3 font-semibold">Key Awards</h3>
                       <ul className="text-sm text-canvas/70 list-disc pl-4 space-y-1.5">
-                        <li><strong>1988:</strong> Udas Trophy, All India Ghazal Singing Competition.</li>
+                        <li><strong>1988:</strong> Udhaas Trophy, All India Ghazal Singing Competition.</li>
                         <li>Honoured with the <strong>Shaan-e-Pital Nagari</strong>, Moradabad.</li>
                         <li>Youth Music Session, Youth Festival, Lucknow.</li>
                         <li>Honoured by <strong>Sanskar Bharati</strong>.</li>
@@ -596,7 +570,7 @@ export default function About() {
                       <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-canvas/70">
                         {[
                           "Amir Khusro", "Karna", "Aaj Ka Abhimanyu", "Chandragupta Maurya", 
-                          "Naga Agar Ji Rooth", "Jeevan Meet Sangeet", "Wenders of the World", 
+                          "Naga Agar Ji Rooth", "Jeevan Meet Sangeet", "Wonders of the World", 
                           "Uday", "Bin Paani Sab Soon", "Prithviraj Chauhan", "Meri Delhi", 
                           "Navras", "Panch Tatva"
                         ].map((musical) => (

@@ -3,12 +3,55 @@ import React, { useState } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { Button } from "@/components/ui/Buttons";
+import Image from "next/image";
+
+const CollabSlideshow = () => {
+  const images = [
+    "/collab page/DSC03046.webp",
+    "/collab page/DSC03069~2.webp",
+    "/collab page/IMG_8876~2.webp",
+    "/collab page/IMG_8898.JPG.webp",
+    "/collab page/Screenshot_20260719_232205_Drive.webp",
+    "/collab page/Screenshot_20260719_233048_Gallery~2.webp",
+    "/collab page/Snapseed(81).webp"
+  ];
+  const [index, setIndex] = useState(0);
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % images.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      {images.map((img, i) => (
+        <div
+          key={img}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+            i === index ? "opacity-45" : "opacity-0"
+          }`}
+        >
+          <Image
+            src={img}
+            alt="Collaborations Slideshow Frame"
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
+            priority={i === 0}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default function Collaborations() {
   const faqs = [
     {
       q: "What is the typical timeline for a Collaborations production?",
-      a: "A complete production usually takes 2 to 3 months, including script finalization, casting, training workshops, music production, and dress rehearsals."
+      a: "The staging of a complete production generally spans two to three months, encompassing script finalization, casting, intensive training workshops, music production, and dress rehearsals. However, this timeline is highly flexible and can be customized to accommodate the specific scheduling and operational requirements of our clients."
     },
     {
       q: "Do you handle costumes and set design?",
@@ -33,16 +76,17 @@ export default function Collaborations() {
         
         {/* HERO */}
         <section className="relative min-h-[75vh] flex items-center justify-center bg-curtain text-canvas film-grain pt-20">
-          <div className="absolute inset-0 bg-ink/70 z-0"></div>
-          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+          <CollabSlideshow />
+          <div className="absolute inset-0 bg-ink/75 z-10"></div>
+          <div className="relative z-20 max-w-4xl mx-auto px-4 text-center">
             <span className="font-heading text-xl text-gold uppercase tracking-widest block mb-4">
               Collaborations
             </span>
             <h1 className="font-heading text-5xl md:text-7xl text-gold font-bold mb-6">
-              Unforgettable School Plays
+              Unforgettable Productions
             </h1>
             <p className="font-body text-lg md:text-xl text-canvas/80 max-w-2xl mx-auto">
-              Transforming standard school annual events into Broadway-scale theatrical experiences.
+              Transforming standard annual events into Broadway-scale theatrical productions.
             </p>
           </div>
         </section>
@@ -66,8 +110,10 @@ export default function Collaborations() {
         </section>
 
         {/* WHY A PROFESSIONAL GROUP */}
-        <section className="py-24 bg-ink text-canvas">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative py-24 bg-ink text-canvas overflow-hidden">
+          <CollabSlideshow />
+          <div className="absolute inset-0 bg-ink/80 z-10"></div>
+          <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-heading text-4xl text-gold text-center mb-16">Why Hire Raghuvansh?</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 font-body text-sm">
               <div>
@@ -92,21 +138,7 @@ export default function Collaborations() {
           </div>
         </section>
 
-        {/* PAST INSTITUTIONS */}
-        <section className="py-16 bg-canvas border-b border-gold/20">
-          <div className="max-w-7xl mx-auto px-4">
-            <h3 className="font-body uppercase tracking-widest text-center text-ink/50 text-xs mb-8">Trusted by Elite Institutions</h3>
-            <div className="flex flex-wrap justify-center items-center gap-12 font-heading text-xl text-ink/40 uppercase tracking-widest">
-              <span>DPS RK Puram</span>
-              <span className="text-gold">•</span>
-              <span>Modern School Barakhamba</span>
-              <span className="text-gold">•</span>
-              <span>Amity International</span>
-              <span className="text-gold">•</span>
-              <span>GD Goenka</span>
-            </div>
-          </div>
-        </section>
+
 
         {/* FAQ (Accordion) */}
         <section className="py-24 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -135,7 +167,7 @@ export default function Collaborations() {
         <section className="bg-curtain film-grain py-24 text-center px-4">
           <h2 className="font-heading text-4xl md:text-5xl text-gold mb-8">Transform Your Next Collaboration</h2>
           <p className="font-body text-canvas/80 mb-12 max-w-md mx-auto">
-            Book a consultation call with the directors of Raghuvansh to discuss script ideas and production timelines for your school.
+            Book a consultation call with the Raghuvansh Team.
           </p>
           <Button variant="secondary" href="/contact?subject=AnnualDay">Enquire Now</Button>
         </section>

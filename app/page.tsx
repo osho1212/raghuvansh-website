@@ -76,7 +76,7 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.2, ease: "easeOut" }}
                 >
-                  <h1 className="font-heading text-5xl md:text-7xl lg:text-8xl text-canvas font-bold mb-8 uppercase tracking-wide leading-none min-h-[5rem] sm:min-h-0">
+                  <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl text-canvas font-bold mb-8 uppercase tracking-wide leading-none min-h-[5rem] sm:min-h-0">
                     Raghuvansh{" "}
                     <span className="relative inline-block sm:inline min-w-[15rem] sm:min-w-0">
                       <AnimatePresence mode="wait">
@@ -166,7 +166,7 @@ export default function Home() {
                 Preserving the <span className="text-gold">Classical</span>, Pioneering the <span className="text-curtain">Contemporary</span>.
               </h2>
               <p className="font-body text-lg text-ink/80 leading-relaxed mb-8">
-                Raghuvansh Group of Performing Arts is a premier performing arts collective based in New Delhi. Founded by Late Shri Amitosh Sharma, a renowned AIR A-grade artist, we bring centuries of Indian theatrical tradition to the modern stage with unparalleled grandeur.
+                Raghuvansh Group of Performing Arts is a premier performing arts collective based in New Delhi. Founded by Pt. Amitosh Sharma, a renowned AIR A-grade artist, we bring centuries of Indian theatrical tradition to the modern stage with unparalleled grandeur.
               </p>
               <Button variant="primary" href="/about">Discover Our Story</Button>
             </div>
@@ -179,7 +179,7 @@ export default function Home() {
               
               <Image
                 src="/media-assets/founder-img2.webp"
-                alt="Late Shri Amitosh Sharma"
+                alt="Pt. Amitosh Sharma"
                 fill
                 className="object-cover group-hover:scale-[1.03] transition-transform duration-700"
               />
@@ -193,7 +193,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="font-heading text-4xl text-gold mb-16 text-center">Our Repertoire</h2>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
               {/* Playbill Cards */}
               {[
                 { 
@@ -213,12 +213,6 @@ export default function Home() {
                   href: "/mehfil-e-ghazal", 
                   desc: "Musical evenings",
                   video: "/mehfil-e-ghazal-assets/ghazal.webm"
-                },
-                { 
-                  title: "Collaboration", 
-                  href: "/collaborations", 
-                  desc: "School productions",
-                  video: null
                 }
               ].map((item, idx) => (
                 <Link key={idx} href={item.href} className="group block aspect-[3/4] relative overflow-hidden bg-curtain rounded-lg border border-gold/15 hover:border-gold/45 shadow-xl transition-all duration-500">

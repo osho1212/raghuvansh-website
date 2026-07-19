@@ -326,7 +326,9 @@ export default function ProductionsIndex() {
               <ArrowLeft size={16} />
               <span>Back to Productions</span>
             </button>
-            <span className="font-heading text-lg tracking-widest text-gold font-bold">RAGHUVANSH</span>
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-heading text-lg tracking-widest text-gold font-bold pointer-events-auto select-none">
+              RAGHUVANSH
+            </span>
             <button
               onClick={() => setSelectedProd(null)}
               className="pointer-events-auto p-2 bg-black/40 hover:bg-gold/80 hover:text-ink text-canvas rounded-full transition-all duration-300 cursor-pointer"
@@ -467,8 +469,8 @@ export default function ProductionsIndex() {
                   <div className="divide-y divide-canvas/10 max-h-[350px] overflow-y-auto pr-2 scrollbar-thin">
                     {selectedProd.castRoles.map((item: any, idx: number) => (
                       <div key={idx} className="py-3 flex justify-between gap-4 font-body text-sm text-left">
-                        <span className="text-gold font-semibold tracking-wider">{item.role}</span>
-                        <span className="text-canvas/60">{item.actor}</span>
+                        <span className={`text-gold font-semibold tracking-wider ${!item.actor ? "w-full text-center" : ""}`}>{item.role}</span>
+                        {item.actor && <span className="text-canvas/60">{item.actor}</span>}
                       </div>
                     ))}
                   </div>

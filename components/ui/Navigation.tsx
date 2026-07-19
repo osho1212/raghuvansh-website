@@ -72,7 +72,14 @@ export const Navigation = () => {
   }, [lastScrollY]);
 
   // Determine if the current page starts with a dark background at the top
-  const isDarkPage = pathname === "/" || pathname === "/ramayan" || pathname === "/productions" || pathname?.startsWith("/productions/");
+  const isDarkPage = 
+    pathname === "/" || 
+    pathname === "/about" || 
+    pathname === "/ramayan" || 
+    pathname === "/productions" || 
+    pathname === "/mehfil-e-ghazal" || 
+    pathname === "/collaborations" || 
+    pathname === "/workshops";
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -87,7 +94,7 @@ export const Navigation = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 transform ${
+        className={`fixed top-0 w-full z-[100] transition-all duration-300 transform ${
           visible ? "translate-y-0" : "-translate-y-full"
         } ${
           scrolled 
@@ -97,7 +104,14 @@ export const Navigation = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <Link href="/" className="font-heading text-xl tracking-widest text-gold font-bold">
+            <Link 
+              href="/" 
+              className={`font-heading text-xl tracking-widest font-bold transition-colors duration-300 ${
+                scrolled 
+                  ? "text-curtain" 
+                  : (isDarkPage ? "text-gold" : "text-curtain")
+              }`}
+            >
               RAGHUVANSH
             </Link>
             

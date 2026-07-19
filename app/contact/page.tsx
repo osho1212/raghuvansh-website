@@ -24,6 +24,7 @@ type FormData = z.infer<typeof formSchema>;
 function ContactContent() {
   const searchParams = useSearchParams();
   const initialSubject = searchParams.get("subject") || "General";
+  const initialMessage = searchParams.get("message") || "";
 
   const {
     register,
@@ -33,7 +34,8 @@ function ContactContent() {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      subject: initialSubject
+      subject: initialSubject,
+      message: initialMessage
     }
   });
 
@@ -41,7 +43,10 @@ function ContactContent() {
     if (initialSubject) {
       setValue("subject", initialSubject);
     }
-  }, [initialSubject, setValue]);
+    if (initialMessage) {
+      setValue("message", initialMessage);
+    }
+  }, [initialSubject, initialMessage, setValue]);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -85,7 +90,7 @@ function ContactContent() {
                   </div>
                   <div>
                     <span className="text-canvas/50 block text-xs uppercase tracking-wider">Email</span>
-                    <a href="mailto:contact@raghuvansh.co" className="hover:text-gold transition-colors font-semibold">contact@raghuvansh.co</a>
+                    <a href="mailto:raghuvansh.art@gmail.com" className="hover:text-gold transition-colors font-semibold">raghuvansh.art@gmail.com</a>
                   </div>
                 </div>
 
@@ -95,7 +100,7 @@ function ContactContent() {
                   </div>
                   <div>
                     <span className="text-canvas/50 block text-xs uppercase tracking-wider">Phone / WhatsApp</span>
-                    <a href="tel:+918585909213" className="hover:text-gold transition-colors font-semibold">+91 85859 09213</a>
+                    <a href="tel:+918585909213" className="hover:text-gold transition-colors font-semibold">+91 85859 09213</a>, <a href="tel:+917088575967" className="hover:text-gold transition-colors font-semibold">+91 70885 75967</a>
                   </div>
                 </div>
 

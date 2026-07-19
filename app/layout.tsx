@@ -21,7 +21,7 @@ const tiro = Tiro_Devanagari_Hindi({
 
 export const metadata: Metadata = {
   title: "Raghuvansh Group of Performing Arts",
-  description: "The Curtain Rises - Raghuvansh Group of Performing Arts, founded by Late Shri Amitosh Sharma",
+  description: "The Curtain Rises - Raghuvansh Group of Performing Arts, founded by Pt. Amitosh Sharma",
 };
 
 export default function RootLayout({

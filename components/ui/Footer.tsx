@@ -9,8 +9,26 @@ export const Footer = () => {
           <div className="col-span-1 md:col-span-2">
             <h2 className="font-heading text-3xl text-gold mb-4 font-bold">RAGHUVANSH</h2>
             <p className="font-body text-canvas/80 max-w-md">
-              A professional group of performing arts based out in new delhi, preserving the classical and pioneering the contemporary since 2000
+              A professional group of performing arts based out in New Delhi, preserving the classical and pioneering the contemporary since 2000
             </p>
+            <div className="font-body text-xs text-canvas/80 mt-4 space-y-1">
+              <div>
+                Email:{" "}
+                <a href="mailto:raghuvansh.art@gmail.com" className="text-gold hover:text-canvas transition-colors">
+                  raghuvansh.art@gmail.com
+                </a>
+              </div>
+              <div>
+                Phone:{" "}
+                <a href="tel:+918585909213" className="text-gold hover:text-canvas transition-colors">
+                  8585909213
+                </a>
+                ,{" "}
+                <a href="tel:+917088575967" className="text-gold hover:text-canvas transition-colors">
+                  7088575967
+                </a>
+              </div>
+            </div>
           </div>
           <div>
             <h3 className="font-heading text-xl text-gold mb-4">Explore</h3>
