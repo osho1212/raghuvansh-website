@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { CtaButton } from "@/components/ui/Buttons";
@@ -54,6 +54,24 @@ function VideoCard({ id }: { id: string }) {
 }
 
 export default function Ramayan() {
+  const [glimpses, setGlimpses] = useState<string[]>([
+    "myAHgdaFJbk",
+    "Q7sO8kL0S88",
+    "xhj7PqgMrDI",
+    "I5Rs8_zG-FA",
+    "sILv2SqlBsI"
+  ]);
+
+  useEffect(() => {
+    fetch("/api/admin/content")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.glimpses && data.glimpses.length > 0) {
+          setGlimpses(data.glimpses);
+        }
+      })
+      .catch((err) => console.error("Error loading glimpses:", err));
+  }, []);
   return (
     <>
       <Navigation />
@@ -146,13 +164,7 @@ export default function Ramayan() {
             <h2 className="font-heading text-4xl text-gold">Glimpses of Glory</h2>
           </div>
           <div className="flex gap-6 px-4 md:px-8 pb-8 overflow-x-auto snap-x hide-scrollbar">
-            {[
-              "myAHgdaFJbk",
-              "Q7sO8kL0S88",
-              "xhj7PqgMrDI",
-              "I5Rs8_zG-FA",
-              "sILv2SqlBsI"
-            ].map((id) => (
+            {glimpses.map((id) => (
               <div key={id} className="flex-shrink-0 w-[420px] sm:w-[480px] aspect-video snap-center transition-all duration-300 relative z-10 hover:z-20">
                 <VideoCard id={id} />
               </div>

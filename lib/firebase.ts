@@ -1,6 +1,7 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -9,14 +10,18 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase (SSR Friendly)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const dbId = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID;
-const db = dbId && dbId !== "(default)" ? getFirestore(app, dbId) : getFirestore(app);
+const dbId = process.env.NEXT_PUBLIC_FIREBASE_DATABASE_ID || "raghuvanshmock";
+const db = getFirestore(app, dbId);
 const storage = getStorage(app);
 storage.maxUploadRetryTime = 5000; // 5 seconds max upload retry
 storage.maxOperationRetryTime = 5000; // 5 seconds max operation retry
 
-export { app, db, storage };
+const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
+
+export { app, db, storage, auth, googleProvider };

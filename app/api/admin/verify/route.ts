@@ -4,10 +4,14 @@ import { cookies } from "next/headers";
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
-    const correctEmail = process.env.ADMIN_EMAIL || "admin@raghuvansh.co";
-    const correctPassword = process.env.ADMIN_PASSWORD || "admin123";
+    const correctEmail = process.env.ADMIN_EMAIL || "Admin@raghuvanshgpa.com";
+    const correctPassword = process.env.ADMIN_PASSWORD || "RGPA@2026";
 
-    if (email === correctEmail && password === correctPassword) {
+    if (
+      email &&
+      email.trim().toLowerCase() === correctEmail.trim().toLowerCase() &&
+      password === correctPassword
+    ) {
       const cookieStore = await cookies();
       cookieStore.set("admin_auth", password, {
         httpOnly: true,

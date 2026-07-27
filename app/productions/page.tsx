@@ -220,6 +220,27 @@ const ImageSlideshow = ({ images }: { images: string[] }) => {
 export default function ProductionsIndex() {
   const [selectedProd, setSelectedProd] = React.useState<any | null>(null);
   const [isMuted, setIsMuted] = React.useState(true);
+  const [allProductions, setAllProductions] = React.useState(productionsData);
+
+  React.useEffect(() => {
+    fetch("/api/admin/content")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.productions && data.productions.length > 0) {
+          const combined = [...productionsData];
+          data.productions.forEach((customProd: any) => {
+            const existingIdx = combined.findIndex((p) => p.slug === customProd.slug);
+            if (existingIdx >= 0) {
+              combined[existingIdx] = { ...combined[existingIdx], ...customProd };
+            } else {
+              combined.unshift(customProd);
+            }
+          });
+          setAllProductions(combined);
+        }
+      })
+      .catch((err) => console.error("Error loading dynamic productions:", err));
+  }, []);
 
   React.useEffect(() => {
     if (selectedProd) {
@@ -267,7 +288,7 @@ export default function ProductionsIndex() {
 
           {/* Centered Playbill Layout */}
           <div className="flex flex-wrap justify-center gap-14 lg:gap-16">
-            {productionsData.map((prod) => (
+            {allProductions.map((prod) => (
               <div key={prod.slug} className="group relative w-full sm:w-[320px] md:w-[350px] aspect-[3/4]">
                 
                 {/* Warm Light Radial Glow Behind each poster */}

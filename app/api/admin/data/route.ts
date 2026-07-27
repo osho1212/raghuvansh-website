@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { db } from "@/lib/firebase";
-import { collection, getDocs, doc, deleteDoc, query, orderBy } from "firebase/firestore";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
 
 async function isAuthenticated() {
   const cookieStore = await cookies();
   const auth = cookieStore.get("admin_auth")?.value;
-  const correctPassword = process.env.ADMIN_PASSWORD || "admin123";
+  const correctPassword = process.env.ADMIN_PASSWORD || "RGPA@2026";
   return auth === correctPassword;
 }
 
@@ -15,38 +15,42 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let enquiries: any[] = [];
+  let auditions: any[] = [];
+
+  // Fetch Enquiries from raghuvanshmock database
   try {
-    // Fetch Enquiries
     const enquiriesRef = collection(db, "enquiries");
-    const enquiriesQuery = query(enquiriesRef, orderBy("createdAt", "desc"));
-    const enquiriesSnapshot = await getDocs(enquiriesQuery);
-    const enquiries = enquiriesSnapshot.docs.map((doc) => {
-      const data = doc.data();
+    const snapshot = await getDocs(enquiriesRef);
+    enquiries = snapshot.docs.map((d) => {
+      const data = d.data();
       return {
-        id: doc.id,
+        id: d.id,
         ...data,
-        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt,
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : (data.createdAt || ""),
       };
-    });
-
-    // Fetch Auditions
-    const auditionsRef = collection(db, "auditions");
-    const auditionsQuery = query(auditionsRef, orderBy("createdAt", "desc"));
-    const auditionsSnapshot = await getDocs(auditionsQuery);
-    const auditions = auditionsSnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : data.createdAt,
-      };
-    });
-
-    return NextResponse.json({ enquiries, auditions });
-  } catch (error: any) {
-    console.error("Failed to fetch admin data from Firestore:", error);
-    return NextResponse.json({ error: "Failed to fetch data: " + error.message }, { status: 500 });
+    }).sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+  } catch (err: any) {
+    console.error("Firestore enquiries fetch error for raghuvanshmock:", err);
   }
+
+  // Fetch Auditions from raghuvanshmock database
+  try {
+    const auditionsRef = collection(db, "auditions");
+    const snapshot = await getDocs(auditionsRef);
+    auditions = snapshot.docs.map((d) => {
+      const data = d.data();
+      return {
+        id: d.id,
+        ...data,
+        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : (data.createdAt || ""),
+      };
+    }).sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+  } catch (err: any) {
+    console.error("Firestore auditions fetch error for raghuvanshmock:", err);
+  }
+
+  return NextResponse.json({ enquiries, auditions });
 }
 
 export async function DELETE(request: Request) {
@@ -55,7 +59,7 @@ export async function DELETE(request: Request) {
   }
 
   try {
-    const { id, type } = await request.json(); // type: 'enquiries' | 'auditions'
+    const { id, type } = await request.json();
 
     if (!id || !type || (type !== "enquiries" && type !== "auditions")) {
       return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
@@ -66,7 +70,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
-    console.error("Failed to delete document from Firestore:", error);
+    console.error("Failed to delete document from Firestore raghuvanshmock:", error);
     return NextResponse.json({ error: "Failed to delete: " + error.message }, { status: 500 });
   }
 }

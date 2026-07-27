@@ -50,15 +50,30 @@ function ContactContent() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await addDoc(collection(db, "enquiries"), {
-        name: data.name,
-        email: data.email,
-        subject: data.subject,
-        message: data.message,
-        createdAt: serverTimestamp(),
-      });
+      // 1. Try client SDK first
+      try {
+        await addDoc(collection(db, "enquiries"), {
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message,
+          createdAt: serverTimestamp(),
+        });
+      } catch (clientErr) {
+        // 2. Fallback to API route if client SDK gets permission error or fails
+        await fetch("/api/enquiry", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: data.name,
+            email: data.email,
+            subject: data.subject,
+            message: data.message,
+          }),
+        });
+      }
     } catch (e) {
-      console.error("Error saving enquiry to Firebase: ", e);
+      console.error("Enquiry submission error:", e);
     }
 
     const whatsappNumber = "918585909213";

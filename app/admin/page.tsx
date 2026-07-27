@@ -14,14 +14,25 @@ import {
   Trash2,
   ExternalLink,
   ChevronRight,
+  ChevronLeft,
   Eye,
   Globe,
   Film,
   User,
   Info,
   SlidersHorizontal,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Menu,
+  Plus,
+  Save,
+  Check,
+  Link as LinkIcon,
+  Play,
   X
 } from "lucide-react";
+import { db } from "@/lib/firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 interface SocialLinks {
   instagram?: string;
@@ -96,16 +107,49 @@ export default function AdminDashboard() {
   const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
   const [auditions, setAuditions] = useState<Audition[]>([]);
 
-  // Filtering / Tabs
+  // Filtering / Tabs & Pagination
   const [activeTab, setActiveTab] = useState<string>("auditions"); // 'auditions' or specific enquiry subject
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const PAGE_SIZE = 5;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeTab, searchTerm, sortOrder]);
 
   // Selected details drawer
   const [selectedAudition, setSelectedAudition] = useState<Audition | null>(null);
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
   const [isDeletingId, setIsDeletingId] = useState<string | null>(null);
   const [isDeletingType, setIsDeletingType] = useState<"enquiries" | "auditions" | null>(null);
+
+  // Website Content CRM State
+  const [ramayanGlimpses, setRamayanGlimpses] = useState<string[]>([
+    "myAHgdaFJbk",
+    "Q7sO8kL0S88",
+    "xhj7PqgMrDI",
+    "I5Rs8_zG-FA",
+    "sILv2SqlBsI"
+  ]);
+  const [newGlimpseInput, setNewGlimpseInput] = useState("");
+  const [customProductions, setCustomProductions] = useState<any[]>([]);
+  const [isAddProdOpen, setIsAddProdOpen] = useState(false);
+  const [savingContent, setSavingContent] = useState(false);
+  const [crmToast, setCrmToast] = useState<string | null>(null);
+
+  const [newProdForm, setNewProdForm] = useState({
+    title: "",
+    year: new Date().getFullYear().toString(),
+    director: "Animesh Pandit",
+    genre: "Theatre Drama",
+    duration: "120 mins",
+    poster: "",
+    playwright: "Badal Sircar",
+    excerpt: "",
+    teaser: ""
+  });
 
   useEffect(() => {
     checkAuthAndFetchData();
@@ -123,18 +167,151 @@ export default function AdminDashboard() {
 
       setAuthenticated(true);
 
+      let loadedEnquiries: any[] = [];
+      let loadedAuditions: any[] = [];
+
       const dataRes = await fetch("/api/admin/data");
       if (dataRes.ok) {
         const data = await dataRes.json();
-        setEnquiries(data.enquiries || []);
-        setAuditions(data.auditions || []);
-      } else {
-        console.error("Failed to load dashboard data");
+        loadedEnquiries = data.enquiries || [];
+        loadedAuditions = data.auditions || [];
       }
+
+      // If API return is empty, attempt client SDK fetch with authenticated user context
+      if (loadedEnquiries.length === 0 || loadedAuditions.length === 0) {
+        try {
+          if (loadedEnquiries.length === 0) {
+            const enqSnap = await getDocs(collection(db, "enquiries"));
+            if (enqSnap.docs.length > 0) {
+              loadedEnquiries = enqSnap.docs.map((d) => {
+                const data = d.data();
+                return {
+                  id: d.id,
+                  ...data,
+                  createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : (data.createdAt || ""),
+                };
+              }).sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+            }
+          }
+
+          if (loadedAuditions.length === 0) {
+            const audSnap = await getDocs(collection(db, "auditions"));
+            if (audSnap.docs.length > 0) {
+              loadedAuditions = audSnap.docs.map((d) => {
+                const data = d.data();
+                return {
+                  id: d.id,
+                  ...data,
+                  createdAt: data.createdAt?.toDate ? data.createdAt.toDate().toISOString() : (data.createdAt || ""),
+                };
+              }).sort((a, b) => (b.createdAt > a.createdAt ? 1 : -1));
+            }
+          }
+        } catch (clientFsErr) {
+          console.warn("Client-side Firestore fallback note:", clientFsErr);
+        }
+      }
+
+      setEnquiries(loadedEnquiries);
+      setAuditions(loadedAuditions);
+
+      // Fetch Website Content CRM
+      fetch("/api/admin/content")
+        .then((res) => res.json())
+        .then((cData) => {
+          if (cData.glimpses && cData.glimpses.length > 0) setRamayanGlimpses(cData.glimpses);
+          if (cData.productions) setCustomProductions(cData.productions);
+        })
+        .catch((err) => console.error("Error fetching content CRM data:", err));
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const extractYouTubeId = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : url.trim();
+  };
+
+  const handleAddGlimpse = async () => {
+    if (!newGlimpseInput.trim()) return;
+    const yId = extractYouTubeId(newGlimpseInput);
+    if (!yId) return;
+    const updated = [...ramayanGlimpses, yId];
+    setRamayanGlimpses(updated);
+    setNewGlimpseInput("");
+    await saveContentToServer("ramayan", updated);
+  };
+
+  const handleDeleteGlimpse = async (id: string) => {
+    const updated = ramayanGlimpses.filter((item) => item !== id);
+    setRamayanGlimpses(updated);
+    await saveContentToServer("ramayan", updated);
+  };
+
+  const handleSaveAddProduction = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newProdForm.title.trim()) return;
+
+    const slug = newProdForm.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+    const newProd = {
+      slug: slug || `prod-${Date.now()}`,
+      title: newProdForm.title,
+      year: parseInt(newProdForm.year) || new Date().getFullYear(),
+      director: newProdForm.director || "Animesh Pandit",
+      genre: newProdForm.genre || "Theatre",
+      duration: newProdForm.duration || "120 mins",
+      poster: newProdForm.poster || "/production-assets/baaki-itihaas/poster-1.webp",
+      playwright: newProdForm.playwright || "Pt. Amitosh Sharma",
+      excerpt: newProdForm.excerpt || newProdForm.title,
+      teaser: newProdForm.teaser || null,
+      cast: [],
+      castRoles: [],
+      synopsisFull: [newProdForm.excerpt]
+    };
+
+    const updated = [newProd, ...customProductions];
+    setCustomProductions(updated);
+    setIsAddProdOpen(false);
+    setNewProdForm({
+      title: "",
+      year: new Date().getFullYear().toString(),
+      director: "Animesh Pandit",
+      genre: "Theatre Drama",
+      duration: "120 mins",
+      poster: "",
+      playwright: "Badal Sircar",
+      excerpt: "",
+      teaser: ""
+    });
+    await saveContentToServer("productions", updated);
+  };
+
+  const handleDeleteProduction = async (slug: string) => {
+    const updated = customProductions.filter((p) => p.slug !== slug);
+    setCustomProductions(updated);
+    await saveContentToServer("productions", updated);
+  };
+
+  const saveContentToServer = async (type: "ramayan" | "productions", payload: any) => {
+    setSavingContent(true);
+    try {
+      const res = await fetch("/api/admin/content", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, payload }),
+      });
+      if (res.ok) {
+        setCrmToast("Changes saved & published to website successfully!");
+        setTimeout(() => setCrmToast(null), 3500);
+      }
+    } catch (err) {
+      console.error("Content save error:", err);
+    } finally {
+      setSavingContent(false);
     }
   };
 
@@ -192,8 +369,15 @@ export default function AdminDashboard() {
     let result: any[] = [];
     if (activeTab === "auditions") {
       result = auditions;
+    } else if (activeTab === "all_enquiries") {
+      result = enquiries;
     } else {
-      result = enquiries.filter((e) => e.subject === activeTab);
+      result = enquiries.filter(
+        (e) =>
+          e.subject === activeTab ||
+          (!e.subject && activeTab === "General") ||
+          (e.subject && e.subject.toLowerCase() === activeTab.toLowerCase())
+      );
     }
 
     // Search term
@@ -216,6 +400,8 @@ export default function AdminDashboard() {
   };
 
   const filteredData = getFilteredData();
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / PAGE_SIZE));
+  const paginatedData = filteredData.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   // Stats Counters
   const totalAuditions = auditions.length;
@@ -224,91 +410,210 @@ export default function AdminDashboard() {
   return (
     <>
       <Navigation />
-      <main className="bg-canvas text-ink pt-28 pb-20 min-h-screen font-body relative">
+      <main className="bg-canvas text-ink pt-24 pb-20 min-h-screen font-body relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gold/20 pb-6 mb-8">
-            <div>
-              <h1 className="font-heading text-3xl md:text-4xl text-curtain font-bold">Admin Dashboard</h1>
-              <p className="text-xs text-gold font-semibold uppercase tracking-widest mt-1">
-                Manage Submissions & Audition Portfolios
-              </p>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center gap-2 bg-curtain hover:bg-gold text-canvas hover:text-ink px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-sm transition-all shadow-md self-start md:self-auto"
-            >
-              <LogOut size={14} /> Log Out
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
             
             {/* Sidebar / Tabs */}
-            <div className="lg:col-span-1 space-y-2">
-              <span className="block text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Sections</span>
-              
-              {/* Auditions Tab */}
-              <button
-                onClick={() => { setActiveTab("auditions"); setSelectedAudition(null); setSelectedEnquiry(null); }}
-                className={`w-full text-left p-3 rounded-sm flex items-center justify-between transition-all ${
-                  activeTab === "auditions"
-                    ? "bg-curtain text-canvas shadow-lg"
-                    : "bg-white text-ink/80 border border-gold/15 hover:border-gold/50"
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <Users size={16} className={activeTab === "auditions" ? "text-gold" : "text-curtain"} />
-                  <span className="text-xs font-bold uppercase tracking-wider">Casting / Auditions</span>
+            <div className={`${isSidebarCollapsed ? "lg:col-span-1" : "lg:col-span-3"} bg-white border border-gold/20 p-4 rounded-sm shadow-md transition-all duration-300 flex flex-col justify-between min-h-[500px]`}>
+              <div>
+                {/* Sidebar Header with Collapse Toggle */}
+                <div className="flex items-center justify-between border-b border-gold/15 pb-3 mb-4">
+                  {!isSidebarCollapsed && (
+                    <span className="text-xs font-bold uppercase tracking-wider text-curtain">
+                      Admin Panel
+                    </span>
+                  )}
+                  <button
+                    onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                    className="p-1.5 rounded-sm hover:bg-gold/10 text-curtain transition-colors mx-auto lg:mx-0"
+                    title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+                  >
+                    {isSidebarCollapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+                  </button>
                 </div>
-                <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
-                  activeTab === "auditions" ? "bg-gold text-ink" : "bg-canvas text-curtain"
-                }`}>
-                  {totalAuditions}
-                </span>
-              </button>
 
-              <div className="border-t border-gold/15 my-4 pt-2">
-                <span className="block text-xs uppercase tracking-wider text-ink/40 font-bold mb-2">Enquiries</span>
-                {Object.entries(SUBJECT_LABELS).map(([subject, label]) => {
-                  const count = getEnquiryCount(subject);
-                  return (
+                {isSidebarCollapsed ? (
+                  /* Collapsed Icon Sidebar */
+                  <div className="space-y-3 flex flex-col items-center">
+                    {/* Auditions Icon */}
                     <button
-                      key={subject}
-                      onClick={() => { setActiveTab(subject); setSelectedAudition(null); setSelectedEnquiry(null); }}
-                      className={`w-full text-left p-2.5 mb-1 rounded-sm flex items-center justify-between transition-all ${
-                        activeTab === subject
-                          ? "bg-curtain text-canvas shadow-lg"
-                          : "bg-white/60 text-ink/75 border border-gold/10 hover:border-gold/40 hover:bg-white"
+                      onClick={() => { setActiveTab("auditions"); setSelectedAudition(null); setSelectedEnquiry(null); }}
+                      className={`p-3 rounded-sm relative transition-all ${
+                        activeTab === "auditions" ? "bg-curtain text-gold shadow-md" : "hover:bg-gold/10 text-ink/75"
                       }`}
+                      title={`Casting / Auditions (${totalAuditions})`}
                     >
-                      <span className="text-xs font-semibold truncate pr-2">{label}</span>
-                      <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full shrink-0 ${
-                        activeTab === subject ? "bg-gold text-ink" : "bg-canvas text-ink/50 border border-gold/10"
-                      }`}>
-                        {count}
+                      <Users size={18} />
+                      <span className="absolute -top-1 -right-1 bg-gold text-ink text-[9px] font-bold px-1 rounded-full">
+                        {totalAuditions}
                       </span>
                     </button>
-                  );
-                })}
+
+                    {/* All Enquiries Icon */}
+                    <button
+                      onClick={() => { setActiveTab("all_enquiries"); setSelectedAudition(null); setSelectedEnquiry(null); }}
+                      className={`p-3 rounded-sm relative transition-all ${
+                        activeTab === "all_enquiries" ? "bg-curtain text-gold shadow-md" : "hover:bg-gold/10 text-ink/75"
+                      }`}
+                      title={`All Enquiries (${enquiries.length})`}
+                    >
+                      <Mail size={18} />
+                      <span className="absolute -top-1 -right-1 bg-gold text-ink text-[9px] font-bold px-1 rounded-full">
+                        {enquiries.length}
+                      </span>
+                    </button>
+
+                    {/* Website CRM Icon */}
+                    <button
+                      onClick={() => { setActiveTab("website_crm"); setSelectedAudition(null); setSelectedEnquiry(null); }}
+                      className={`p-3 rounded-sm relative transition-all ${
+                        activeTab === "website_crm" ? "bg-curtain text-gold shadow-md" : "hover:bg-gold/10 text-ink/75"
+                      }`}
+                      title="Website Content CRM"
+                    >
+                      <Globe size={18} />
+                    </button>
+                  </div>
+                ) : (
+                  /* Expanded Sidebar */
+                  <div className="space-y-2">
+                    <span className="block text-[10px] uppercase tracking-wider text-ink/40 font-bold mb-2">Sections</span>
+                    
+                    {/* Auditions Tab */}
+                    <button
+                      onClick={() => { setActiveTab("auditions"); setSelectedAudition(null); setSelectedEnquiry(null); }}
+                      className={`w-full text-left p-2.5 rounded-sm flex items-center justify-between transition-all ${
+                        activeTab === "auditions"
+                          ? "bg-curtain text-canvas shadow-md"
+                          : "bg-canvas/50 text-ink/80 border border-gold/15 hover:border-gold/50"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Users size={15} className={activeTab === "auditions" ? "text-gold" : "text-curtain"} />
+                        <span className="text-xs font-bold uppercase tracking-wider">Casting / Auditions</span>
+                      </div>
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                        activeTab === "auditions" ? "bg-gold text-ink" : "bg-canvas text-curtain border border-gold/10"
+                      }`}>
+                        {totalAuditions}
+                      </span>
+                    </button>
+
+                    {/* Website CRM Tab */}
+                    <button
+                      onClick={() => { setActiveTab("website_crm"); setSelectedAudition(null); setSelectedEnquiry(null); }}
+                      className={`w-full text-left p-2.5 mb-2 rounded-sm flex items-center justify-between transition-all ${
+                        activeTab === "website_crm"
+                          ? "bg-curtain text-canvas shadow-md"
+                          : "bg-canvas/50 text-ink/80 border border-gold/15 hover:border-gold/50 font-bold"
+                      }`}
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <Globe size={15} className={activeTab === "website_crm" ? "text-gold" : "text-curtain"} />
+                        <span className="text-xs font-bold uppercase tracking-wider">Website Content CRM</span>
+                      </div>
+                      <span className="text-[9px] px-1.5 py-0.2 rounded-full font-bold bg-gold text-ink">
+                        CMS
+                      </span>
+                    </button>
+
+                    <div className="border-t border-gold/15 my-4 pt-3">
+                      <span className="block text-[10px] uppercase tracking-wider text-ink/40 font-bold mb-2">Enquiries</span>
+                      
+                      {/* All Enquiries Button */}
+                      <button
+                        onClick={() => { setActiveTab("all_enquiries"); setSelectedAudition(null); setSelectedEnquiry(null); }}
+                        className={`w-full text-left p-2.5 mb-2 rounded-sm flex items-center justify-between transition-all ${
+                          activeTab === "all_enquiries"
+                            ? "bg-curtain text-canvas shadow-md"
+                            : "bg-canvas/50 text-ink/80 border border-gold/15 hover:border-gold/50 font-bold"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Mail size={14} className={activeTab === "all_enquiries" ? "text-gold" : "text-curtain"} />
+                          <span className="text-xs font-bold uppercase tracking-wider">All Enquiries</span>
+                        </div>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold ${
+                          activeTab === "all_enquiries" ? "bg-gold text-ink" : "bg-canvas text-curtain border border-gold/10"
+                        }`}>
+                          {enquiries.length}
+                        </span>
+                      </button>
+
+                      {Object.entries(SUBJECT_LABELS).map(([subject, label]) => {
+                        const count = getEnquiryCount(subject);
+                        return (
+                          <button
+                            key={subject}
+                            onClick={() => { setActiveTab(subject); setSelectedAudition(null); setSelectedEnquiry(null); }}
+                            className={`w-full text-left p-2 mb-1 rounded-sm flex items-center justify-between transition-all ${
+                              activeTab === subject
+                                ? "bg-curtain text-canvas shadow-md"
+                                : "bg-canvas/30 text-ink/75 border border-gold/10 hover:border-gold/40 hover:bg-canvas/80"
+                            }`}
+                          >
+                            <span className="text-xs font-semibold truncate pr-2">{label}</span>
+                            <span className={`text-[9px] font-bold px-1.5 py-0.2 rounded-full shrink-0 ${
+                              activeTab === subject ? "bg-gold text-ink" : "bg-canvas text-ink/50 border border-gold/10"
+                            }`}>
+                              {count}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Log Out Button */}
+              <div className="border-t border-gold/15 pt-4 mt-6">
+                {isSidebarCollapsed ? (
+                  <button
+                    onClick={handleLogout}
+                    className="p-3 w-full rounded-sm bg-curtain hover:bg-gold text-canvas hover:text-ink transition-all shadow-md flex justify-center items-center"
+                    title="Log Out"
+                  >
+                    <LogOut size={18} />
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleLogout}
+                    className="w-full flex items-center justify-center gap-2 bg-curtain hover:bg-gold text-canvas hover:text-ink px-4 py-2.5 text-xs font-bold uppercase tracking-wider rounded-sm transition-all shadow-md"
+                  >
+                    <LogOut size={14} /> Log Out
+                  </button>
+                )}
               </div>
             </div>
 
             {/* Main Content Area */}
-            <div className="lg:col-span-3 space-y-6">
+            <div className={`${isSidebarCollapsed ? "lg:col-span-11" : "lg:col-span-9"} space-y-6 transition-all duration-300`}>
               
               {/* Controls Bar */}
               <div className="bg-white border border-gold/20 p-4 rounded-sm shadow-md flex flex-wrap gap-4 items-center justify-between">
-                <div className="relative flex-grow max-w-md">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/40" size={16} />
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search by name or email..."
-                    className="w-full bg-canvas border border-gold/10 focus:border-gold outline-none pl-10 pr-4 py-2 text-xs rounded-sm transition-colors text-ink"
-                  />
+                <div className="flex items-center gap-3 flex-grow max-w-md">
+                  {isSidebarCollapsed && (
+                    <button
+                      onClick={() => setIsSidebarCollapsed(false)}
+                      className="p-2 border border-gold/20 rounded-sm hover:bg-gold/10 text-curtain transition-colors shrink-0"
+                      title="Expand Sidebar"
+                    >
+                      <PanelLeftOpen size={16} />
+                    </button>
+                  )}
+                  <div className="relative flex-grow">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/40" size={16} />
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Search by name or email..."
+                      className="w-full bg-canvas border border-gold/10 focus:border-gold outline-none pl-10 pr-4 py-2 text-xs rounded-sm transition-colors text-ink"
+                    />
+                  </div>
                 </div>
                 <div className="flex items-center gap-2 text-xs">
                   <SlidersHorizontal size={14} className="text-gold" />
@@ -324,16 +629,158 @@ export default function AdminDashboard() {
                 </div>
               </div>
 
-              {/* Data Table / List */}
+              {/* Data Table / List / Website CRM */}
               <div className="space-y-4">
-                {filteredData.length === 0 ? (
+                {activeTab === "website_crm" ? (
+                  /* WEBSITE CONTENT CRM PANEL */
+                  <div className="space-y-8">
+                    
+                    {/* Toast Feedback */}
+                    {crmToast && (
+                      <div className="bg-emerald-800 text-canvas px-4 py-3 rounded-sm text-xs font-bold flex items-center justify-between shadow-lg animate-fadeIn">
+                        <div className="flex items-center gap-2">
+                          <Check size={16} className="text-gold" />
+                          <span>{crmToast}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* SECTION 1: RAMLEELA GLIMPSES OF GLORY */}
+                    <div className="bg-white border border-gold/20 p-6 rounded-sm shadow-md space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gold/15 pb-4">
+                        <div>
+                          <h2 className="font-heading text-xl text-curtain font-bold flex items-center gap-2">
+                            <Play size={18} className="text-gold" /> Ramleela: Glimpses of Glory Videos
+                          </h2>
+                          <p className="text-xs text-ink/60 mt-1 font-semibold">
+                            Manage YouTube video links displayed in the Glimpses of Glory section on the Ramayan page.
+                          </p>
+                        </div>
+                        {savingContent && (
+                          <span className="text-xs text-gold font-bold uppercase tracking-wider animate-pulse">
+                            Publishing...
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Add New Video Link Input */}
+                      <div className="flex flex-col sm:flex-row gap-3">
+                        <div className="relative flex-grow">
+                          <LinkIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/40" size={14} />
+                          <input
+                            type="text"
+                            value={newGlimpseInput}
+                            onChange={(e) => setNewGlimpseInput(e.target.value)}
+                            placeholder="Paste YouTube Link or Video ID (e.g. https://www.youtube.com/watch?v=myAHgdaFJbk)..."
+                            className="w-full bg-canvas border border-gold/15 focus:border-gold outline-none pl-9 pr-4 py-2.5 text-xs rounded-sm text-ink font-semibold"
+                          />
+                        </div>
+                        <button
+                          onClick={handleAddGlimpse}
+                          className="bg-curtain hover:bg-gold text-canvas hover:text-ink px-5 py-2.5 text-xs font-bold uppercase tracking-wider rounded-sm transition-all shadow-md flex items-center justify-center gap-2 shrink-0"
+                        >
+                          <Plus size={14} /> Add Video Link
+                        </button>
+                      </div>
+
+                      {/* Video Cards Grid */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 pt-2">
+                        {ramayanGlimpses.map((yId, idx) => (
+                          <div key={`${yId}-${idx}`} className="bg-canvas border border-gold/15 rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-all group flex flex-col justify-between">
+                            <div className="relative aspect-video bg-black overflow-hidden">
+                              <img
+                                src={`https://img.youtube.com/vi/${yId}/hqdefault.jpg`}
+                                alt={`Glimpse ${idx + 1}`}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-90"
+                              />
+                              <span className="absolute top-2 left-2 bg-curtain/90 text-gold text-[10px] font-bold px-2 py-0.5 rounded-sm shadow">
+                                Video #{idx + 1}
+                              </span>
+                            </div>
+                            <div className="p-3 flex items-center justify-between gap-2">
+                              <span className="text-[11px] font-mono text-ink/75 truncate font-semibold">
+                                ID: {yId}
+                              </span>
+                              <button
+                                onClick={() => handleDeleteGlimpse(yId)}
+                                className="text-curtain hover:bg-curtain/10 p-1.5 rounded-sm transition-colors"
+                                title="Delete Link"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* SECTION 2: OUR PRODUCTIONS MANAGER */}
+                    <div className="bg-white border border-gold/20 p-6 rounded-sm shadow-md space-y-6">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gold/15 pb-4">
+                        <div>
+                          <h2 className="font-heading text-xl text-curtain font-bold flex items-center gap-2">
+                            <Film size={18} className="text-gold" /> Our Productions Manager
+                          </h2>
+                          <p className="text-xs text-ink/60 mt-1 font-semibold">
+                            Add new stage productions or edit existing playbills on the Productions page.
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setIsAddProdOpen(true)}
+                          className="bg-curtain hover:bg-gold text-canvas hover:text-ink px-4 py-2.5 text-xs font-bold uppercase tracking-wider rounded-sm transition-all shadow-md flex items-center gap-2 self-start sm:self-auto"
+                        >
+                          <Plus size={14} /> Add New Production
+                        </button>
+                      </div>
+
+                      {/* Productions Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+                        {customProductions.map((prod) => (
+                          <div key={prod.slug} className="bg-canvas border border-gold/20 rounded-sm overflow-hidden shadow-md flex flex-col justify-between">
+                            <div className="relative h-44 bg-ink overflow-hidden">
+                              <img
+                                src={prod.poster || "/production-assets/baaki-itihaas/poster-1.webp"}
+                                alt={prod.title}
+                                className="w-full h-full object-cover opacity-80"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-ink via-transparent to-transparent"></div>
+                              <div className="absolute bottom-3 left-3 right-3">
+                                <span className="text-[9px] text-gold uppercase tracking-widest font-bold block">
+                                  {prod.year} • {prod.genre}
+                                </span>
+                                <h3 className="font-heading text-base text-canvas font-bold truncate">
+                                  {prod.title}
+                                </h3>
+                              </div>
+                            </div>
+                            <div className="p-4 space-y-3 flex-grow flex flex-col justify-between text-xs">
+                              <p className="text-ink/70 leading-relaxed line-clamp-3">
+                                {prod.excerpt}
+                              </p>
+                              <div className="pt-2 border-t border-gold/10 flex items-center justify-between">
+                                <span className="text-[10px] text-ink/50 font-semibold">Director: {prod.director}</span>
+                                <button
+                                  onClick={() => handleDeleteProduction(prod.slug)}
+                                  className="text-curtain hover:bg-curtain/10 p-1.5 rounded-sm transition-colors"
+                                  title="Delete Production"
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ) : filteredData.length === 0 ? (
                   <div className="bg-white border border-gold/15 p-12 text-center rounded-sm shadow-md">
                     <p className="text-sm text-ink/50 font-semibold">No submissions found in this section.</p>
                   </div>
                 ) : activeTab === "auditions" ? (
                   /* Auditions Grid View */
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {filteredData.map((audition: Audition) => (
+                    {paginatedData.map((audition: Audition) => (
                       <div
                         key={audition.id}
                         className="bg-white border border-gold/20 rounded-sm overflow-hidden shadow-lg hover:shadow-xl transition-all flex flex-col group"
@@ -408,7 +855,7 @@ export default function AdminDashboard() {
                 ) : (
                   /* Enquiries Table/List View */
                   <div className="bg-white border border-gold/15 rounded-sm overflow-hidden shadow-lg divide-y divide-gold/10">
-                    {filteredData.map((enquiry: Enquiry) => (
+                    {paginatedData.map((enquiry: Enquiry) => (
                       <div
                         key={enquiry.id}
                         className="p-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 hover:bg-canvas/10 transition-colors"
@@ -448,6 +895,45 @@ export default function AdminDashboard() {
                   </div>
                 )}
               </div>
+
+              {/* Pagination Controls */}
+              {filteredData.length > 0 && (
+                <div className="bg-white border border-gold/20 p-4 rounded-sm shadow-md flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-semibold text-ink/70">
+                  <div>
+                    Showing{" "}
+                    <span className="text-curtain font-bold">
+                      {Math.min((currentPage - 1) * PAGE_SIZE + 1, filteredData.length)}
+                    </span>{" "}
+                    to{" "}
+                    <span className="text-curtain font-bold">
+                      {Math.min(currentPage * PAGE_SIZE, filteredData.length)}
+                    </span>{" "}
+                    of <span className="text-curtain font-bold">{filteredData.length}</span> submissions
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+                      className="px-3 py-1.5 border border-gold/20 rounded-sm hover:bg-gold/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all flex items-center gap-1 font-bold text-curtain"
+                      title="Previous Page"
+                    >
+                      <ChevronLeft size={14} /> Previous
+                    </button>
+                    <span className="px-3 py-1.5 bg-canvas border border-gold/10 rounded-sm font-bold text-curtain">
+                      Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                      disabled={currentPage >= totalPages}
+                      onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                      className="px-3 py-1.5 border border-gold/20 rounded-sm hover:bg-gold/10 disabled:opacity-30 disabled:hover:bg-transparent transition-all flex items-center gap-1 font-bold text-curtain"
+                      title="Next Page"
+                    >
+                      Next <ChevronRight size={14} />
+                    </button>
+                  </div>
+                </div>
+              )}
 
             </div>
           </div>
@@ -723,6 +1209,138 @@ export default function AdminDashboard() {
                 </div>
 
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Add Production Modal */}
+        {isAddProdOpen && (
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto animate-fadeIn">
+            <div className="bg-canvas border border-gold/30 rounded-lg max-w-lg w-full p-6 shadow-2xl relative">
+              <div className="flex items-center justify-between border-b border-gold/20 pb-3 mb-4">
+                <h3 className="font-heading text-lg text-curtain font-bold flex items-center gap-2">
+                  <Film size={18} className="text-gold" /> Add New Production
+                </h3>
+                <button
+                  onClick={() => setIsAddProdOpen(false)}
+                  className="text-ink/50 hover:text-curtain p-1 rounded-sm"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveAddProduction} className="space-y-3.5 text-xs">
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-ink/70 mb-1">
+                    Production Title *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={newProdForm.title}
+                    onChange={(e) => setNewProdForm({ ...newProdForm, title: e.target.value })}
+                    placeholder="e.g. Maha Ramayan Live"
+                    className="w-full bg-white border border-gold/20 focus:border-gold p-2.5 rounded-sm outline-none font-semibold text-ink"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-ink/70 mb-1">
+                      Year
+                    </label>
+                    <input
+                      type="number"
+                      value={newProdForm.year}
+                      onChange={(e) => setNewProdForm({ ...newProdForm, year: e.target.value })}
+                      placeholder="2026"
+                      className="w-full bg-white border border-gold/20 focus:border-gold p-2.5 rounded-sm outline-none font-semibold text-ink"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-ink/70 mb-1">
+                      Director
+                    </label>
+                    <input
+                      type="text"
+                      value={newProdForm.director}
+                      onChange={(e) => setNewProdForm({ ...newProdForm, director: e.target.value })}
+                      placeholder="Animesh Pandit"
+                      className="w-full bg-white border border-gold/20 focus:border-gold p-2.5 rounded-sm outline-none font-semibold text-ink"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-ink/70 mb-1">
+                      Genre
+                    </label>
+                    <input
+                      type="text"
+                      value={newProdForm.genre}
+                      onChange={(e) => setNewProdForm({ ...newProdForm, genre: e.target.value })}
+                      placeholder="Theatre Drama"
+                      className="w-full bg-white border border-gold/20 focus:border-gold p-2.5 rounded-sm outline-none font-semibold text-ink"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] uppercase font-bold text-ink/70 mb-1">
+                      Duration
+                    </label>
+                    <input
+                      type="text"
+                      value={newProdForm.duration}
+                      onChange={(e) => setNewProdForm({ ...newProdForm, duration: e.target.value })}
+                      placeholder="120 mins"
+                      className="w-full bg-white border border-gold/20 focus:border-gold p-2.5 rounded-sm outline-none font-semibold text-ink"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-ink/70 mb-1">
+                    Poster Image URL (optional)
+                  </label>
+                  <input
+                    type="text"
+                    value={newProdForm.poster}
+                    onChange={(e) => setNewProdForm({ ...newProdForm, poster: e.target.value })}
+                    placeholder="/production-assets/baaki-itihaas/poster-1.webp or image URL..."
+                    className="w-full bg-white border border-gold/20 focus:border-gold p-2.5 rounded-sm outline-none font-semibold text-ink"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] uppercase font-bold text-ink/70 mb-1">
+                    Excerpt / Overview *
+                  </label>
+                  <textarea
+                    required
+                    rows={3}
+                    value={newProdForm.excerpt}
+                    onChange={(e) => setNewProdForm({ ...newProdForm, excerpt: e.target.value })}
+                    placeholder="Short description of the production..."
+                    className="w-full bg-white border border-gold/20 focus:border-gold p-2.5 rounded-sm outline-none font-semibold text-ink"
+                  ></textarea>
+                </div>
+
+                <div className="flex justify-end gap-3 pt-3 border-t border-gold/15">
+                  <button
+                    type="button"
+                    onClick={() => setIsAddProdOpen(false)}
+                    className="bg-canvas border border-gold/20 text-ink/70 font-bold uppercase text-xs px-4 py-2 rounded-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="bg-curtain hover:bg-gold text-canvas hover:text-ink font-bold uppercase text-xs px-5 py-2 rounded-sm transition-colors shadow-md"
+                  >
+                    Save & Publish Production
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
