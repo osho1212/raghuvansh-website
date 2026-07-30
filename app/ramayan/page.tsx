@@ -78,10 +78,15 @@ export default function Ramayan() {
       <main className="flex-grow">
         {/* VIDEO HERO */}
         <section className="relative min-h-screen flex items-center justify-center bg-ink">
-          {/* Placeholder for Video Background */}
-          <div className="absolute inset-0 bg-ink/80 flex items-center justify-center z-0">
-            <span className="font-body text-canvas/20">Video Background Placeholder</span>
-          </div>
+          {/* Background Video */}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
+            src="/ramayan%20video.webm"
+          />
           <div className="absolute inset-0 bg-curtain/60 mix-blend-multiply z-10 film-grain"></div>
           
           <div className="relative z-20 max-w-4xl mx-auto px-4 text-center">

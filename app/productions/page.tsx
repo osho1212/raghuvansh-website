@@ -282,7 +282,7 @@ export default function ProductionsIndex() {
               Our Productions
             </h1>
             <p className="font-body text-lg text-canvas/80">
-              Explore the major stage productions by Raghuvansh Group of Performing Arts. Click on any playbill to open its immersive overview, watch the teaser, and view the full credits.
+              Explore the major stage productions by Raghuvansh Group of Performing Arts. Click on any production poster to open its immersive overview, watch the teaser, and view the full credits.
             </p>
           </div>
 
@@ -370,7 +370,7 @@ export default function ProductionsIndex() {
                   loop
                   muted={isMuted}
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover object-center z-0"
+                  className={`absolute inset-0 w-full h-full object-cover z-0 ${selectedProd.teaserPosition || "object-center"}`}
                 />
               )
             ) : (

@@ -31,7 +31,7 @@ export default function MehfilEGhazal() {
           <div className="text-center mb-16">
             <h2 className="font-heading text-4xl text-curtain font-bold mb-6">The Musical Wing</h2>
             <p className="font-body text-lg text-ink/80 leading-relaxed max-w-3xl mx-auto">
-              Our music wing brings together classical Hindustani musicians and seasoned vocalists to revive the traditional baithak-style ghazal presentation. Carrying forward the musical legacy of Pt. Amitosh Sharma, we perform timeless compositions of Ghalib, Faiz, and Meer.
+              Our music wing brings together classical Hindustani musicians and seasoned vocalists to revive the traditional baithak-style ghazal presentation, carrying forward the musical legacy of Pt. Amitosh Sharma.
             </p>
           </div>
         </section>

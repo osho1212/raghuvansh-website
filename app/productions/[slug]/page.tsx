@@ -10,7 +10,7 @@ export default function ProductionDetail() {
   const params = useParams();
   const slug = params.slug as string;
 
-  const prod = productionsData.find((p) => p.slug === slug);
+  const prod = productionsData.find((p) => p.slug === slug || p.targetSlug === slug);
 
   if (!prod) {
     notFound();
@@ -134,13 +134,16 @@ export default function ProductionDetail() {
           <div>
             <h3 className="font-heading text-3xl text-curtain mb-8">Production Gallery</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {prod.slug === "baaki-itihaas" ? (
+              {prod.slug === "baaki-itihaas" || prod.targetSlug === "baaki-itihaas" ? (
                 <>
                   <div className="aspect-[3/4] bg-ink/10 relative border border-gold/20 rounded-sm overflow-hidden">
                     <Image src="/production-assets/baaki-itihaas/poster-1.webp" alt="Baaki Itihaas Poster 1" fill className="object-cover" />
                   </div>
                   <div className="aspect-[3/4] bg-ink/10 relative border border-gold/20 rounded-sm overflow-hidden">
                     <Image src="/production-assets/baaki-itihaas/poster-2.webp" alt="Baaki Itihaas Poster 2" fill className="object-cover" />
+                  </div>
+                  <div className="aspect-[3/4] bg-ink/10 relative border border-gold/20 rounded-sm overflow-hidden">
+                    <Image src="/production-assets/baaki-itihaas/BI 2.jpeg" alt="Baaki Itihaas Poster 3" fill className="object-cover" />
                   </div>
                 </>
               ) : (

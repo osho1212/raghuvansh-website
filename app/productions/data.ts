@@ -5,6 +5,7 @@ export interface CastMember {
 
 export interface Production {
   slug: string;
+  targetSlug?: string;
   title: string;
   year: number;
   director: string;
@@ -22,6 +23,7 @@ export interface Production {
   directorsNoteFull: string[];
   synopsisFull: string[];
   teaser: string | string[] | null;
+  teaserPosition?: string;
   youtube?: string;
 }
 
@@ -33,7 +35,7 @@ export const productionsData: Production[] = [
     director: "Animesh Pandit",
     excerpt: "Baaki Itihaas transcends the boundaries of conventional theatre, emerging as a profound reflection on human existence, memory, guilt, and the enduring search for life's meaning.",
     genre: "Drama / Reflection",
-    duration: "120 mins",
+    duration: "150 mins",
     poster: "/production-assets/baaki-itihaas/poster-1.webp",
     posterBackup: "/production-assets/baaki-itihaas/poster-2.webp",
     brochure: "/production-assets/baaki-itihaas/brochure.pdf",
@@ -41,6 +43,43 @@ export const productionsData: Production[] = [
     quote: "History is not only what is written in books; it is also what every individual silently carries within, yet never finds the words to tell.",
     directorsNote: "",
     teaser: "/production-assets/baaki-itihaas/rgv-baaki-itihaas.webm",
+    teaserPosition: "object-[center_15%]",
+    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Pandit)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
+    castRoles: [
+      { role: "Sharad", actor: "Krishna Shrivastav" },
+      { role: "Vasanti", actor: "Isha Khera" },
+      { role: "Sitanath", actor: "Animesh Pandit" },
+      { role: "Kanak", actor: "Anoushka Pandit" },
+      { role: "Vidubhushan", actor: "Anil Gagneja" },
+      { role: "Nikhil", actor: "Arman" },
+      { role: "Vijay", actor: "Aryan Verma" },
+      { role: "Vasudev", actor: "Aryan Verma" },
+      { role: "Kanak’s Father", actor: "Anil Gagneja" },
+      { role: "Postman", actor: "Jivansh Bihagra" }
+    ],
+    synopsisFull: [
+      "Baaki Itihaas transcends the boundaries of conventional theatre to become a profound exploration of human existence, memory, guilt, and the search for meaning. Through the lives of an ordinary middle-class family, Badal Sircar examines the emotional and psychological complexities hidden beneath everyday life - unfulfilled aspirations, silent disappointments, moral dilemmas, and unresolved conflicts. When an unexpected event disrupts their routine, the characters are forced to confront their past, reassess their relationships, and question the purpose of their lives.",
+      "One of Badal Sircar's most celebrated works, Baaki Itihaas challenges the notion that history belongs only to kings, wars, and great achievements. It reveals that every individual carries an unwritten history shaped by sacrifice, love, remorse, fear, and longing. Rather than offering easy answers, the play invites audiences to reflect on the forgotten chapters of their own lives, reminding us that the most significant history is often the one silently carried within the human heart."
+    ],
+    directorsNoteFull: []
+  },
+  {
+    slug: "baaki-itihaas-poster-2",
+    targetSlug: "baaki-itihaas",
+    title: "Baaki Itihaas",
+    year: 2024,
+    director: "Animesh Pandit",
+    excerpt: "Baaki Itihaas transcends the boundaries of conventional theatre, emerging as a profound reflection on human existence, memory, guilt, and the enduring search for life's meaning.",
+    genre: "Drama / Reflection",
+    duration: "150 mins",
+    poster: "/production-assets/baaki-itihaas/BI 2.jpeg",
+    posterBackup: "/production-assets/baaki-itihaas/poster-1.webp",
+    brochure: "/production-assets/baaki-itihaas/brochure.pdf",
+    playwright: "Badal Sircar",
+    quote: "History is not only what is written in books; it is also what every individual silently carries within, yet never finds the words to tell.",
+    directorsNote: "",
+    teaser: "/production-assets/baaki-itihaas/rgv-baaki-itihaas.webm",
+    teaserPosition: "object-[center_15%]",
     cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Pandit)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
     castRoles: [
       { role: "Sharad", actor: "Krishna Shrivastav" },
@@ -101,19 +140,24 @@ export const productionsData: Production[] = [
     director: "Animesh Pandit",
     excerpt: "Shabd Baan is an intense dramatic exploration of grief, dharma, and divine accountability, imagined through a searing conversation between Gandhari and Shri Krishna in the aftermath of the Mahabharata.",
     genre: "Musical & Poetic Drama",
-    duration: "90 mins",
+    duration: "30 mins",
     poster: "/production-assets/shabd-baan/poster.webp",
     brochure: "/production-assets/shabd-baan/brochure.pdf",
     playwright: "Animesh Pandit",
     quote: "True justice is not the destruction of an enemy, but the destruction of enmity.",
     directorsNote: "",
     teaser: "/production-assets/shabd-baan/teaser.webm",
-    cast: ["Krishn", "Gaandhari", "Kaurav", "Draupadi"],
+    cast: [
+      "Krishn (Vikas Verma)",
+      "Gaandhari (Suman Tongariya)",
+      "Draupadi (Isha Khera)",
+      "Kaurav (Abhay, Nakul, Khush, Priyanshi, Charvi, Ishaan, Kairav)"
+    ],
     castRoles: [
-      { role: "Krishn", actor: "Cast Member" },
-      { role: "Gaandhari", actor: "Cast Member" },
-      { role: "Kaurav", actor: "Cast Member" },
-      { role: "Draupadi", actor: "Cast Member" }
+      { role: "Krishn", actor: "Vikas Verma" },
+      { role: "Gaandhari", actor: "Suman Tongariya" },
+      { role: "Draupadi", actor: "Isha Khera" },
+      { role: "Kaurav", actor: "Abhay, Nakul, Khush, Priyanshi, Charvi, Ishaan, Kairav" }
     ],
     synopsisFull: [
       "Shabd Baan is an intense dramatic exploration of grief, dharma, and divine accountability, imagined through a searing conversation between Gandhari and Shri Krishna in the aftermath of the Mahabharata. The war has ended, but its silence is heavier than the clang of weapons. In this silence, a mother rises, not with prayers, but with questions sharp as arrows.",
@@ -127,11 +171,11 @@ export const productionsData: Production[] = [
   {
     slug: "wrong-turn",
     title: "Wrong Turn",
-    year: 2024,
+    year: 2026,
     director: "Animesh Pandit",
     excerpt: "Wrong Turn is a thought-provoking contemporary play that explores the complex relationship between human choices and their consequences, adapting Frederick Dürrenmatt's The Dangerous Game.",
     genre: "Contemporary Drama / Psychological Theatre",
-    duration: "100 mins",
+    duration: "120 mins",
     poster: "/production-assets/wrong-turn/poster.webp",
     brochure: "/production-assets/wrong-turn/brochure.pdf",
     playwright: "Ranjit Kapoor",

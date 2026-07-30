@@ -11,20 +11,20 @@ export const Footer = () => {
             <p className="font-body text-canvas/80 max-w-md">
               A professional group of performing arts based out in New Delhi, preserving the classical and pioneering the contemporary since 2000
             </p>
-            <div className="font-body text-xs text-canvas/80 mt-4 space-y-1">
+            <div className="font-body text-base sm:text-lg text-canvas/90 mt-4 space-y-1.5">
               <div>
-                Email:{" "}
-                <a href="mailto:raghuvansh.art@gmail.com" className="text-gold hover:text-canvas transition-colors">
+                <span className="text-canvas/70 font-medium">Email:</span>{" "}
+                <a href="mailto:raghuvansh.art@gmail.com" className="text-gold hover:text-canvas transition-colors font-medium">
                   raghuvansh.art@gmail.com
                 </a>
               </div>
               <div>
-                Phone:{" "}
-                <a href="tel:+918585909213" className="text-gold hover:text-canvas transition-colors">
+                <span className="text-canvas/70 font-medium">Phone:</span>{" "}
+                <a href="tel:+918585909213" className="text-gold hover:text-canvas transition-colors font-medium">
                   8585909213
                 </a>
                 ,{" "}
-                <a href="tel:+917088575967" className="text-gold hover:text-canvas transition-colors">
+                <a href="tel:+917088575967" className="text-gold hover:text-canvas transition-colors font-medium">
                   7088575967
                 </a>
               </div>
