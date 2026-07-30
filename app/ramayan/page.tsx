@@ -87,7 +87,7 @@ export default function Ramayan() {
             className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
             src="/ramayan%20video.webm"
           />
-          <div className="absolute inset-0 bg-curtain/60 mix-blend-multiply z-10 film-grain"></div>
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px] z-10 film-grain"></div>
           
           <div className="relative z-20 max-w-4xl mx-auto px-4 text-center">
             <motion.h1 
