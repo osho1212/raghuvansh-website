@@ -55,9 +55,9 @@ export default function Home() {
 
   const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const time = e.currentTarget.currentTime;
-    if (time >= 36) {
+    if (time >= 43) {
       setHeroHighlight("Ki Mehfil");
-    } else if (time >= 23) {
+    } else if (time >= 33) {
       setHeroHighlight("ki Peshkash");
     } else {
       setHeroHighlight("ki Ramayan");
