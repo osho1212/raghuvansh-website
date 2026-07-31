@@ -79,7 +79,7 @@ export default function Home() {
             playsInline
             onTimeUpdate={handleTimeUpdate}
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="/new%20hero%20video.webm"
+            src="/Timeline%201%20final%20hero%20section%20.webm"
           />
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/90 via-transparent to-ink/30"></div>
           

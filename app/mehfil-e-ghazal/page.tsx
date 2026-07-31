@@ -1,18 +1,48 @@
 "use client";
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { CtaButton } from "@/components/ui/Buttons";
+import { Volume2, VolumeX } from "lucide-react";
 
 export default function MehfilEGhazal() {
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
+
   return (
     <>
       <Navigation />
       <main className="flex-grow bg-canvas text-ink">
         
         {/* MOODY HERO */}
-        <section className="relative min-h-[80vh] flex items-center justify-center bg-curtain text-canvas film-grain pt-20">
+        <section className="relative min-h-[80vh] flex items-center justify-center bg-curtain text-canvas film-grain pt-20 overflow-hidden">
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover z-0"
+            src="/ghazal%20hero%20.webm"
+          />
           <div className="absolute inset-0 bg-black/60 z-0"></div>
+
+          {/* Mute/Unmute Button */}
+          <button
+            onClick={toggleMute}
+            className="absolute bottom-6 right-6 z-30 p-3 bg-ink/60 border border-gold/30 hover:bg-gold hover:text-ink hover:border-gold rounded-full text-canvas transition-all flex items-center justify-center"
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+          >
+            {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+          </button>
+
           <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
             <span className="font-heading text-xl text-gold uppercase tracking-widest block mb-4">
               Ghazal, Devotional & Sufi Music
