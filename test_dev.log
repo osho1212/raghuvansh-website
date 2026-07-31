@@ -1,0 +1,63 @@
+
+> temp-app@0.1.0 dev
+> next dev -p 3005
+
+▲ Next.js 16.2.10 (Turbopack)
+- Local:         http://localhost:3005
+- Network:       http://192.168.29.70:3005
+✓ Ready in 345ms
+
+⨯ Error: Cannot find module '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/server/middleware-manifest.json'
+Require stack:
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next-server.js
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next.js
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/lib/start-server.js
+    at ignore-listed frames {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next-server.js',
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/dev/next-dev-server.js',
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next.js',
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+⨯ Error: ENOENT: no such file or directory, open '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/static/development/_buildManifest.js.tmp.294r7bsmu21'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/static/development/_buildManifest.js.tmp.294r7bsmu21'
+}
+Error: Cannot find module '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/server/middleware-manifest.json'
+Require stack:
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next-server.js
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/dev/next-dev-server.js
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next.js
+- /Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/lib/start-server.js
+    at ignore-listed frames {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next-server.js',
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/dev/next-dev-server.js',
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/next.js',
+    '/Users/girenderbharti/Desktop/Raghuvansh website/node_modules/next/dist/server/lib/start-server.js'
+  ]
+}
+⨯ Error: ENOENT: no such file or directory, open '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/routes-manifest.json'
+}
+Error: ENOENT: no such file or directory, open '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/routes-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/girenderbharti/Desktop/Raghuvansh website/.next/dev/routes-manifest.json'
+}
+ GET / 500 in 2.7s (next.js: 2.6s, application-code: 33ms)
+ GET / 500 in 2.7s (next.js: 2.6s, application-code: 33ms)
+[?25h
