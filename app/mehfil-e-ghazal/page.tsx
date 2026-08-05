@@ -43,12 +43,12 @@ export default function MehfilEGhazal() {
             {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
           </button>
 
-          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+          <div className="relative z-10 max-w-5xl mx-auto px-4 text-center">
             <span className="font-heading text-xl text-gold uppercase tracking-widest block mb-4">
               Ghazal, Devotional & Sufi Music
             </span>
             <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-gold font-bold mb-6">
-              Where Poetry & Devotion Meet the Stage
+              Where Poetry & Devotion <br className="hidden md:block" /> Meet the Stage
             </h1>
             <p className="font-body text-lg md:text-xl text-canvas/80 max-w-2xl mx-auto">
               Immerse yourself in soul-stirring Ghazals, devotional bhajans, and Sufi melodies curated by Raghuvansh's music wing.
