@@ -47,7 +47,7 @@ export default function MehfilEGhazal() {
             <span className="font-heading text-xl text-gold uppercase tracking-widest block mb-4">
               Ghazal, Devotional & Sufi Music
             </span>
-            <h1 className="font-heading text-5xl md:text-7xl text-gold font-bold mb-6">
+            <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl text-gold font-bold mb-6">
               Where Poetry & Devotion Meet the Stage
             </h1>
             <p className="font-body text-lg md:text-xl text-canvas/80 max-w-2xl mx-auto">
