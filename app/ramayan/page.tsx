@@ -147,7 +147,7 @@ export default function Ramayan() {
                 </p>
               </div>
               <div className="aspect-[4/3] relative bg-ink/10 border border-gold/30 flex items-center justify-center rounded-sm overflow-hidden">
-                <Image src="/ramayan-assets/WhatsApp Image 2026-08-05 at 14.30.50.webp" alt="Ramayan Performance" fill className="object-cover" />
+                <Image src="/ramayan-assets/whatsapp-image-2026-08-05.webp" alt="Ramayan Performance" fill className="object-cover" />
               </div>
             </div>
           </div>
