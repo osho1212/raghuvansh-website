@@ -22,7 +22,7 @@ export default function MehfilEGhazal() {
       <main className="flex-grow bg-canvas text-ink">
         
         {/* MOODY HERO */}
-        <section className="relative min-h-[80vh] flex items-center justify-center bg-curtain text-canvas film-grain pt-20 overflow-hidden">
+        <section className="relative min-h-[80vh] flex items-end justify-center bg-curtain text-canvas film-grain pt-20 pb-[120px] overflow-hidden">
           <video
             ref={videoRef}
             autoPlay
