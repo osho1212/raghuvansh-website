@@ -4,6 +4,7 @@ import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { CtaButton } from "@/components/ui/Buttons";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 function VideoCard({ id }: { id: string }) {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -145,8 +146,8 @@ export default function Ramayan() {
                   Combining traditional Awadhi dialogues with state-of-the-art stagecraft, digital mapping, and a cast of over 200 artists, we bring the epic to life in a way that honours the past while embracing the future.
                 </p>
               </div>
-              <div className="aspect-[4/3] bg-ink/10 border border-gold/30 flex items-center justify-center rounded-sm">
-                 <span className="font-body text-ink/40">Performance Image Placeholder</span>
+              <div className="aspect-[4/3] relative bg-ink/10 border border-gold/30 flex items-center justify-center rounded-sm overflow-hidden">
+                <Image src="/ramayan-assets/WhatsApp Image 2026-08-05 at 14.30.50.webp" alt="Ramayan Performance" fill className="object-cover" />
               </div>
             </div>
           </div>
