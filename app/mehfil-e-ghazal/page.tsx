@@ -3,9 +3,11 @@ import React, { useState, useRef } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { CtaButton } from "@/components/ui/Buttons";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Play, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function MehfilEGhazal() {
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -83,10 +85,22 @@ export default function MehfilEGhazal() {
               </div>
               <div>
                 {/* Video/Audio Player Placeholder */}
-                <div className="aspect-video bg-curtain/20 border border-gold/30 rounded-sm flex items-center justify-center">
-                  <span className="font-body text-sm text-canvas/40 uppercase tracking-wider">
-                    Featured Performance Video
-                  </span>
+                <div 
+                  onClick={() => setIsVideoModalOpen(true)}
+                  className="aspect-video relative bg-curtain/20 border border-gold/30 rounded-sm overflow-hidden flex items-center justify-center cursor-pointer group"
+                >
+                  <video 
+                    autoPlay 
+                    loop 
+                    muted 
+                    playsInline 
+                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-300"
+                    src="/mehfil-e-ghazal-assets/MVI_2050.webm"
+                  />
+                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
+                  <div className="relative z-10 w-16 h-16 rounded-full bg-gold/90 text-ink flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform duration-300">
+                    <Play className="w-8 h-8 ml-1" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -125,6 +139,45 @@ export default function MehfilEGhazal() {
           <h2 className="font-heading text-4xl md:text-5xl text-gold mb-12">Book a Musical Presentation</h2>
           <CtaButton href="/contact?subject=Ghazal">Request Booking</CtaButton>
         </section>
+
+        {/* VIDEO MODAL */}
+        <AnimatePresence>
+          {isVideoModalOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 md:p-8 backdrop-blur-sm"
+              onClick={() => setIsVideoModalOpen(false)}
+            >
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsVideoModalOpen(false);
+                }}
+                className="absolute top-6 right-6 p-2 bg-black/50 border border-gold/30 hover:bg-gold hover:text-ink text-canvas rounded-full transition-colors z-50 cursor-pointer"
+              >
+                <X size={24} />
+              </button>
+              
+              <motion.div
+                initial={{ scale: 0.95, y: 15 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.95, y: 15 }}
+                transition={{ duration: 0.3 }}
+                className="relative w-full max-w-5xl aspect-video bg-black border border-gold/40 rounded-sm overflow-hidden shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <video
+                  src="/mehfil-e-ghazal-assets/MVI_2050.webm"
+                  controls
+                  autoPlay
+                  className="w-full h-full object-contain"
+                />
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
       </main>
       <Footer />
