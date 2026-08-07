@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Navigation } from "@/components/ui/Navigation";
 import { Footer } from "@/components/ui/Footer";
 import { CtaButton } from "@/components/ui/Buttons";
@@ -11,10 +11,35 @@ export default function MehfilEGhazal() {
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (videoRef.current) {
+        const heroHeight = window.innerHeight || 800;
+        const scrollY = window.scrollY;
+        const volumeFactor = Math.max(0, 1 - scrollY / heroHeight);
+        
+        if (Math.abs(videoRef.current.volume - volumeFactor) > 0.01) {
+          videoRef.current.volume = volumeFactor;
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   const toggleMute = () => {
     if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
+      const nextMuted = !videoRef.current.muted;
+      videoRef.current.muted = nextMuted;
+      setIsMuted(nextMuted);
+      if (!nextMuted) {
+        const heroHeight = window.innerHeight || 800;
+        const volumeFactor = Math.max(0, 1 - window.scrollY / heroHeight);
+        videoRef.current.volume = volumeFactor;
+      }
     }
   };
 
