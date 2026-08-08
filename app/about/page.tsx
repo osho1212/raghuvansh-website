@@ -294,21 +294,62 @@ export default function About() {
         </section>
 
         {/* AWARDS WALL */}
-        <section className="py-24 bg-curtain text-canvas film-grain">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="font-heading text-4xl text-gold mb-16">Accolades</h2>
-            <div className="flex overflow-x-auto gap-6 pb-6 px-4 md:px-0 scrollbar-thin scrollbar-thumb-gold/50 scrollbar-track-transparent snap-x snap-mandatory justify-start md:justify-center">
-              {[1, 2, 3, 4].map((i) => (
-                <div 
-                  key={i} 
-                  className="flex-shrink-0 snap-center min-w-[240px] bg-black/30 border border-gold/30 hover:border-gold px-8 py-6 rounded-sm text-center transition-all duration-300"
-                >
-                  <h4 className="font-body font-semibold text-lg text-gold">National Award {i}</h4>
-                  <p className="font-body text-sm text-canvas/70 uppercase tracking-wider mt-2">Best Production</p>
-                </div>
-              ))}
+        <section className="py-24 bg-curtain text-canvas film-grain overflow-hidden">
+          <div className="text-center mb-14">
+            <h2 className="font-heading text-4xl text-gold">Accolades</h2>
+          </div>
+
+          {/* Marquee ribbon */}
+          <div className="relative w-full">
+            {/* Fade edges */}
+            <div className="absolute left-0 top-0 h-full w-24 bg-gradient-to-r from-curtain to-transparent z-10 pointer-events-none" />
+            <div className="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-curtain to-transparent z-10 pointer-events-none" />
+
+            <div className="flex overflow-hidden">
+              <div
+                className="flex gap-6 shrink-0 animate-marquee"
+                style={{ animationDuration: '28s' }}
+              >
+                {[
+                  { award: "Best Set Award", icon: "🏆" },
+                  { award: "Best Ram", icon: "⭐" },
+                  { award: "Best Seeta", icon: "✨" },
+                  { award: "Best Raavan", icon: "🏅" },
+                  { award: "Youngest Director Award", icon: "🎬" },
+                  { award: "Oldest Ground, Youngest Director", icon: "🌟" },
+                  { award: "Best Makeup Award", icon: "💎" },
+                  /* duplicate for seamless loop */
+                  { award: "Best Set Award", icon: "🏆" },
+                  { award: "Best Ram", icon: "⭐" },
+                  { award: "Best Seeta", icon: "✨" },
+                  { award: "Best Raavan", icon: "🏅" },
+                  { award: "Youngest Director Award", icon: "🎬" },
+                  { award: "Oldest Ground, Youngest Director", icon: "🌟" },
+                  { award: "Best Makeup Award", icon: "💎" },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="flex-shrink-0 flex items-center gap-4 bg-black/30 border border-gold/30 hover:border-gold/70 hover:bg-black/50 px-8 py-5 rounded-sm transition-all duration-300 group cursor-default"
+                  >
+                    <span className="text-2xl select-none">{item.icon}</span>
+                    <span className="font-heading text-lg text-gold uppercase tracking-widest whitespace-nowrap group-hover:text-canvas transition-colors duration-300">
+                      {item.award}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+
+          <style>{`
+            @keyframes marquee {
+              from { transform: translateX(0); }
+              to { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+              animation: marquee linear infinite;
+            }
+          `}</style>
         </section>
 
         {/* GALLERY SECTION */}
