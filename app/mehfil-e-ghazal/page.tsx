@@ -121,7 +121,7 @@ export default function MehfilEGhazal() {
                     muted 
                     playsInline 
                     className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-300"
-                    style={{ objectPosition: 'center 30%' }}
+                    style={{ objectPosition: 'center top' }}
                     src="/mehfil-e-ghazal-assets/MVI_2050.webm"
                   />
                   <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors duration-300"></div>
