@@ -106,7 +106,7 @@ export default function Ramayan() {
               transition={{ duration: 1, delay: 0.5 }}
               className="font-body text-xl md:text-3xl text-canvas tracking-wide font-light"
             >
-              Performed at Red Fort since 1995
+              Performing since 1995
             </motion.p>
           </div>
         </section>
