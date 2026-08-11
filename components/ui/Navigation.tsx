@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -92,6 +93,10 @@ export const Navigation = () => {
     pathname === "/collaborations" || 
     pathname === "/workshops";
 
+  // Transparent navbar over a dark hero needs the gold mark; everywhere
+  // else (scrolled canvas background, or a page that starts light) needs the black one.
+  const useGoldLogo = !scrolled && isDarkPage;
+
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "About", path: "/about" },
@@ -115,15 +120,15 @@ export const Navigation = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <Link 
-              href="/" 
-              className={`font-heading text-xl tracking-widest font-bold transition-colors duration-300 ${
-                scrolled 
-                  ? "text-curtain" 
-                  : (isDarkPage ? "text-gold" : "text-curtain")
-              }`}
-            >
-              RAGHUVANSH
+            <Link href="/" className="shrink-0 py-2">
+              <Image
+                src={useGoldLogo ? "/logo-gold.png" : "/logo-black.png"}
+                alt="Raghuvansh Group of Performing Arts"
+                width={900}
+                height={807}
+                priority
+                className="h-11 w-auto sm:h-12 lg:h-14 transition-opacity duration-300"
+              />
             </Link>
             
             {/* Desktop Nav */}
@@ -174,7 +179,13 @@ export const Navigation = () => {
           >
             <div className="film-grain flex flex-col h-full w-full">
               <div className="flex justify-between items-center p-4 sm:p-6 h-16 sm:h-20 shrink-0">
-                <span className="font-heading text-lg sm:text-xl tracking-widest text-gold font-bold">RAGHUVANSH</span>
+                <Image
+                  src="/logo-gold.png"
+                  alt="Raghuvansh Group of Performing Arts"
+                  width={900}
+                  height={807}
+                  className="h-10 sm:h-12 w-auto"
+                />
                 <button onClick={() => setIsOpen(false)} className="p-2" aria-label="Close menu">
                   <X size={26} className="text-canvas" />
                 </button>
