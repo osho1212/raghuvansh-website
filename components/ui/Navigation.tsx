@@ -170,32 +170,34 @@ export const Navigation = () => {
             animate={{ y: 0 }}
             exit={{ y: "-100%" }}
             transition={{ duration: 0.5, ease: "easeInOut" }}
-            className="fixed inset-0 z-[200] h-[100dvh] w-screen bg-curtain text-canvas flex flex-col film-grain"
+            className="fixed inset-0 z-[200] h-[100dvh] w-screen bg-curtain text-canvas overflow-hidden"
           >
-            <div className="flex justify-between items-center p-4 sm:p-6 h-16 sm:h-20 shrink-0">
-              <span className="font-heading text-lg sm:text-xl tracking-widest text-gold font-bold">RAGHUVANSH</span>
-              <button onClick={() => setIsOpen(false)} className="p-2" aria-label="Close menu">
-                <X size={26} className="text-canvas" />
-              </button>
-            </div>
-            <div className="flex-1 min-h-0 overflow-y-auto flex flex-col items-center justify-start gap-3 sm:gap-5 px-6 py-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className="font-heading text-2xl sm:text-3xl hover:text-gold transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <div className="w-12 border-t border-gold opacity-50 my-2 sm:my-3"></div>
-              <Link href="/gallery" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Gallery</Link>
-              <Link href="/media" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Media</Link>
-              <Link href="/collaborate" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Collaborate</Link>
-              <Link href="/apply" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Casting Calls</Link>
-              <Link href="/contact" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl text-gold mt-2">Contact</Link>
-              <div className="h-4 shrink-0" />
+            <div className="film-grain flex flex-col h-full w-full">
+              <div className="flex justify-between items-center p-4 sm:p-6 h-16 sm:h-20 shrink-0">
+                <span className="font-heading text-lg sm:text-xl tracking-widest text-gold font-bold">RAGHUVANSH</span>
+                <button onClick={() => setIsOpen(false)} className="p-2" aria-label="Close menu">
+                  <X size={26} className="text-canvas" />
+                </button>
+              </div>
+              <div className="flex-1 min-h-0 overflow-y-auto flex flex-col items-center justify-start gap-3 sm:gap-5 px-6 py-6">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className="font-heading text-2xl sm:text-3xl hover:text-gold transition-colors"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+                <div className="w-12 border-t border-gold opacity-50 my-2 sm:my-3"></div>
+                <Link href="/gallery" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Gallery</Link>
+                <Link href="/media" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Media</Link>
+                <Link href="/collaborate" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Collaborate</Link>
+                <Link href="/apply" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl hover:text-gold">Casting Calls</Link>
+                <Link href="/contact" onClick={() => setIsOpen(false)} className="font-heading text-lg sm:text-xl text-gold mt-2">Contact</Link>
+                <div className="h-4 shrink-0" />
+              </div>
             </div>
           </motion.div>
         )}
