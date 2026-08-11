@@ -61,7 +61,8 @@ export const productionsData: Production[] = [
       "Baaki Itihaas transcends the boundaries of conventional theatre to become a profound exploration of human existence, memory, guilt, and the search for meaning. Through the lives of an ordinary middle-class family, Badal Sircar examines the emotional and psychological complexities hidden beneath everyday life - unfulfilled aspirations, silent disappointments, moral dilemmas, and unresolved conflicts. When an unexpected event disrupts their routine, the characters are forced to confront their past, reassess their relationships, and question the purpose of their lives.",
       "One of Badal Sircar's most celebrated works, Baaki Itihaas challenges the notion that history belongs only to kings, wars, and great achievements. It reveals that every individual carries an unwritten history shaped by sacrifice, love, remorse, fear, and longing. Rather than offering easy answers, the play invites audiences to reflect on the forgotten chapters of their own lives, reminding us that the most significant history is often the one silently carried within the human heart."
     ],
-    directorsNoteFull: []
+    directorsNoteFull: [],
+    youtube: "https://www.youtube.com/watch?v=sJ5GlA5Hh4E&t=3007s&pp=ygUNYmFha2kgaXRpaGFhcw%3D%3D"
   },
   {
     slug: "baaki-itihaas-poster-2",
@@ -97,7 +98,8 @@ export const productionsData: Production[] = [
       "Baaki Itihaas transcends the boundaries of conventional theatre to become a profound exploration of human existence, memory, guilt, and the search for meaning. Through the lives of an ordinary middle-class family, Badal Sircar examines the emotional and psychological complexities hidden beneath everyday life - unfulfilled aspirations, silent disappointments, moral dilemmas, and unresolved conflicts. When an unexpected event disrupts their routine, the characters are forced to confront their past, reassess their relationships, and question the purpose of their lives.",
       "One of Badal Sircar's most celebrated works, Baaki Itihaas challenges the notion that history belongs only to kings, wars, and great achievements. It reveals that every individual carries an unwritten history shaped by sacrifice, love, remorse, fear, and longing. Rather than offering easy answers, the play invites audiences to reflect on the forgotten chapters of their own lives, reminding us that the most significant history is often the one silently carried within the human heart."
     ],
-    directorsNoteFull: []
+    directorsNoteFull: [],
+    youtube: "https://www.youtube.com/watch?v=sJ5GlA5Hh4E&t=3007s&pp=ygUNYmFha2kgaXRpaGFhcw%3D%3D"
   },
   {
     slug: "saari-raat",
