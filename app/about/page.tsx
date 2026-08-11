@@ -164,7 +164,7 @@ export default function About() {
                   image: "/about-section/Animesh 2.webp"
                 },
                 {
-                  name: "Anoushka Pandit",
+                  name: "Anoushka Sharma",
                   relation: "Daughter of Pt. Amitosh Sharma",
                   role: "Vocalist and Music Practitioner",
                   desc: "A Sangeet Natak Akademi awardee, Anoushka is a distinguished classical, Mehfil-e-Ghazal, and devotional vocalist empanelled with Akashvani (All India Radio). Holding a Master of Music degree, she has performed as the lead vocalist in Raghuvansh's prestigious annual Red Fort Ramayan productions for over two decades. She also coordinates the collective's cultural, theatrical, and musical presentations, preserving the legacy of her father, Pt. Amitosh Sharma.",

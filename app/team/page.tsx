@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function Team() {
   const [activeTab, setActiveTab] = React.useState("theatre");
   const members = [
-    { name: "Anoushka Pandit", role: "Vocalist and Music Practitioner" },
+    { name: "Anoushka Sharma", role: "Vocalist and Music Practitioner" },
     { name: "Rohan Sen", role: "Associate Director" },
     { name: "Priya Das", role: "Lead Choreographer" },
     { name: "Vikram Malhotra", role: "Stage & Set Designer" },

@@ -44,12 +44,12 @@ export const productionsData: Production[] = [
     directorsNote: "",
     teaser: "/production-assets/baaki-itihaas/rgv-baaki-itihaas.webm",
     teaserPosition: "object-[center_15%]",
-    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Pandit)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
+    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
     castRoles: [
       { role: "Sharad", actor: "Krishna Shrivastav" },
       { role: "Vasanti", actor: "Isha Khera" },
       { role: "Sitanath", actor: "Animesh Pandit" },
-      { role: "Kanak", actor: "Anoushka Pandit" },
+      { role: "Kanak", actor: "Anoushka Sharma" },
       { role: "Vidubhushan", actor: "Anil Gagneja" },
       { role: "Nikhil", actor: "Arman" },
       { role: "Vijay", actor: "Aryan Verma" },
@@ -81,12 +81,12 @@ export const productionsData: Production[] = [
     directorsNote: "",
     teaser: "/production-assets/baaki-itihaas/rgv-baaki-itihaas.webm",
     teaserPosition: "object-[center_15%]",
-    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Pandit)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
+    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
     castRoles: [
       { role: "Sharad", actor: "Krishna Shrivastav" },
       { role: "Vasanti", actor: "Isha Khera" },
       { role: "Sitanath", actor: "Animesh Pandit" },
-      { role: "Kanak", actor: "Anoushka Pandit" },
+      { role: "Kanak", actor: "Anoushka Sharma" },
       { role: "Vidubhushan", actor: "Anil Gagneja" },
       { role: "Nikhil", actor: "Arman" },
       { role: "Vijay", actor: "Aryan Verma" },
@@ -104,7 +104,7 @@ export const productionsData: Production[] = [
   {
     slug: "saari-raat",
     title: "Saari Raat",
-    year: 2024,
+    year: 2025,
     director: "Animesh Pandit",
     excerpt: "Saari Raat transcends the boundaries of conventional theatre, emerging as a deeply philosophical exploration of loneliness, human relationships, and the timeless search for truth.",
     genre: "Philosophical Drama",
@@ -122,10 +122,10 @@ export const productionsData: Production[] = [
       "/production-assets/saari-raat/IMG_8935.webp",
       "/production-assets/saari-raat/IMG_8946.webp"
     ],
-    cast: ["Aadmi (Arman Kumar)", "Aurat (Anoushka Pandit)", "Vriddh (Animesh Pandit)"],
+    cast: ["Aadmi (Arman Kumar)", "Aurat (Anoushka Sharma)", "Vriddh (Animesh Pandit)"],
     castRoles: [
       { role: "Aadmi", actor: "Arman Kumar" },
-      { role: "Aurat", actor: "Anoushka Pandit" },
+      { role: "Aurat", actor: "Anoushka Sharma" },
       { role: "Vriddh", actor: "Animesh Pandit" }
     ],
     synopsisFull: [
@@ -186,15 +186,15 @@ export const productionsData: Production[] = [
     teaser: "/production-assets/wrong-turn/teaser.webm",
     cast: ["Arun Mehra", "Lateef Zaidi", "Makarand Joshi", "Jagdeesh Mathur", "Neena Oberoi", "Banne Miyaan", "Raghu", "White Man", "Shivani"],
     castRoles: [
-      { role: "Arun Mehra", actor: "" },
-      { role: "Lateef Zaidi", actor: "" },
-      { role: "Makarand Joshi", actor: "" },
-      { role: "Jagdeesh Mathur", actor: "" },
-      { role: "Neena Oberoi", actor: "" },
-      { role: "Banne Miyaan", actor: "" },
-      { role: "Raghu", actor: "" },
-      { role: "White Man", actor: "" },
-      { role: "Shivani", actor: "" }
+      { role: "Arun Mehra", actor: "Dishant Malhotra" },
+      { role: "Lateef Zaidi", actor: "Vikas Verma" },
+      { role: "Makarand Joshi", actor: "Gyan" },
+      { role: "Jagdeesh Mathur", actor: "Animesh Pandit" },
+      { role: "Neena Oberoi", actor: "Dhwani Jain" },
+      { role: "Banne Miyaan", actor: "Anil Gagneja" },
+      { role: "Raghu", actor: "Mohit Chauhan" },
+      { role: "White Man", actor: "Virendra Chaturvedi" },
+      { role: "Shivani", actor: "Isha Khera" }
     ],
     synopsisFull: [
       "Wrong Turn is a thought-provoking contemporary play that explores the profound relationship between human choices and their consequences. It follows individuals whose lives are transformed by defining moments, where decisions made under fear, uncertainty, pressure, or haste set them on paths that irrevocably alter their futures. Through familiar characters and everyday situations, the play reveals the emotional and psychological complexities hidden beneath ordinary life.",
