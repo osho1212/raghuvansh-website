@@ -85,6 +85,8 @@ export default function Ramayan() {
             loop
             muted
             playsInline
+            preload="auto"
+            poster="/ramayan-assets/hero-poster.webp"
             className="absolute inset-0 w-full h-full object-cover z-0 opacity-80"
             src="/ramayan%20video.webm"
           />
@@ -170,10 +172,28 @@ export default function Ramayan() {
           <div className="max-w-7xl mx-auto px-4 mb-12">
             <h2 className="font-heading text-4xl text-gold">Glimpses of Glory</h2>
           </div>
-          <div className="flex gap-6 px-4 md:px-8 pb-8 overflow-x-auto snap-x hide-scrollbar">
-            {glimpses.map((id) => (
-              <div key={id} className="flex-shrink-0 w-[420px] sm:w-[480px] aspect-video snap-center transition-all duration-300 relative z-10 hover:z-20">
-                <VideoCard id={id} />
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes marquee-glimpses {
+              0% { transform: translateX(0%); }
+              100% { transform: translateX(-50%); }
+            }
+            .animate-marquee-glimpses {
+              display: flex;
+              width: max-content;
+              animation: marquee-glimpses 40s linear infinite;
+            }
+            .animate-marquee-glimpses:hover {
+              animation-play-state: paused;
+            }
+          `}} />
+          <div className="animate-marquee-glimpses gap-6 px-4 md:px-8 pb-8">
+            {[1, 2].map((loop) => (
+              <div key={loop} className="flex gap-6 flex-shrink-0">
+                {glimpses.map((id, idx) => (
+                  <div key={`${loop}-${id}-${idx}`} className="flex-shrink-0 w-[420px] sm:w-[480px] aspect-video transition-all duration-300 relative z-10 hover:z-20">
+                    <VideoCard id={id} />
+                  </div>
+                ))}
               </div>
             ))}
           </div>

@@ -208,6 +208,7 @@ const ImageSlideshow = ({ images }: { images: string[] }) => {
             src={img}
             alt="Slideshow Frame"
             fill
+            sizes="100vw"
             className="object-cover object-center scale-105"
             priority={i === 0}
           />
@@ -266,6 +267,7 @@ export default function ProductionsIndex() {
             src="/production-assets/page-assets/page-bg.webp"
             alt="Theater Background"
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -321,7 +323,7 @@ export default function ProductionsIndex() {
                     src={prod.poster}
                     alt={prod.title}
                     fill
-                    sizes="(max-w-768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, 350px"
                     className="object-cover z-0 group-hover:scale-[1.04] transition-transform duration-700 rounded-xl"
                   />
                   
@@ -379,6 +381,7 @@ export default function ProductionsIndex() {
                   src={selectedProd.poster}
                   alt={selectedProd.title}
                   fill
+                  sizes="100vw"
                   className="object-cover object-center opacity-45 scale-105 z-0"
                   priority
                 />

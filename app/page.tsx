@@ -78,6 +78,8 @@ export default function Home() {
             muted
             playsInline
             onTimeUpdate={handleTimeUpdate}
+            preload="auto"
+            poster="/hero-poster.webp"
             className="absolute inset-0 w-full h-full object-cover z-0"
             src="/Timeline%201%20final%20hero%20section%20.webm"
           />

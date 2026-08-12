@@ -31,7 +31,7 @@ export default function ProductionDetail() {
                 src={prod.poster}
                 alt={prod.title}
                 fill
-                sizes="(max-w-768px) 100vw, 33vw"
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className="object-cover"
                 priority
               />

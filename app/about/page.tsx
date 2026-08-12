@@ -239,21 +239,21 @@ export default function About() {
         <section className="py-16 bg-canvas border-b border-gold/20 relative overflow-hidden">
           <div className="w-full relative">
             <style dangerouslySetInnerHTML={{__html: `
-              @keyframes marquee {
+              @keyframes marquee-affiliations {
                 0% { transform: translateX(-50%); }
                 100% { transform: translateX(0%); }
               }
-              .animate-marquee {
+              .animate-marquee-affiliations {
                 display: flex;
                 width: max-content;
-                animation: marquee 30s linear infinite;
+                animation: marquee-affiliations 30s linear infinite;
               }
-              .animate-marquee:hover {
+              .animate-marquee-affiliations:hover {
                 animation-play-state: paused;
               }
             `}} />
-            
-            <div className="animate-marquee flex items-center gap-16 md:gap-24">
+
+            <div className="animate-marquee-affiliations flex items-center gap-16 md:gap-24">
               {/* Render twice for seamless loop */}
               {[1, 2].map((loop) => (
                 <div key={loop} className="flex items-center gap-16 md:gap-24 flex-shrink-0">

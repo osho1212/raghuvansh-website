@@ -56,6 +56,8 @@ export default function MehfilEGhazal() {
             loop
             muted
             playsInline
+            preload="auto"
+            poster="/mehfil-e-ghazal-assets/hero-poster.webp"
             className="absolute inset-0 w-full h-full object-cover z-0"
             style={{ objectPosition: 'center 30%' }}
             src="/ghazal%20hero%20.webm"
