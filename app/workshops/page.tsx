@@ -7,13 +7,9 @@ import Image from "next/image";
 
 const WorkshopSlideshow = () => {
   const images = [
-    "/Workshop assets/IMG_8862 (1).webp",
-    "/Workshop assets/IMG_8868~2 (1).webp",
-    "/Workshop assets/IMG_8898 (1).webp",
-    "/Workshop assets/IMG_8909 (1).webp",
-    "/Workshop assets/IMG_8928 (1) (1).webp",
-    "/Workshop assets/IMG_8935 (1).webp",
-    "/Workshop assets/IMG_8946 (1).webp"
+    "/Workshop assets/workshop-1.webp",
+    "/Workshop assets/workshop-2.webp",
+    "/Workshop assets/workshop-3.webp"
   ];
   const [index, setIndex] = React.useState(0);
 
