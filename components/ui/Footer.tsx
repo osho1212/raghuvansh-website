@@ -24,8 +24,8 @@ export const Footer = () => {
                   8585909213
                 </a>
                 ,{" "}
-                <a href="tel:+917088575967" className="text-gold hover:text-canvas transition-colors font-medium">
-                  7088575967
+                <a href="tel:+919953959498" className="text-gold hover:text-canvas transition-colors font-medium">
+                  9953959498
                 </a>
               </div>
             </div>

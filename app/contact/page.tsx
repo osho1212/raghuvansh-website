@@ -115,7 +115,7 @@ function ContactContent() {
                   </div>
                   <div>
                     <span className="text-canvas/50 block text-xs uppercase tracking-wider">Phone / WhatsApp</span>
-                    <a href="tel:+918585909213" className="hover:text-gold transition-colors font-semibold">+91 85859 09213</a>, <a href="tel:+917088575967" className="hover:text-gold transition-colors font-semibold">+91 70885 75967</a>
+                    <a href="tel:+918585909213" className="hover:text-gold transition-colors font-semibold">+91 85859 09213</a>, <a href="tel:+919953959498" className="hover:text-gold transition-colors font-semibold">+91 99539 59498</a>
                   </div>
                 </div>
 

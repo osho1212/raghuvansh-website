@@ -47,7 +47,7 @@ export default function Workshops() {
   const types = [
     { 
       title: "Music", 
-      desc: "Comprehensive training in vocals and instrumentation, bridging classical foundations with contemporary music forms. Designed for artists looking to refine their technical skills and musical expression.", 
+      desc: "Comprehensive training in vocals and instrumental, bridging classical foundations with contemporary music forms. Designed for artists looking to refine their technical skills and musical expression.",
       duration: "Ongoing" 
     },
     { 
@@ -80,7 +80,7 @@ export default function Workshops() {
 
         {/* TYPES (Cards) */}
         <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-heading text-4xl text-curtain font-bold text-center mb-16">Workshop Types</h2>
+          <h2 className="font-heading text-4xl text-curtain font-bold text-center mb-16">Workshops</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto gap-8">
             {types.map((type, idx) => (
               <div key={idx} className="p-8 border border-gold/20 hover:border-gold/50 bg-white rounded-sm transition-colors flex flex-col justify-between">
