@@ -81,7 +81,7 @@ export default function Home() {
             preload="auto"
             poster="/hero-poster.webp"
             className="absolute inset-0 w-full h-full object-cover z-0"
-            src="/Timeline%201%20final%20hero%20section%20.webm"
+            src="/rgv.webm"
           />
           <div className="absolute inset-0 z-10 bg-gradient-to-t from-ink/90 via-transparent to-ink/30"></div>
           
