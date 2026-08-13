@@ -79,7 +79,7 @@ export default function About() {
                   Pt. Amitosh Sharma
                 </motion.h1>
                 <div className="font-body text-gold uppercase tracking-widest text-sm mb-8">
-                  Founder & Director • AIR A-Grade Vocal Artist
+                  Founder & Director • AIR B-High Grade Vocal Artist
                 </div>
                 <p className="font-body text-lg text-canvas/80 leading-relaxed mb-8">
                   A visionary of the Indian stage, Pt. Amitosh Sharma dedicated his life to bridging the gap between ancient theatrical traditions and contemporary performance art. His directorial style was characterized by its scale, emotional depth, and uncompromising commitment to the craft.
@@ -93,7 +93,7 @@ export default function About() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-gold font-bold">•</span>
-                    <span>AIR A-Grade Vocal Artist</span>
+                    <span>AIR B-High Grade Vocal Artist</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-gold font-bold">•</span>
@@ -164,10 +164,10 @@ export default function About() {
                   image: "/about-section/Animesh 2.webp"
                 },
                 {
-                  name: "Anoushka Sharma",
+                  name: "Anushka Sharma",
                   relation: "Daughter of Pt. Amitosh Sharma",
                   role: "Vocalist and Music Practitioner",
-                  desc: "A Sangeet Natak Akademi awardee, Anoushka is a distinguished classical, Mehfil-e-Ghazal, and devotional vocalist empanelled with Akashvani (All India Radio). Holding a Master of Music degree, she has performed as the lead vocalist in Raghuvansh's prestigious annual Red Fort Ramayan productions for over two decades. She also coordinates the collective's cultural, theatrical, and musical presentations, preserving the legacy of her father, Pt. Amitosh Sharma.",
+                  desc: "A Sangeet Natak Akademi awardee, Anushka is a distinguished classical, Mehfil-e-Ghazal, and devotional vocalist empanelled with Akashvani (All India Radio). Holding a Master of Music degree, she has performed as the lead vocalist in Raghuvansh's prestigious annual Red Fort Ramayan productions for over two decades. She also coordinates the collective's cultural, theatrical, and musical presentations, preserving the legacy of her father, Pt. Amitosh Sharma.",
                   image: "/about-section/anushka.webp"
                 },
                 {
@@ -550,7 +550,7 @@ export default function About() {
                         <strong className="text-gold text-xs uppercase tracking-wider block mb-1">Professional Profile</strong>
                         <ul className="text-sm text-canvas/80 list-disc pl-4 space-y-1.5">
                           <li>Head of the Music Department, CRPF School, Delhi</li>
-                          <li>AIR (All India Radio) A-Grade Vocal Artist (Ghazal and Bhajan)</li>
+                          <li>AIR (All India Radio) B-High Grade Vocal Artist (Ghazal and Bhajan)</li>
                           <li>Urdu Theatre Training at Shri Ram Centre for Performing Arts, Delhi</li>
                         </ul>
                       </div>

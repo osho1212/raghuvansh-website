@@ -44,12 +44,12 @@ export const productionsData: Production[] = [
     directorsNote: "",
     teaser: "/production-assets/baaki-itihaas/rgv-baaki-itihaas.webm",
     teaserPosition: "object-[center_15%]",
-    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
+    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
     castRoles: [
       { role: "Sharad", actor: "Krishna Shrivastav" },
       { role: "Vasanti", actor: "Isha Khera" },
       { role: "Sitanath", actor: "Animesh Pandit" },
-      { role: "Kanak", actor: "Anoushka Sharma" },
+      { role: "Kanak", actor: "Anushka Sharma" },
       { role: "Vidubhushan", actor: "Anil Gagneja" },
       { role: "Nikhil", actor: "Arman" },
       { role: "Vijay", actor: "Aryan Verma" },
@@ -81,12 +81,12 @@ export const productionsData: Production[] = [
     directorsNote: "",
     teaser: "/production-assets/baaki-itihaas/rgv-baaki-itihaas.webm",
     teaserPosition: "object-[center_15%]",
-    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anoushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
+    cast: ["Sharad (Krishna Shrivastav)", "Vasanti (Isha Khera)", "Sitanath (Animesh Pandit)", "Kanak (Anushka Sharma)", "Vidubhushan (Anil Gagneja)", "Nikhil (Arman)", "Vijay (Aryan Verma)", "Vasudev (Aryan Verma)", "Kanak’s Father (Anil Gagneja)", "Postman (Jivansh Bihagra)"],
     castRoles: [
       { role: "Sharad", actor: "Krishna Shrivastav" },
       { role: "Vasanti", actor: "Isha Khera" },
       { role: "Sitanath", actor: "Animesh Pandit" },
-      { role: "Kanak", actor: "Anoushka Sharma" },
+      { role: "Kanak", actor: "Anushka Sharma" },
       { role: "Vidubhushan", actor: "Anil Gagneja" },
       { role: "Nikhil", actor: "Arman" },
       { role: "Vijay", actor: "Aryan Verma" },
@@ -122,10 +122,10 @@ export const productionsData: Production[] = [
       "/production-assets/saari-raat/IMG_8935.webp",
       "/production-assets/saari-raat/IMG_8946.webp"
     ],
-    cast: ["Aadmi (Arman Kumar)", "Aurat (Anoushka Sharma)", "Vriddh (Animesh Pandit)"],
+    cast: ["Aadmi (Arman Kumar)", "Aurat (Anushka Sharma)", "Vriddh (Animesh Pandit)"],
     castRoles: [
       { role: "Aadmi", actor: "Arman Kumar" },
-      { role: "Aurat", actor: "Anoushka Sharma" },
+      { role: "Aurat", actor: "Anushka Sharma" },
       { role: "Vriddh", actor: "Animesh Pandit" }
     ],
     synopsisFull: [

@@ -29,12 +29,22 @@ const WorkshopSlideshow = () => {
             i === index ? "opacity-45" : "opacity-0"
           }`}
         >
+          {i === 0 && (
+            <Image
+              src={img}
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes="100vw"
+              className="object-cover object-center scale-110 blur-2xl"
+            />
+          )}
           <Image
             src={img}
             alt="Workshop Slideshow Frame"
             fill
             sizes="100vw"
-            className="object-cover object-center"
+            className={`relative object-center ${i === 0 ? "object-contain" : "object-cover"}`}
             priority={i === 0}
           />
         </div>

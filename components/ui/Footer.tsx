@@ -1,5 +1,7 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { Mail, Phone } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -7,26 +9,42 @@ export const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
-            <h2 className="font-heading text-3xl text-gold mb-4 font-bold">RAGHUVANSH</h2>
+            <Image
+              src="/logo-gold.png"
+              alt="Raghuvansh Group of Performing Arts"
+              width={900}
+              height={807}
+              className="h-24 sm:h-28 w-auto mb-4"
+            />
             <p className="font-body text-canvas/80 max-w-md">
               A professional group of performing arts based out in New Delhi, preserving the classical and pioneering the contemporary since 2000
             </p>
-            <div className="font-body text-base sm:text-lg text-canvas/90 mt-4 space-y-1.5">
-              <div>
-                <span className="text-canvas/70 font-medium">Email:</span>{" "}
-                <a href="mailto:raghuvansh.art@gmail.com" className="text-gold hover:text-canvas transition-colors font-medium">
-                  raghuvansh.art@gmail.com
-                </a>
+            <div className="space-y-6 font-body text-sm mt-6">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center text-gold shrink-0">
+                  <Mail size={18} />
+                </div>
+                <div>
+                  <span className="text-canvas/50 block text-xs uppercase tracking-wider">Email</span>
+                  <a href="mailto:raghuvansh.art@gmail.com" className="text-base sm:text-lg hover:text-gold transition-colors font-semibold">
+                    raghuvansh.art@gmail.com
+                  </a>
+                </div>
               </div>
-              <div>
-                <span className="text-canvas/70 font-medium">Phone:</span>{" "}
-                <a href="tel:+918585909213" className="text-gold hover:text-canvas transition-colors font-medium">
-                  8585909213
-                </a>
-                ,{" "}
-                <a href="tel:+919953959498" className="text-gold hover:text-canvas transition-colors font-medium">
-                  9953959498
-                </a>
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full border border-gold/30 flex items-center justify-center text-gold shrink-0">
+                  <Phone size={18} />
+                </div>
+                <div>
+                  <span className="text-canvas/50 block text-xs uppercase tracking-wider">Phone / WhatsApp</span>
+                  <a href="tel:+918585909213" className="text-base sm:text-lg hover:text-gold transition-colors font-semibold">
+                    +91 85859 09213
+                  </a>
+                  ,{" "}
+                  <a href="tel:+919953959498" className="text-base sm:text-lg hover:text-gold transition-colors font-semibold">
+                    +91 99539 59498
+                  </a>
+                </div>
               </div>
             </div>
           </div>

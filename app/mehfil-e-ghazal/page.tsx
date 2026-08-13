@@ -105,10 +105,10 @@ export default function MehfilEGhazal() {
                   Featured Vocalist
                 </span>
                 <h2 className="font-heading text-4xl md:text-5xl text-canvas mb-6 font-bold">
-                  Anoushka Sharma
+                  Anushka Sharma
                 </h2>
                 <p className="font-body text-lg text-canvas/80 leading-relaxed mb-6">
-                  A Sangeet Natak Akademi awardee, Anoushka Sharma has captivated audiences nationwide with her mesmerizing voice. She brings a contemporary depth to classical Ghazals, devotional music, and Sufi compositions, making these rich traditions accessible and emotional for listeners of all ages.
+                  A Sangeet Natak Akademi awardee, Anushka Sharma has captivated audiences nationwide with her mesmerizing voice. She brings a contemporary depth to classical Ghazals, devotional music, and Sufi compositions, making these rich traditions accessible and emotional for listeners of all ages.
                 </p>
               </div>
               <div>

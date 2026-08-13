@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function Team() {
   const [activeTab, setActiveTab] = React.useState("theatre");
   const members = [
-    { name: "Anoushka Sharma", role: "Vocalist and Music Practitioner" },
+    { name: "Anushka Sharma", role: "Vocalist and Music Practitioner" },
     { name: "Rohan Sen", role: "Associate Director" },
     { name: "Priya Das", role: "Lead Choreographer" },
     { name: "Vikram Malhotra", role: "Stage & Set Designer" },
@@ -62,7 +62,7 @@ export default function Team() {
                     <h3 className="font-heading text-xl text-curtain font-semibold border-b border-gold/15 pb-2 mb-4">Professional Profile</h3>
                     <ul className="list-disc pl-5 space-y-2 font-body text-ink/80">
                       <li>Served as the Head of the Music Department, CRPF School, Delhi.</li>
-                      <li>AIR (All India Radio) A-Grade Vocal Artist (Ghazal and Bhajan).</li>
+                      <li>AIR (All India Radio) B-High Grade Vocal Artist (Ghazal and Bhajan).</li>
                     </ul>
                   </div>
 
