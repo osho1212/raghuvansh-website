@@ -21,6 +21,22 @@ h1, h2, h3, h4, h5, h6, .font-heading {
   font-family: 'Cinzel Decorative', serif !important;
 }
 
+/* Consistent mobile type scale: heading 32px, sub-heading 16px, body 12px */
+@media (max-width: 767px) {
+  h1, h2 {
+    font-size: 32px !important;
+    line-height: 1.2 !important;
+  }
+  h3 {
+    font-size: 16px !important;
+    line-height: 1.4 !important;
+  }
+  p {
+    font-size: 12px !important;
+    line-height: 1.6 !important;
+  }
+}
+
 @layer utilities {
   .film-grain {
     position: relative;
