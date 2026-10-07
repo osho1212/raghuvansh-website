@@ -1,0 +1,551 @@
+# dev-desk-workflow-version: 4
+#
+# Dev Desk cloud runner (Potentiaa HQ → Dev Desk).
+#
+# Two jobs, so Claude never holds a token that can write to the repository:
+#   1. "Claude Code" (read-only token) checks out the base branch, or the existing work branch
+#      for follow-ups, runs Claude Code, commits locally and hands the new commits over as a
+#      git bundle. Claude's final reply is published as "Dev Desk reply" annotations so Dev Desk
+#      can show it, including when Claude changed nothing (for example when it needs more info).
+#   2. "Push changes" (write token) starts on a clean runner, refuses commits that contain
+#      credentials, and pushes the work branch. Nothing from the repository runs in this job.
+#
+# The person's Claude credential is never stored in the repository. Before any repository code
+# runs, the job creates a one-time key pair and publishes the public half (as an artifact name).
+# Dev Desk checks that this run uses the unmodified Dev Desk workflow, then sends the credential
+# sealed to that key through a temporary ref (refs/dev-desk/handoff/<job_id>). Only this run can
+# open it. The run stops unless actor_key belongs to the person who started it.
+#
+# While Claude works, a small publisher posts its recent activity (messages, files, commands) to a
+# "Dev Desk · <job_id>" check run on this commit every few seconds; Dev Desk shows it as a live feed.
+name: Dev Desk Claude Task
+run-name: Dev Desk ${{ inputs.job_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      job_id:
+        description: Dev Desk job id
+        required: true
+        type: string
+      prompt:
+        description: What Claude Code should do
+        required: true
+        type: string
+      branch:
+        description: Work branch to create (or continue) and push
+        required: true
+        type: string
+      base:
+        description: Base branch to start from
+        required: true
+        default: main
+        type: string
+      actor_key:
+        description: Upper-case GitHub login used to pick the per-user secrets
+        required: true
+        type: string
+      auth_mode:
+        description: subscription or api_key
+        required: true
+        default: subscription
+        type: string
+      author_name:
+        description: Git author name
+        required: true
+        type: string
+      author_email:
+        description: Git author email
+        required: true
+        type: string
+      model:
+        description: Claude model id (empty for the account default)
+        required: false
+        default: ''
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: dev-desk-${{ inputs.branch }}
+  cancel-in-progress: false
+
+jobs:
+  claude:
+    name: Claude Code
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: read
+      checks: write
+    outputs:
+      outcome: ${{ steps.commit.outputs.outcome }}
+      start_sha: ${{ steps.branch.outputs.start_sha }}
+    env:
+      JOB_ID: ${{ inputs.job_id }}
+      PROMPT: ${{ inputs.prompt }}
+      BRANCH: ${{ inputs.branch }}
+      BASE: ${{ inputs.base }}
+      ACTOR_KEY: ${{ inputs.actor_key }}
+      AUTH_MODE: ${{ inputs.auth_mode }}
+      AUTHOR_NAME: ${{ inputs.author_name }}
+      AUTHOR_EMAIL: ${{ inputs.author_email }}
+      MODEL: ${{ inputs.model }}
+      DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+    steps:
+      - name: Check request
+        run: |
+          expected=$(printf '%s' "$GITHUB_TRIGGERING_ACTOR" | tr '[:lower:]' '[:upper:]' | sed 's/[^A-Z0-9]/_/g')
+          if [ "$ACTOR_KEY" != "$expected" ]; then
+            echo "::error title=Dev Desk::This run was started by @$GITHUB_TRIGGERING_ACTOR but asked for someone else's Claude credential. Start the task from Dev Desk while signed in to your own account."
+            exit 1
+          fi
+          if ! git check-ref-format --branch "$BRANCH" >/dev/null 2>&1; then
+            echo "::error title=Dev Desk::The work branch name is not a valid git branch name."
+            exit 1
+          fi
+          if [ "$BRANCH" = "$BASE" ] || [ "$BRANCH" = "$DEFAULT_BRANCH" ]; then
+            echo "::error title=Dev Desk::Claude must work on its own branch, not on the base or default branch."
+            exit 1
+          fi
+          case "$AUTH_MODE" in
+            subscription|api_key) ;;
+            *) echo "::error title=Dev Desk::auth_mode must be subscription or api_key."; exit 1 ;;
+          esac
+          if ! printf '%s' "$JOB_ID" | grep -Eq '^[A-Za-z0-9_-]{1,80}$'; then
+            echo "::error title=Dev Desk::Invalid job id."
+            exit 1
+          fi
+          if [ -n "$MODEL" ] && ! printf '%s' "$MODEL" | grep -Eq '^[a-z0-9][a-z0-9.-]{1,60}$'; then
+            echo "::error title=Dev Desk::Unknown Claude model."
+            exit 1
+          fi
+
+      - name: Create handoff key
+        id: handoffkey
+        run: |
+          node <<'EOF'
+          const fs = require('fs');
+          const { webcrypto: { subtle } } = require('crypto');
+          (async () => {
+            const tmp = process.env.RUNNER_TEMP;
+            const kp = await subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']);
+            fs.writeFileSync(`${tmp}/dev-desk-handoff.key`, Buffer.from(await subtle.exportKey('pkcs8', kp.privateKey)), { mode: 0o600 });
+            const pub = Buffer.from(await subtle.exportKey('raw', kp.publicKey)).toString('base64url');
+            fs.writeFileSync(`${tmp}/dev-desk-key.txt`, pub);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `name=dev-desk-key-${pub}\n`);
+            console.log('Created a one-time key for receiving your Claude credential.');
+          })().catch(err => { console.log(`::error title=Dev Desk::Could not create the handoff key: ${err.message}`); process.exit(1); });
+          EOF
+
+      - name: Publish handoff key
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.handoffkey.outputs.name }}
+          path: ${{ runner.temp }}/dev-desk-key.txt
+          retention-days: 1
+          if-no-files-found: error
+
+      - name: Receive Claude credential
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          work="$RUNNER_TEMP/dev-desk-handoff"
+          git init -q "$work"
+          auth="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+          url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY"
+          found=""
+          for attempt in $(seq 1 60); do
+            for ref in "refs/dev-desk/handoff/${JOB_ID}" "refs/tags/dev-desk-handoff/${JOB_ID}"; do
+              if git -C "$work" -c "http.extraheader=$auth" fetch -q --no-tags --depth=1 "$url" "+${ref}:refs/handoff" 2>/dev/null; then
+                found="$ref"
+                break 2
+              fi
+            done
+            sleep 3
+          done
+          if [ -z "$found" ]; then
+            echo "::error title=Dev Desk::Dev Desk did not hand over your Claude credential within 3 minutes. Keep the Dev Desk tab open for about 30 seconds after starting a task, then retry."
+            exit 1
+          fi
+          git -C "$work" show refs/handoff:handoff.json > "$RUNNER_TEMP/dev-desk-handoff.json"
+          rm -rf "$work"
+          node <<'EOF'
+          const fs = require('fs');
+          const { webcrypto: { subtle } } = require('crypto');
+          const tmp = process.env.RUNNER_TEMP;
+          const jobId = process.env.JOB_ID;
+          const fail = msg => { console.log(`::error title=Dev Desk::${msg}`); process.exit(1); };
+          (async () => {
+            let sealed;
+            try { sealed = JSON.parse(fs.readFileSync(`${tmp}/dev-desk-handoff.json`, 'utf8')); } catch { return fail('The credential handoff was unreadable.'); }
+            if (!sealed || sealed.v !== 1 || sealed.alg !== 'ECDH-P256+HKDF-SHA256+A256GCM') return fail('Unsupported credential handoff. Update Dev Desk and retry.');
+            const enc = new TextEncoder();
+            const b64 = s => Buffer.from(String(s || ''), 'base64');
+            const priv = await subtle.importKey('pkcs8', fs.readFileSync(`${tmp}/dev-desk-handoff.key`), { name: 'ECDH', namedCurve: 'P-256' }, false, ['deriveBits']);
+            const epk = await subtle.importKey('raw', b64(sealed.epk), { name: 'ECDH', namedCurve: 'P-256' }, false, []);
+            const shared = await subtle.deriveBits({ name: 'ECDH', public: epk }, priv, 256);
+            const hkdf = await subtle.importKey('raw', shared, 'HKDF', false, ['deriveKey']);
+            const aes = await subtle.deriveKey({ name: 'HKDF', hash: 'SHA-256', salt: enc.encode(jobId), info: enc.encode('dev-desk-handoff-v1') }, hkdf, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+            let plain;
+            try {
+              plain = JSON.parse(Buffer.from(await subtle.decrypt({ name: 'AES-GCM', iv: b64(sealed.iv), additionalData: enc.encode(jobId) }, aes, b64(sealed.data))).toString('utf8'));
+            } catch {
+              return fail('Could not open the credential handoff: it was not sealed for this run.');
+            }
+            if (plain.jobId !== jobId) return fail('The credential handoff belongs to a different task.');
+            if (plain.mode !== process.env.AUTH_MODE) return fail('The credential type does not match this run.');
+            if (typeof plain.credential !== 'string' || !/^[A-Za-z0-9_-]{20,400}$/.test(plain.credential)) return fail('The handed-over credential is malformed.');
+            console.log(`::add-mask::${plain.credential}`);
+            fs.writeFileSync(`${tmp}/dev-desk-credential`, plain.credential, { mode: 0o600 });
+            fs.rmSync(`${tmp}/dev-desk-handoff.key`, { force: true });
+            fs.rmSync(`${tmp}/dev-desk-handoff.json`, { force: true });
+            console.log('Received your Claude credential, sealed to this run.');
+          })().catch(err => fail(`Credential handoff failed: ${err.message}`));
+          EOF
+
+      - name: Check out repository
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.base }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Prepare work branch
+        id: branch
+        run: |
+          if git rev-parse --verify --quiet "refs/remotes/origin/$BRANCH" >/dev/null; then
+            git checkout -q -B "$BRANCH" "origin/$BRANCH"
+            echo "Continuing on the existing work branch $BRANCH"
+          else
+            git checkout -q -B "$BRANCH"
+            echo "Created work branch $BRANCH from $BASE"
+          fi
+          echo "start_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          package-manager-cache: false
+
+      - name: Install project dependencies
+        continue-on-error: true
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+          elif [ -f package.json ]; then
+            npm install --no-audit --no-fund
+          else
+            echo "No package.json, skipping."
+          fi
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Run Claude Code
+        id: claude
+        env:
+          LIVE_TOKEN: ${{ github.token }}
+        run: |
+          CRED="$RUNNER_TEMP/dev-desk-credential"
+          [ -s "$CRED" ] || { echo "::error title=Dev Desk::No Claude credential was received for this run."; exit 1; }
+          if [ "$AUTH_MODE" = "api_key" ]; then
+            export ANTHROPIC_API_KEY="$(cat "$CRED")"
+          else
+            export CLAUDE_CODE_OAUTH_TOKEN="$(cat "$CRED")"
+          fi
+          rm -f "$CRED"
+          # Live activity publisher: the only process that gets the (checks: write) job token.
+          cat > "$RUNNER_TEMP/dev-desk-live.js" <<'EOF'
+          const fs = require('fs');
+          // dev-desk-lite:start
+          const LITE_TEXT_MAX = 6000;
+          const LITE_INPUT_MAX = 1200;
+          const LITE_RESULT_MAX = 800;
+
+          function liteCut(value, max) {
+            if (typeof value !== 'string') return value;
+            return value.length > max ? `${value.slice(0, max)}… (+${value.length - max} chars)` : value;
+          }
+
+          function liteInput(input) {
+            const out = {};
+            for (const [k, v] of Object.entries(input && typeof input === 'object' ? input : {})) {
+              if (typeof v === 'string') {
+                out[k] = liteCut(v, LITE_INPUT_MAX);
+              } else if (v && typeof v === 'object') {
+                // Small structures (e.g. todo lists) stay structured; big ones become trimmed text.
+                const json = JSON.stringify(v);
+                out[k] = json.length > LITE_INPUT_MAX * 2 ? liteCut(json, LITE_INPUT_MAX) : v;
+              } else {
+                out[k] = v;
+              }
+            }
+            return out;
+          }
+
+          function liteResultContent(content) {
+            if (typeof content === 'string') return liteCut(content, LITE_RESULT_MAX);
+            if (Array.isArray(content)) {
+              const text = content.map(c => (c && c.type === 'text' ? c.text : c && c.type ? `[${c.type}]` : '')).join('\n');
+              return liteCut(text, LITE_RESULT_MAX);
+            }
+            return '';
+          }
+
+          function toLiteEvents(ev) {
+            if (!ev || typeof ev !== 'object') return [];
+            if (ev.type === 'system') {
+              if (ev.subtype === 'init') return [{ t: 'init', model: ev.model || '', session: ev.session_id || '' }];
+              if (ev.subtype === 'task_summary' && ev.detail) return [{ t: 'note', text: liteCut(String(ev.detail), 300) }];
+              if (ev.subtype === 'post_turn_summary' && ev.status_detail) return [{ t: 'note', text: liteCut(String(ev.status_detail), 300) }];
+              return [];
+            }
+            if (ev.type === 'assistant') {
+              const out = [];
+              for (const block of (ev.message && ev.message.content) || []) {
+                if (block.type === 'text' && block.text && block.text.trim()) out.push({ t: 'text', text: liteCut(block.text, LITE_TEXT_MAX) });
+                else if (block.type === 'tool_use') out.push({ t: 'tool', id: block.id, name: block.name, input: liteInput(block.input) });
+              }
+              return out;
+            }
+            if (ev.type === 'user') {
+              const out = [];
+              const content = ev.message && ev.message.content;
+              for (const block of Array.isArray(content) ? content : []) {
+                if (block && block.type === 'tool_result') {
+                  out.push({ t: 'tool_result', id: block.tool_use_id, error: Boolean(block.is_error), content: liteResultContent(block.content) });
+                }
+              }
+              return out;
+            }
+            if (ev.type === 'result') {
+              return [
+                {
+                  t: 'result',
+                  subtype: ev.subtype || '',
+                  error: Boolean(ev.is_error),
+                  text: liteCut(typeof ev.result === 'string' ? ev.result : '', LITE_TEXT_MAX),
+                  turns: typeof ev.num_turns === 'number' ? ev.num_turns : null,
+                  cost: typeof ev.total_cost_usd === 'number' ? ev.total_cost_usd : null,
+                  ms: typeof ev.duration_ms === 'number' ? ev.duration_ms : null,
+                  session: ev.session_id || '',
+                },
+              ];
+            }
+            return [];
+          }
+          // dev-desk-lite:end
+          const tmp = process.env.RUNNER_TEMP;
+          const token = process.env.LIVE_TOKEN;
+          delete process.env.LIVE_TOKEN;
+          const jobId = process.env.JOB_ID;
+          const base = `${process.env.GITHUB_API_URL}/repos/${process.env.GITHUB_REPOSITORY}`;
+          const LIMIT = 60000;
+          const call = async (method, path, body) => {
+            try {
+              const r = await fetch(base + path, {
+                method,
+                headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'Content-Type': 'application/json', 'User-Agent': 'dev-desk-live' },
+                body: JSON.stringify(body),
+              });
+              return r.ok ? await r.json() : null;
+            } catch {
+              return null;
+            }
+          };
+          function snapshot() {
+            let raw = '';
+            try { raw = fs.readFileSync(`${tmp}/claude-stream.jsonl`, 'utf8'); } catch {}
+            const events = [];
+            for (const line of raw.split('\n')) {
+              if (!line.trim()) continue;
+              try { events.push(...toLiteEvents(JSON.parse(line))); } catch {}
+            }
+            const kept = [];
+            let size = 200;
+            for (let i = events.length - 1; i >= 0; i--) {
+              const n = Buffer.byteLength(JSON.stringify(events[i])) + 1;
+              if (size + n > LIMIT) break;
+              kept.unshift(events[i]);
+              size += n;
+            }
+            return { v: 1, jobId, total: events.length, events: kept };
+          }
+          (async () => {
+            const check = await call('POST', '/check-runs', {
+              name: `Dev Desk · ${jobId}`,
+              head_sha: process.env.GITHUB_SHA,
+              external_id: jobId,
+              status: 'in_progress',
+              output: { title: 'Claude is working', summary: 'Live activity for Dev Desk.' },
+            });
+            if (!check || !check.id) {
+              console.log('Live activity feed unavailable (could not create the check run).');
+              return;
+            }
+            let last = '';
+            for (;;) {
+              const done = fs.existsSync(`${tmp}/claude-done`);
+              const snap = snapshot();
+              const text = JSON.stringify(snap);
+              if (text !== last) {
+                await call('PATCH', `/check-runs/${check.id}`, {
+                  output: { title: done ? 'Claude finished' : 'Claude is working', summary: `${snap.total} activity events`, text },
+                });
+                last = text;
+              }
+              if (done) break;
+              await new Promise(r => setTimeout(r, 4000));
+            }
+            await call('PATCH', `/check-runs/${check.id}`, { status: 'completed', conclusion: 'neutral' });
+          })();
+          EOF
+          : > "$RUNNER_TEMP/claude-stream.jsonl"
+          LIVE_TOKEN="$LIVE_TOKEN" node "$RUNNER_TEMP/dev-desk-live.js" &
+          LIVE_PID=$!
+          unset LIVE_TOKEN
+          NOTE="You are running unattended on GitHub Actions for Dev Desk, in the repository $GITHUB_REPOSITORY on branch $BRANCH. Nobody can answer questions while you work, so make reasonable assumptions and finish the task. If the request clearly does not apply to this repository, or you cannot continue without more information, change nothing and explain why in plain language, ending with the questions you need answered. Do not commit, push or switch branches; Dev Desk commits and pushes your changes after you finish. Never write credentials or environment variable values into files."
+          set +e
+          claude -p "$PROMPT" \
+            ${MODEL:+--model "$MODEL"} \
+            --output-format stream-json --verbose \
+            --permission-mode acceptEdits \
+            --append-system-prompt "$NOTE" \
+            --allowedTools "Read Edit MultiEdit Write Glob Grep TodoWrite Bash(npm:*) Bash(npx:*) Bash(node:*) Bash(ls:*) Bash(cat:*) Bash(mkdir:*) Bash(git status:*) Bash(git diff:*) Bash(git log:*) Bash(git show:*)" \
+            2> "$RUNNER_TEMP/claude-stderr.txt" \
+            | tee "$RUNNER_TEMP/claude-stream.jsonl" \
+            | jq -R -r --unbuffered '
+                fromjson?
+                | (if .type == "assistant" then
+                     (.message.content[]?
+                      | if .type == "text" then .text
+                        elif .type == "tool_use" then
+                          "→ \(.name) \((.input.file_path // .input.path // .input.command // .input.pattern // "") | tostring | .[0:160])"
+                        else empty end)
+                   elif .type == "result" then
+                     "── Claude finished (\(.subtype)) after \(.num_turns // 0) turns"
+                   else empty end)
+                | split("\n")[]
+                | "│ " + .'
+          code=${PIPESTATUS[0]}
+          set -e
+          touch "$RUNNER_TEMP/claude-done"
+          ( sleep 60; kill "$LIVE_PID" 2>/dev/null ) &
+          wait "$LIVE_PID" 2>/dev/null || true
+          if [ -s "$RUNNER_TEMP/claude-stderr.txt" ]; then
+            tail -n 40 "$RUNNER_TEMP/claude-stderr.txt" | sed 's/^/stderr│ /'
+          fi
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit "$code"
+
+      - name: Report Claude's reply
+        if: always() && (steps.claude.outcome == 'success' || steps.claude.outcome == 'failure')
+        env:
+          EXIT_CODE: ${{ steps.claude.outputs.exit_code }}
+        run: |
+          node <<'EOF'
+          const fs = require('fs');
+          const tmp = process.env.RUNNER_TEMP;
+          const read = f => { try { return fs.readFileSync(`${tmp}/${f}`, 'utf8'); } catch { return ''; } };
+          let result = null;
+          for (const line of read('claude-stream.jsonl').split('\n')) {
+            try { const e = JSON.parse(line); if (e && e.type === 'result') result = e; } catch {}
+          }
+          let reply = (result && typeof result.result === 'string' ? result.result : '').trim();
+          if (!reply) reply = read('claude-stderr.txt').trim().slice(-3000);
+          fs.writeFileSync(`${tmp}/claude-reply.txt`, reply);
+          // Workflow commands keep one annotation per line and cap each message near 4 KB.
+          const esc = s => s.replace(/%/g, '%25').replace(/\r/g, '%0D').replace(/\n/g, '%0A');
+          const chars = Array.from(reply);
+          const SIZE = 3800, MAX = 8;
+          const parts = [];
+          for (let i = 0; i < chars.length && parts.length < MAX; i += SIZE) parts.push(chars.slice(i, i + SIZE).join(''));
+          parts.forEach((p, i) => console.log(`::notice title=Dev Desk reply ${i + 1}/${parts.length}::${esc(p)}`));
+          const stats = {
+            exitCode: Number(process.env.EXIT_CODE || 0),
+            isError: Boolean(result && result.is_error),
+            subtype: (result && result.subtype) || '',
+            turns: result && typeof result.num_turns === 'number' ? result.num_turns : null,
+            costUsd: result && typeof result.total_cost_usd === 'number' ? result.total_cost_usd : null,
+            durationMs: result && typeof result.duration_ms === 'number' ? result.duration_ms : null,
+            truncated: chars.length > SIZE * MAX,
+          };
+          console.log(`::notice title=Dev Desk stats::${esc(JSON.stringify(stats))}`);
+          EOF
+
+      - name: Commit changes
+        id: commit
+        if: steps.claude.outcome == 'success'
+        env:
+          START_SHA: ${{ steps.branch.outputs.start_sha }}
+        run: |
+          current=$(git symbolic-ref --short -q HEAD || true)
+          if [ "$current" != "$BRANCH" ]; then
+            echo "::error title=Dev Desk::Claude switched away from the work branch, so nothing was pushed."
+            exit 1
+          fi
+          git config user.name "$AUTHOR_NAME"
+          git config user.email "$AUTHOR_EMAIL"
+          git add -A
+          if ! git diff --cached --quiet; then
+            TITLE=$(printf '%s' "$PROMPT" | head -n 1 | cut -c1-70)
+            SUMMARY=$(head -c 12000 "$RUNNER_TEMP/claude-reply.txt" 2>/dev/null || true)
+            git commit -q -m "Dev Desk: $TITLE" -m "$SUMMARY" -m "Dev Desk job: $JOB_ID"
+          fi
+          if [ "$(git rev-parse HEAD)" = "$START_SHA" ]; then
+            echo "::notice title=Dev Desk outcome::no_changes"
+            echo "outcome=no_changes" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git bundle create "$RUNNER_TEMP/dev-desk.bundle" "${START_SHA}..${BRANCH}"
+          git --no-pager diff --stat "$START_SHA" HEAD
+          echo "::notice title=Dev Desk outcome::changes"
+          echo "outcome=changes" >> "$GITHUB_OUTPUT"
+
+      - name: Hand over commits
+        if: steps.commit.outputs.outcome == 'changes'
+        uses: actions/upload-artifact@v7
+        with:
+          name: dev-desk-bundle
+          path: ${{ runner.temp }}/dev-desk.bundle
+          retention-days: 1
+          if-no-files-found: error
+
+  push:
+    name: Push changes
+    needs: claude
+    if: needs.claude.outputs.outcome == 'changes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    env:
+      BRANCH: ${{ inputs.branch }}
+      START_SHA: ${{ needs.claude.outputs.start_sha }}
+    steps:
+      - name: Check out starting commit
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.claude.outputs.start_sha }}
+          fetch-depth: 1
+
+      - name: Download commits
+        uses: actions/download-artifact@v8
+        with:
+          name: dev-desk-bundle
+          path: ${{ runner.temp }}/bundle
+
+      - name: Check commits for credentials
+        run: |
+          git bundle verify -q "$RUNNER_TEMP/bundle/dev-desk.bundle"
+          git fetch -q "$RUNNER_TEMP/bundle/dev-desk.bundle" "refs/heads/${BRANCH}:refs/dev-desk/work"
+          if git diff "$START_SHA" refs/dev-desk/work | grep -E '^\+' | grep -qE 'sk-ant-(oat|api|admin)[0-9]{2}-[A-Za-z0-9_-]{40,}|gh[pousr]_[A-Za-z0-9]{36,}|github_pat_[A-Za-z0-9_]{60,}'; then
+            echo "::error title=Dev Desk::Refusing to push: the changes contain what looks like an API key or access token."
+            exit 1
+          fi
+
+      - name: Push work branch
+        run: git push origin "refs/dev-desk/work:refs/heads/${BRANCH}"
