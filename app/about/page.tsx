@@ -174,7 +174,7 @@ export default function About() {
                   name: "Shrikant Verma",
                   relation: "Mentor of the Group",
                   role: "Acclaimed Actor & SRC Alumnus",
-                  desc: "An alumnus of the National School of Drama, Shrikant Verma is a highly recognized actor in Indian cinema (Panchayat, Dum Laga Ke Haisha) and theatre. As the mentor of Raghuvansh, he provides critical artistic guidance, training, and dramatic calibre to the collective.",
+                  desc: "An alumnus of the Shri Ram Centre for Performing Arts (SRCPA), Shrikant Verma is a highly recognized actor in Indian cinema (Panchayat, Dum Laga Ke Haisha) and theatre. As the mentor of Raghuvansh, he provides critical artistic guidance, training, and dramatic calibre to the collective.",
                   image: "/about-section/shrikant-verma.webp"
                 },
                 {
